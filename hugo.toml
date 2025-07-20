@@ -1,0 +1,66 @@
+baseURL = "https://diefish1024.github.io/"
+languageCode = "zh-cn"
+title = "Diefish's blog"
+theme = "PaperMod"
+
+enableRobotsTXT = true
+enableEmoji = true
+
+[params]
+  defaultTheme = "auto"
+  homeInfoParams = { Title = "Welcome! ", Content = "This is my personal blog..." }
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowToc = true
+  TocOpen = true
+  [params.comments]
+    enabled = true
+    provider = "giscus"
+    # giscus
+    # [params.comments.giscus]
+    #   repo = "diefish1024/diefish1024.github.io"
+    #   repoId = "R_..."
+    #   category = "Announcements"
+    #   categoryId = "DIC_..."
+    #   mapping = "pathname"
+    #   strict = "0"
+    #   reactionsEnabled = "1"
+    #   emitMetadata = "0"
+    #   inputPosition = "bottom"
+    #   theme = "preferred_color_scheme"
+    #   lang = "zh-CN"
+    #   loading = "lazy"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    noClasses = false
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  series = "series"
+
+[menu]
+  [[menu.main]]
+    identifier = "archives"
+    name = "Archives"
+    url = "/archives/"
+    weight = 10
+  [[menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags/"
+    weight = 20
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 30
