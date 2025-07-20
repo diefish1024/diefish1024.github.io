@@ -8,7 +8,7 @@ enableEmoji = true
 
 [params]
   defaultTheme = "auto"
-  homeInfoParams = { Title = "Hi, I'm <mark>diefish</mark> ", Content = "A freshman at SJTU John class." }
+  homeInfoParams = { Title = "Hi, I'm <b>diefish</b> ", Content = "A freshman at SJTU John class." }
   ShowReadingTime = true
   ShowShareButtons = true
   ShowPostNavLinks = true
