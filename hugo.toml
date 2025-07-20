@@ -1,6 +1,6 @@
 baseURL = "https://diefish1024.github.io/"
 languageCode = "zh-cn"
-title = "Diefish's blog"
+title = "diefish's blog"
 theme = "PaperMod"
 
 enableRobotsTXT = true
@@ -8,11 +8,11 @@ enableEmoji = true
 
 [params]
   defaultTheme = "auto"
-  homeInfoParams = { Title = "Welcome! ", Content = "This is my personal blog..." }
+  homeInfoParams = { Title = "Hi, I'm <mark>diefish</mark> ", Content = "A freshman at SJTU John class." }
   ShowReadingTime = true
   ShowShareButtons = true
   ShowPostNavLinks = true
-  ShowBreadCrumbs = true
+  ShowBreadCrumbs = false
   ShowToc = true
   TocOpen = true
   [params.comments]
