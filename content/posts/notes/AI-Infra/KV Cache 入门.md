@@ -96,14 +96,14 @@ $$
 
 那么，第 $t$ 个 token 的注意力计算变为：
 $$
-\text{Attention}_{t}(Q_t, K_{\text{cached}}, V_{\text{cached}}) = \text{softmax}\left(\frac{Q_t K_{\text{cached}}^T}{\sqrt{d_k}}\right)V_{\text{cached}}
+\text{Attention}\_{t}(Q_t, K\_{\text{cached}}, V\_{\text{cached}}) = \text{softmax}\left(\frac{Q_t K\_{\text{cached}}^T}{\sqrt{d_k}}\right)V\_{\text{cached}}
 $$
 其中
 - $Q_t K_{\text{cached}}^T$ 是一个 $1 \times t$ 的行向量，代表当前 Query 与所有历史 Key 的相关性分数
 - $\text{softmax}$ 操作将这个 $1 \times t$ 的向量转化为注意力权重
 - 这个 $1 \times t$ 的注意力权重向量再与 $V_{\text{cached}}$ 矩阵（维度 $t \times d_v$）相乘，得到最终的注意力输出，维度是 $1 \times d_v$ 
 
-每次生成新的 token $t+1$ 时，我们只需要计算新的 $Q_{t+1}$，将新计算的 $K_{t+1}$ 和 $V_{t+1}$ 拼接到 $K_{\text{cached}}$ 和 $V_{\text{cached}}$ 末尾，形成 $K'_{\text{cached}} = \text{concat}(K_{\text{cached}}, K_{t+1})$ 和 $V'_{\text{cached}} = \text{concat}(V_{\text{cached}}, V_{t+1})$
+每次生成新的 token $t+1$ 时，我们只需要计算新的 $Q_{t+1}$，将新计算的 $K_{t+1}$ 和 $V_{t+1}$ 拼接到 $K_{\text{cached}}$ 和 $V_{\text{cached}}$ 末尾，形成 $K'\_{\text{cached}} = \text{concat}(K\_{\text{cached}}, K_{t+1})$ 和 $V'\_{\text{cached}} = \text{concat}(V\_{\text{cached}}, V_{t+1})$
 
 ### 7. Limitations and Considerations
 
@@ -118,7 +118,7 @@ KV Cache 是 Transformer 模型在自回归推理过程中非常重要的一种�
 
 ### References
 
-[KV Cache 原理讲解 ](https://www.bilibili.com/video/BV17CPkeEEzk)（Bilibili）
-- _注意：此视频内容存在部分错误_
-[看图学KV Cache](https://zhuanlan.zhihu.com/p/662498827)（知乎）
-[为什么没有Q Cache](https://www.zhihu.com/question/653658936/answer/3545520807)（知乎）
+- [KV Cache 原理讲解 ](https://www.bilibili.com/video/BV17CPkeEEzk)（Bilibili）
+	- *注意：此视频内容存在部分错误*
+- [看图学KV Cache](https://zhuanlan.zhihu.com/p/662498827)（知乎）
+- [为什么没有Q Cache](https://www.zhihu.com/question/653658936/answer/3545520807)（知乎）
