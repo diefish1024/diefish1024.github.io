@@ -8,16 +8,7 @@ Entropy Objective Tent 的测试时目标函数是最小化模型预测 $\hat{y}
 $$ H(\hat{y}) = - \sum\_c p(\hat{y}\_c) \log p(\hat{y}\_c) $$
 其中， $p(\hat{y}\_c)$ 表示模型预测目标数据 $x^t$ 属于类别 $c$ 的概率。
 最小化熵促使模型输出更“尖锐”或更“确定”的预测分布。 优势：熵是一种无监督目标，仅依赖于模型预测，不需要真实标签。最小化熵与减少预测误差和数据漂移之间存在内在联系，因为更确定的预测通常意味着更正确的预测。 Modulation Parameters Tent 不直接修改原始模型的全部参数 $\theta$。相反，它仅更新模型内部归一化层（如Batch Normalization layers）中的线性且低维度的仿射变换参数：尺度参数 $\gamma$ 和偏移参数 $\beta$。
-...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to Tent" href=https://diefish1024.github.io/posts/literature-notes/tent/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>并发控制：同步 (1)</h2></header><div class=entry-content><p>同步和条件变量 互斥实现了原子性，但是无法实现确定性，也就是无法正确实现 “happens-before” 的关系
-因此需要引入条件变量来实现线程的同步，形成受控制的并发事件的发生顺序（可以用乐团指挥来类比），把一系列不确定的状态在某一个时间点同步到了一个确定的状态，将发散的并发程序状态 “收束”
-实现同步
-实现 $A\to B$:
-1 2 3 4 5 6 7 A; can_proceed = true; (signal) while(!can_proceed); B // B: wait until the condition is satisfied 这样的思路大致正确，但是自选的循环有很大的性能问题，因此需要一个更加底层的机制来帮助实现这一点
-最理想的 API 是 wait_until(cond) ，但是过去为了简化设计，变成了
-条件不满足时等待：wait - 直接睡眠等待 条件满足时继续：signal/broadcast - 唤醒所有线程 （小时候的 scratch 编程其实已经有了这样的思想😂）
-在 c++ 代码中我们可以把条件放到 $\lambda$ 表达式中：
-1 2 3 4 5 6 7 8 9 10 11 12 std::mutex mtx; std::condition_variable cv; void T_player() { std::unique_lock lk(mtx); cv.wait(lk, []{ return can_proceed; } ); cv.notify_all(); lk.unlock(); } 注意条件变量在等待时需要带着一把锁（需要确保检查和等待是原子操作）
-...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 并发控制：同步 (1)" href=https://diefish1024.github.io/posts/nju-os-2025/15.-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5-1/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://diefish1024.github.io/posts/>«&nbsp;Prev&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
+...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to Tent" href=https://diefish1024.github.io/posts/literature-notes/tent/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://diefish1024.github.io/posts/>«&nbsp;Prev&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
