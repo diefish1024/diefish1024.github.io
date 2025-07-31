@@ -51,11 +51,26 @@ def slugify(text):
 
 
 def process_content(main_content, note_slug):
-    """Standard image links ![]()."""
+    """Processes content to convert LaTeX to shortcodes and update image links."""
 
     processed_content = main_content
 
-    # Handle standard Markdown image links ![]()
+    # --- 1. Convert LaTeX to Shortcodes ---
+    # The order is important: process display math first, then inline math.
+
+    # Handle display math ($$ ... $$)
+    # The re.DOTALL flag allows the pattern to match across multiple lines.
+    display_math_pattern = re.compile(r'\$\$(.*?)\$\$', re.DOTALL)
+    content_after_display = display_math_pattern.sub(r'{{< math >}}\n\1\n{{< /math >}}', processed_content)
+
+    # Handle inline math ($ ... $)
+    # The pattern [^\$]+? ensures it's not greedy and doesn't match across different formulas.
+    inline_math_pattern = re.compile(r'\$([^\$]+?)\$')
+    content_after_latex = inline_math_pattern.sub(r'{{< imath >}}\1{{< /imath >}}', content_after_display)
+
+
+    # --- 2. Process Image Links ---
+    # This part remains the same as your original script.
     def replace_image_links(match):
         alt_text = match.group(1)
         original_path = match.group(2)
@@ -75,7 +90,7 @@ def process_content(main_content, note_slug):
             return f"![{alt_text}]()"
 
         image_name = os.path.basename(source_image_path)
-        slugified_image_name = slugify(image_name)
+        slugified_image_name = slugify(image_name) # Using your existing slugify function
         note_image_dir = os.path.join(HUGO_STATIC_IMAGES_PATH, note_slug)
         os.makedirs(note_image_dir, exist_ok=True)
         dest_image_path = os.path.join(note_image_dir, slugified_image_name)
@@ -87,7 +102,7 @@ def process_content(main_content, note_slug):
         return f"![{alt_text}]({web_path})"
 
     image_pattern = re.compile(r'!\[(.*?)\]\((.*?)\)')
-    final_content = image_pattern.sub(replace_image_links, processed_content)
+    final_content = image_pattern.sub(replace_image_links, content_after_latex)
     
     return final_content
 
