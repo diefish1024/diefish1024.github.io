@@ -10,14 +10,14 @@ categories:
 ---
 # Setting
 
-**Fully Test-Time Adaptation** 是一种独特的模型适应设定。在此设定下，模型 $f_\theta(x)$ 在训练阶段已通过源数据 $x^s$ 和标签 $y^s$ 完成训练，获得参数 $\theta$。但在测试阶段，模型将遇到与源数据分布不同的无标签目标数据 $x^t$。
+**Fully Test-Time Adaptation** 是一种独特的模型适应设定。在此设定下，模型 {{< imath >}}f_\theta(x){{< /imath >}} 在训练阶段已通过源数据 {{< imath >}}x^s{{< /imath >}} 和标签 {{< imath >}}y^s{{< /imath >}} 完成训练，获得参数 {{< imath >}}\theta{{< /imath >}}。但在测试阶段，模型将遇到与源数据分布不同的无标签目标数据 {{< imath >}}x^t{{< /imath >}}。
 
 FTT-Adaptation 与以下方法不同：
 - **Fine-tuning**：需要目标标签进行重新训练。
 - **Domain Adaptation**：需要源数据和目标数据进行联合训练。
 - **Test-Time Training (TTT)**：需要修改训练过程并共同优化有监督及自监督损失。
 
-相比之下，FTT-Adaptation 仅能利用预训练模型 $f_\theta$ 和无标签目标数据 $x^t$ 进行适应，不依赖源数据或额外的监督信息。
+相比之下，FTT-Adaptation 仅能利用预训练模型 {{< imath >}}f_\theta{{< /imath >}} 和无标签目标数据 {{< imath >}}x^t{{< /imath >}} 进行适应，不依赖源数据或额外的监督信息。
 
 ## Method
 
@@ -25,36 +25,38 @@ FTT-Adaptation 与以下方法不同：
 
 ### Entropy Objective
 
-Tent 的测试时目标函数是最小化模型预测 $\hat{y} = f_\theta(x^t)$ 的**熵 $H(\hat{y})$**。论文中使用的**香农熵**计算公式如下：
+Tent 的测试时目标函数是最小化模型预测 {{< imath >}}\hat{y} = f_\theta(x^t){{< /imath >}} 的**熵 {{< imath >}}H(\hat{y}){{< /imath >}}**。论文中使用的**香农熵**计算公式如下：
 
-$$
+{{< math >}}
+
 H(\hat{y}) = - \sum_c p(\hat{y}_c) \log p(\hat{y}_c)
-$$
 
-其中， $p(\hat{y}_c)$ 表示模型预测目标数据 $x^t$ 属于类别 $c$ 的概率。
+{{< /math >}}
+
+其中， {{< imath >}}p(\hat{y}_c){{< /imath >}} 表示模型预测目标数据 {{< imath >}}x^t{{< /imath >}} 属于类别 {{< imath >}}c{{< /imath >}} 的概率。
 - 最小化熵促使模型输出更“尖锐”或更“确定”的预测分布。
 - **优势**：熵是一种**无监督目标**，仅依赖于模型预测，不需要真实标签。最小化熵与减少预测误差和数据漂移之间存在内在联系，因为更确定的预测通常意味着更正确的预测。
 
 ### Modulation Parameters
 
-**Tent** 不直接修改原始模型的全部参数 $\theta$。相反，它仅更新模型内部归一化层（如**Batch Normalization layers**）中的线性且低维度的**仿射变换**参数：尺度参数 $\gamma$ 和偏移参数 $\beta$。
+**Tent** 不直接修改原始模型的全部参数 {{< imath >}}\theta{{< /imath >}}。相反，它仅更新模型内部归一化层（如**Batch Normalization layers**）中的线性且低维度的**仿射变换**参数：尺度参数 {{< imath >}}\gamma{{< /imath >}} 和偏移参数 {{< imath >}}\beta{{< /imath >}}。
 - 这一选择的理由是：这些参数只占模型总参数的极小部分（<1%），优化效率高且稳定。
 - **特征调制**过程包含两个步骤：
-    1.**Normalization (标准化)**：根据当前批次测试数据的均值 $\mu$ 和标准差 $\sigma$ 来标准化特征 $x$，即 $\hat{x} = (x - \mu)/\sigma$。这里的 $\mu, \sigma$ 是在测试时从当前批次数据中估计的。
-    2.**Transformation (仿射变换)**：对标准化后的特征 $\hat{x}$ 应用仿射变换，即 $x' = \gamma \hat{x} + \beta$。参数 $\gamma$ 和 $\beta$ 通过最小化熵目标函数进行优化。
+    1.**Normalization (标准化)**：根据当前批次测试数据的均值 {{< imath >}}\mu{{< /imath >}} 和标准差 {{< imath >}}\sigma{{< /imath >}} 来标准化特征 {{< imath >}}x{{< /imath >}}，即 {{< imath >}}\hat{x} = (x - \mu)/\sigma{{< /imath >}}。这里的 {{< imath >}}\mu, \sigma{{< /imath >}} 是在测试时从当前批次数据中估计的。
+    2.**Transformation (仿射变换)**：对标准化后的特征 {{< imath >}}\hat{x}{{< /imath >}} 应用仿射变换，即 {{< imath >}}x' = \gamma \hat{x} + \beta{{< /imath >}}。参数 {{< imath >}}\gamma{{< /imath >}} 和 {{< imath >}}\beta{{< /imath >}} 通过最小化熵目标函数进行优化。
 
 ### Algorithm
 
 **Tent** 算法的流程如下：
 - **Initialization**：
-    - 加载预训练好的源模型参数 $\theta$。
+    - 加载预训练好的源模型参数 {{< imath >}}\theta{{< /imath >}}。
     - 固定所有非仿射变换的参数。
     - 丢弃源数据中估计的归一化统计量。
-    - 优化器收集所有归一化层的通道级仿射变换参数 $\{\gamma_{l,k}, \beta_{l,k}\}$。
+    - 优化器收集所有归一化层的通道级仿射变换参数 {{< imath >}}\{\gamma_{l,k}, \beta_{l,k}\}{{< /imath >}}。
 - **Iteration**：在线处理数据批次。
-    - **Forward Pass**：对每个数据批次，逐层估计该批次数据的归一化统计量 ($\mu, \sigma$)。
-    - **Backward Pass**：计算预测熵 $H(\hat{y})$ 相对于仿射变换参数 $\gamma, \beta$ 的梯度 $\nabla H(\hat{y})$。
-    - **Update**：使用梯度更新 $\gamma, \beta$ 参数。**Tent** 采用高效的在线更新策略，每次更新只影响下一个批次的数据处理。
+    - **Forward Pass**：对每个数据批次，逐层估计该批次数据的归一化统计量 ({{< imath >}}\mu, \sigma{{< /imath >}})。
+    - **Backward Pass**：计算预测熵 {{< imath >}}H(\hat{y}){{< /imath >}} 相对于仿射变换参数 {{< imath >}}\gamma, \beta{{< /imath >}} 的梯度 {{< imath >}}\nabla H(\hat{y}){{< /imath >}}。
+    - **Update**：使用梯度更新 {{< imath >}}\gamma, \beta{{< /imath >}} 参数。**Tent** 采用高效的在线更新策略，每次更新只影响下一个批次的数据处理。
 - **Termination**：对于**在线适应**，适应过程只要有测试数据就持续进行。对于**离线适应**，模型会先进行更新，然后重复推断，适应可以持续多个**Epochs**。
 
 ## Experiments
@@ -98,7 +100,7 @@ $$
 **Tent** 通过**Test Entropy Minimization**实现了在**数据漂移**情况下的**泛化误差**降低。其核心在于模型的**自监督**自我改进，即依据自身的预测反馈进行调整。
 
 - **优势总结**：
-    - **高效**：仅通过在线优化少数参数（$\gamma, \beta$）实现。
+    - **高效**：仅通过在线优化少数参数（{{< imath >}}\gamma, \beta{{< /imath >}}）实现。
     - **实用**：无需源数据访问，不改变模型训练过程。
     - **通用**：适用于多种数据漂移类型和不同网络架构。
 

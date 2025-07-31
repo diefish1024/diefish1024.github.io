@@ -27,17 +27,19 @@ KV Cache，全称 **Key-Value Cache**，是一种优化技术，用于加速 Tra
 
 自注意力机制的计算过程为以下步骤：
 1.  计算 Query 与所有 Key 的点积，得到**注意力分数**
-2.  将注意力分数进行缩放，除以 $\sqrt{d_k}$（$d_k$ 是 Key 向量的维度)
+2.  将注意力分数进行缩放，除以 {{< imath >}}\sqrt{d_k}{{< /imath >}}（{{< imath >}}d_k{{< /imath >}} 是 Key 向量的维度)
 3.  对缩放后的分数进行 Softmax，将其转换为**注意力权重**，表示每个 token 对当前 token 的重要性
 4.  将注意力权重与 Value 向量进行加权求和，得到当前 token 的注意力输出
 
 公式为：
-$$
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-$$
-其中矩阵 $Q,K,V \in \mathbb{R}^{L \times d}$ ，$L$ 为当前上下文长度
+{{< math >}}
 
-（处于简洁性的考虑，忽略了 Causal Mask ，实际上 $QK^{T}$ 应该 Mask 成下三角矩阵来强制不能看到序列未来的信息）
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+
+{{< /math >}}
+其中矩阵 {{< imath >}}Q,K,V \in \mathbb{R}^{L \times d}{{< /imath >}} ，{{< imath >}}L{{< /imath >}} 为当前上下文长度
+
+（处于简洁性的考虑，忽略了 Causal Mask ，实际上 {{< imath >}}QK^{T}{{< /imath >}} 应该 Mask 成下三角矩阵来强制不能看到序列未来的信息）
 
 ### 3. The Problem KV Cache Solves
 
@@ -45,16 +47,16 @@ $$
 
 假设我们要生成“中华人民”
 1.  **输入**：“中”
-    - 模型计算“中”的 $Q, K, V$ 
+    - 模型计算“中”的 {{< imath >}}Q, K, V{{< /imath >}} 
     - 计算 attention ，生成“华”
 2.  **输入**：“中华”
-    - 模型再次计算“中”和“华”的 $Q, K, V$ 
+    - 模型再次计算“中”和“华”的 {{< imath >}}Q, K, V{{< /imath >}} 
     - 计算 attention ，生成“人”
 3.  **输入**：“中华人”
-    - 模型再次计算“中”、“华”和“人”的 $Q, K, V$ 
+    - 模型再次计算“中”、“华”和“人”的 {{< imath >}}Q, K, V{{< /imath >}} 
     - 计算 attention ，生成“民”
 
-可以看到，在每一步生成新 token 时，都需要重新计算**之前已经处理过的所有 token** 的 $K$ 和 $V$ 向量。这种重复计算在序列较长时会消耗大量的计算资源和时间，效率低下。
+可以看到，在每一步生成新 token 时，都需要重新计算**之前已经处理过的所有 token** 的 {{< imath >}}K{{< /imath >}} 和 {{< imath >}}V{{< /imath >}} 向量。这种重复计算在序列较长时会消耗大量的计算资源和时间，效率低下。
 
 ### 4. How KV Cache Works
 
@@ -62,19 +64,19 @@ $$
 
 以生成“中华人民”为例，使用 KV Cache 的流程如下：
 1.  **输入**：“中”
-    - 计算“中”的 $K_1, V_1$ 
-    - 将 $K_1, V_1$ 存入 KV Cache
-    - 使用 $Q_1, K_1, V_1$ 计算 attention ，生成“华”
+    - 计算“中”的 {{< imath >}}K_1, V_1{{< /imath >}} 
+    - 将 {{< imath >}}K_1, V_1{{< /imath >}} 存入 KV Cache
+    - 使用 {{< imath >}}Q_1, K_1, V_1{{< /imath >}} 计算 attention ，生成“华”
 2.  **输入**：“华”（当前 token 只有“华”，但注意力要关注整个序列“中华”）
-    - 计算“华”的 $K_2, V_2$ 
-    - 将 $K_2, V_2$ 添加到 KV Cache。此时 KV Cache 包含 $[K_1, K_2]$ 和 $[V_1, V_2]$ 
-    - 使用当前 $Q_2$ 和缓存中的 $[K_1, K_2], [V_1, V_2]$ 计算 attention ，生成“人”
+    - 计算“华”的 {{< imath >}}K_2, V_2{{< /imath >}} 
+    - 将 {{< imath >}}K_2, V_2{{< /imath >}} 添加到 KV Cache。此时 KV Cache 包含 {{< imath >}}[K_1, K_2]{{< /imath >}} 和 {{< imath >}}[V_1, V_2]{{< /imath >}} 
+    - 使用当前 {{< imath >}}Q_2{{< /imath >}} 和缓存中的 {{< imath >}}[K_1, K_2], [V_1, V_2]{{< /imath >}} 计算 attention ，生成“人”
 3.  **输入**：“人”
-    - 计算“人”的 $K_3, V_3$ 
-    - 将 $K_3, V_3$ 添加到 KV Cache。此时 KV Cache 包含 $[K_1, K_2, K_3]$ 和 $[V_1, V_2, V_3]$ 
-    - 使用当前 $Q_3$ 和缓存中的 $[K_1, K_2, K_3], [V_1, V_2, V_3]$ 计算 attention ，生成“民”
+    - 计算“人”的 {{< imath >}}K_3, V_3{{< /imath >}} 
+    - 将 {{< imath >}}K_3, V_3{{< /imath >}} 添加到 KV Cache。此时 KV Cache 包含 {{< imath >}}[K_1, K_2, K_3]{{< /imath >}} 和 {{< imath >}}[V_1, V_2, V_3]{{< /imath >}} 
+    - 使用当前 {{< imath >}}Q_3{{< /imath >}} 和缓存中的 {{< imath >}}[K_1, K_2, K_3], [V_1, V_2, V_3]{{< /imath >}} 计算 attention ，生成“民”
 
-通过这种方式，每一步只需要计算**当前新生成 token** 的 $K, V$ 向量，而无需重新计算之前所有 token 的 $K, V$。
+通过这种方式，每一步只需要计算**当前新生成 token** 的 {{< imath >}}K, V{{< /imath >}} 向量，而无需重新计算之前所有 token 的 {{< imath >}}K, V{{< /imath >}}。
 
 ### 5. Why Not QKV Cache?
 
@@ -82,30 +84,32 @@ $$
 
 原因在于 Q 向量的性质：
 
-- Q 向量是用来“查询”当前 token 与序列中其他 token 的相关性的。在自回归生成过程中，每一步生成一个新的 token，这个新 token 对应的 Query 向量是**新的**，它基于当前步的隐藏状态计算得出。换句话说，每次生成新 token 时，其对应的 $Q$ 向量都是独一无二的，并且需要重新计算以反映最新的生成上下文。
-- K 和 V 向量则代表了序列中每个 token 的“内容”信息。对于已经处理过的 token，它们的 $K$ 和 $V$ 向量一旦计算出来，其内容信息就是**固定不变的**。因此，这些 $K$ 和 $V$ 向量可以直接被缓存并反复使用，而无需重新计算。
+- Q 向量是用来“查询”当前 token 与序列中其他 token 的相关性的。在自回归生成过程中，每一步生成一个新的 token，这个新 token 对应的 Query 向量是**新的**，它基于当前步的隐藏状态计算得出。换句话说，每次生成新 token 时，其对应的 {{< imath >}}Q{{< /imath >}} 向量都是独一无二的，并且需要重新计算以反映最新的生成上下文。
+- K 和 V 向量则代表了序列中每个 token 的“内容”信息。对于已经处理过的 token，它们的 {{< imath >}}K{{< /imath >}} 和 {{< imath >}}V{{< /imath >}} 向量一旦计算出来，其内容信息就是**固定不变的**。因此，这些 {{< imath >}}K{{< /imath >}} 和 {{< imath >}}V{{< /imath >}} 向量可以直接被缓存并反复使用，而无需重新计算。
 
 因此，不缓存 Q 是因为它在每一步都是一个新的计算结果；而缓存 K 和 V 则可以显著减少重复计算，从而提高效率。
 
 ### 6. KV Cache in Attention Mechanism
 
-在数学上，当使用 KV Cache 进行自回归解码时，注意力公式中的 $K$ 和 $V$ 矩阵会随着生成过程的进行而不断增长。
+在数学上，当使用 KV Cache 进行自回归解码时，注意力公式中的 {{< imath >}}K{{< /imath >}} 和 {{< imath >}}V{{< /imath >}} 矩阵会随着生成过程的进行而不断增长。
 
-假设我们正在生成第 $t$ 个 token。
-- 当前 token 的 Q 向量是 $Q_t$ ，这是一个行向量，代表当前第 $t$ 个 token 的 Query ，维度为 $1 \times d_k$ 
-- K 矩阵 $K_{\text{cached}}$ 将包含从第一个 token 到第 $t$ 个 token 的所有 K 向量： $K_{\text{cached}} = [K_1^T, K_2^T, \dots, K_t^T]^T$ ，维度为 $t \times d_k$ 
-- V 矩阵 $V_{\text{cached}}$ 将包含从第一个 token 到第 $t$ 个 token 的所有 V 向量： $V_{\text{cached}} = [V_1^T, V_2^T, \dots, V_t^T]^T$ 。其维度为 $t \times d_v$ 
+假设我们正在生成第 {{< imath >}}t{{< /imath >}} 个 token。
+- 当前 token 的 Q 向量是 {{< imath >}}Q_t{{< /imath >}} ，这是一个行向量，代表当前第 {{< imath >}}t{{< /imath >}} 个 token 的 Query ，维度为 {{< imath >}}1 \times d_k{{< /imath >}} 
+- K 矩阵 {{< imath >}}K_{\text{cached}}{{< /imath >}} 将包含从第一个 token 到第 {{< imath >}}t{{< /imath >}} 个 token 的所有 K 向量： {{< imath >}}K_{\text{cached}} = [K_1^T, K_2^T, \dots, K_t^T]^T{{< /imath >}} ，维度为 {{< imath >}}t \times d_k{{< /imath >}} 
+- V 矩阵 {{< imath >}}V_{\text{cached}}{{< /imath >}} 将包含从第一个 token 到第 {{< imath >}}t{{< /imath >}} 个 token 的所有 V 向量： {{< imath >}}V_{\text{cached}} = [V_1^T, V_2^T, \dots, V_t^T]^T{{< /imath >}} 。其维度为 {{< imath >}}t \times d_v{{< /imath >}} 
 
-那么，第 $t$ 个 token 的注意力计算变为：
-$$
+那么，第 {{< imath >}}t{{< /imath >}} 个 token 的注意力计算变为：
+{{< math >}}
+
 \text{Attention}_{t}(Q_t, K_{\text{cached}}, V_{\text{cached}}) = \text{softmax}\left(\frac{Q_t K_{\text{cached}}^T}{\sqrt{d_k}}\right)V_{\text{cached}}
-$$
-其中
-- $Q_t K_{\text{cached}}^T$ 是一个 $1 \times t$ 的行向量，代表当前 Query 与所有历史 Key 的相关性分数
-- $\text{softmax}$ 操作将这个 $1 \times t$ 的向量转化为注意力权重
-- 这个 $1 \times t$ 的注意力权重向量再与 $V_{\text{cached}}$ 矩阵（维度 $t \times d_v$）相乘，得到最终的注意力输出，维度是 $1 \times d_v$ 
 
-每次生成新的 token $t+1$ 时，我们只需要计算新的 $Q_{t+1}$，将新计算的 $K_{t+1}$ 和 $V_{t+1}$ 拼接到 $K_{\text{cached}}$ 和 $V_{\text{cached}}$ 末尾，形成 $K'_{\text{cached}} = \text{concat}(K_{\text{cached}}, K_{t+1})$ 和 $V'_{\text{cached}} = \text{concat}(V_{\text{cached}}, V_{t+1})$
+{{< /math >}}
+其中
+- {{< imath >}}Q_t K_{\text{cached}}^T{{< /imath >}} 是一个 {{< imath >}}1 \times t{{< /imath >}} 的行向量，代表当前 Query 与所有历史 Key 的相关性分数
+- {{< imath >}}\text{softmax}{{< /imath >}} 操作将这个 {{< imath >}}1 \times t{{< /imath >}} 的向量转化为注意力权重
+- 这个 {{< imath >}}1 \times t{{< /imath >}} 的注意力权重向量再与 {{< imath >}}V_{\text{cached}}{{< /imath >}} 矩阵（维度 {{< imath >}}t \times d_v{{< /imath >}}）相乘，得到最终的注意力输出，维度是 {{< imath >}}1 \times d_v{{< /imath >}} 
+
+每次生成新的 token {{< imath >}}t+1{{< /imath >}} 时，我们只需要计算新的 {{< imath >}}Q_{t+1}{{< /imath >}}，将新计算的 {{< imath >}}K_{t+1}{{< /imath >}} 和 {{< imath >}}V_{t+1}{{< /imath >}} 拼接到 {{< imath >}}K_{\text{cached}}{{< /imath >}} 和 {{< imath >}}V_{\text{cached}}{{< /imath >}} 末尾，形成 {{< imath >}}K'_{\text{cached}} = \text{concat}(K_{\text{cached}}, K_{t+1}){{< /imath >}} 和 {{< imath >}}V'_{\text{cached}} = \text{concat}(V_{\text{cached}}, V_{t+1}){{< /imath >}}
 
 ### 7. Limitations and Considerations
 
