@@ -14,9 +14,9 @@
     <atom:link href="https://diefish1024.github.io/tags/ai-infra/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>KV Cache 入门</title>
-      <link>https://diefish1024.github.io/posts/notes/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
+      <link>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/notes/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</guid>
+      <guid>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</guid>
       <description>&lt;p&gt;推理效率对于 llm 是一个至关重要的问题。当模型生成文本时，尤其是以自回归方式逐词生成时，效率瓶颈会变得非常明显。KV Cache 就是为了解决这一问题而诞生的技术。&lt;/p&gt;
 &lt;h3 id=&#34;1-what-is-kv-cache&#34;&gt;1. What is KV Cache?&lt;/h3&gt;
 &lt;p&gt;KV Cache，全称 &lt;strong&gt;Key-Value Cache&lt;/strong&gt;，是一种优化技术，用于加速 Transformer 架构在自回归生成过程中的推理速度。它的核心思想是&lt;strong&gt;缓存&lt;/strong&gt;并&lt;strong&gt;重用&lt;/strong&gt;在注意力机制中计算得到的 &lt;strong&gt;Key (K)&lt;/strong&gt; 和 &lt;strong&gt;Value (V)&lt;/strong&gt; 向量。&lt;/p&gt;

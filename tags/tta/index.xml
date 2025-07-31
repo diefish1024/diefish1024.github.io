@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>TTA on diefish&#39;s blog</title>
+    <link>https://diefish1024.github.io/tags/tta/</link>
+    <description>Recent content in TTA on diefish&#39;s blog</description>
+    <image>
+      <title>diefish&#39;s blog</title>
+      <url>https://diefish1024.github.io/images/avatar.jpg</url>
+      <link>https://diefish1024.github.io/images/avatar.jpg</link>
+    </image>
+    <generator>Hugo -- 0.148.2</generator>
+    <language>zh-cn</language>
+    <atom:link href="https://diefish1024.github.io/tags/tta/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SSA</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/ssa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/ssa/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;TTA 在回归任务上的局限：为分类任务设计，一般基于熵最小化和特征对齐；熵最小化不适用，回归模型产生单一值，不产生概率分布；简单特征对齐对回归模型效果不佳，可能反而会稀释需要学习的特征&lt;/p&gt;
+&lt;h2 id=&#34;problem-setting&#34;&gt;Problem Setting&lt;/h2&gt;
+&lt;p&gt;考虑一个回归模型 $f\&lt;em&gt;\theta: \mathcal{X} \to \mathbb{R}$，可以进一步分解为&lt;strong&gt;特征提取器&lt;/strong&gt; $g\&lt;/em&gt;\phi: \mathcal{X} \to \mathbb{R}^D$（从输入 $\mathcal{X}$ 提取 $D$ 维特征 $z$）和&lt;strong&gt;线性回归器&lt;/strong&gt; $h\&lt;em&gt;\psi(z) = w^T z + b$（或者 $h\&lt;/em&gt;{\psi}(z)=Wz+b$）&lt;/p&gt;
+&lt;p&gt;$f\_\theta$ 首先在一个有标签的&lt;strong&gt;源数据集&lt;/strong&gt; $S = {(x\_i, y\&lt;em&gt;i)}\&lt;/em&gt;{i=1}^{N\_s}$ 上进行预训练，数据从源域分布 $p\_s$ 中采样&lt;/p&gt;
+&lt;p&gt;目标是使用一个&lt;strong&gt;无标签的&lt;/strong&gt;目标数据集 $T = {x\&lt;em&gt;j}\&lt;/em&gt;{j=1}^{N\&lt;em&gt;t}$ 来适应预训练好的模型 $f\&lt;/em&gt;\theta$ 到目标域&lt;/p&gt;
+&lt;p&gt;我们假设存在 &lt;strong&gt;covariate shift&lt;/strong&gt; ，这意味着：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入数据的分布在源域和目标域之间是不同的：$p\_s(x) \neq p\_t(x)$&lt;/li&gt;
+&lt;li&gt;但给定输入后，输出的条件分布是相同的：$p\_s(y|x) = p\_t(y|x)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;test-time-adaptation-for-regression&#34;&gt;Test-time Adaptation for Regression&lt;/h2&gt;
+&lt;h3 id=&#34;basic-idea-feature-alignment&#34;&gt;Basic Idea: Feature Alignment&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;朴素实现&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;计算源域特征统计量&lt;/strong&gt;：在源域训练后，计算源域特征的&lt;strong&gt;均值&lt;/strong&gt; $\mu^s$ 和&lt;strong&gt;元素级方差&lt;/strong&gt; $\sigma^{s2}$
+$$ \mu^s = \frac{1}{N\&lt;em&gt;s} \sum\&lt;/em&gt;{i=1}^{N\_s} z\_i^s, \quad \sigma^{s2} = \frac{1}{N\&lt;em&gt;s} \sum\&lt;/em&gt;{i=1}^{N\_s} (z\_i^s - \mu^s) \odot (z\_i^s - \mu^s) \quad \text{(1)} $$
+其中 $z\&lt;em&gt;i^s = g\&lt;/em&gt;\phi(x\_i)$ 是源特征，$N\_s$ 是源数据样本数，$\odot$ 表示元素级乘积&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>T-TIME</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/t-time/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/t-time/</guid>
+      <description>&lt;h1 id=&#34;method&#34;&gt;Method&lt;/h1&gt;
+&lt;h3 id=&#34;problem-set&#34;&gt;Problem Set&lt;/h3&gt;
+&lt;p&gt;EEG 数据 ${ X\&lt;em&gt;{s,l}^{i},y\&lt;/em&gt;{s,l}^{i} }\&lt;em&gt;{i=1}^{n\&lt;/em&gt;{s,l}}$ ，进行无监督在线 K 分类&lt;/p&gt;
+&lt;h3 id=&#34;source-model-training&#34;&gt;Source Model Training&lt;/h3&gt;
+&lt;p&gt;对源数据做 Euclidean alignment (EA) 数据对齐，减少不同个体 EEG 信号差异&lt;/p&gt;
+&lt;p&gt;EA 计算每个个体所有 EEG 试次协方差矩阵的算术平均值
+$$
+R\&lt;em&gt;{s,l} = \dfrac{1}{n}\sum\&lt;/em&gt;{i=1}^{n} X\&lt;em&gt;{i}(X\&lt;/em&gt;{i})^{T} \implies \bar{X}\&lt;em&gt;{i} = R\&lt;/em&gt;{s,l}^{-1/2}X\_{i}
+$$
+之后再整合经过对齐的受试者数据，形成“源域”&lt;/p&gt;
+&lt;p&gt;在整合后的数据上独立训练 $M$ 个模型&lt;/p&gt;
+&lt;h3 id=&#34;incremental-ea-on-target-data&#34;&gt;Incremental EA on Target Data&lt;/h3&gt;
+&lt;p&gt;对新数据增量式更新协方差矩阵，再用新的矩阵更新所有测试数据&lt;/p&gt;
+&lt;h3 id=&#34;target-label-prediction&#34;&gt;Target Label Prediction&lt;/h3&gt;
+&lt;p&gt;用训练好的 $M$ 模型初始化用于适应目标域的 $M$ 个 TTA 模型 $f\_{m}$&lt;/p&gt;
+&lt;p&gt;新的 $X\&lt;em&gt;{a}$ 经过 IEA 被变换为 $X\&lt;/em&gt;{a}&amp;rsquo;$ 后被输入到每个模型 $f\&lt;em&gt;{m}$ 中进行分类，输出概率向量 $f\&lt;/em&gt;{m}(X\_{a}&amp;rsquo;)$&lt;/p&gt;
+&lt;p&gt;之后结合这 $M$ 个概率向量来获得最终的预测标签 $\hat{y}\_{a}$&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Tent</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/tent/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/tent/</guid>
+      <description>&lt;h1 id=&#34;setting&#34;&gt;Setting&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Fully Test-Time Adaptation&lt;/strong&gt; 是一种独特的模型适应设定。在此设定下，模型 $f\_\theta(x)$ 在训练阶段已通过源数据 $x^s$ 和标签 $y^s$ 完成训练，获得参数 $\theta$。但在测试阶段，模型将遇到与源数据分布不同的无标签目标数据 $x^t$。&lt;/p&gt;
+&lt;p&gt;FTT-Adaptation 与以下方法不同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Fine-tuning&lt;/strong&gt;：需要目标标签进行重新训练。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Domain Adaptation&lt;/strong&gt;：需要源数据和目标数据进行联合训练。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Test-Time Training (TTT)&lt;/strong&gt;：需要修改训练过程并共同优化有监督及自监督损失。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相比之下，FTT-Adaptation 仅能利用预训练模型 $f\_\theta$ 和无标签目标数据 $x^t$ 进行适应，不依赖源数据或额外的监督信息。&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
+&lt;p&gt;论文的核心贡献是提出了 &lt;strong&gt;Tent&lt;/strong&gt; 方法，其核心思想是通过&lt;strong&gt;最小化测试熵&lt;/strong&gt;（&lt;strong&gt;Test Entropy Minimization&lt;/strong&gt;）来适应模型预测，旨在使模型对测试数据的预测结果更“有信心”。&lt;/p&gt;
+&lt;h3 id=&#34;entropy-objective&#34;&gt;Entropy Objective&lt;/h3&gt;
+&lt;p&gt;Tent 的测试时目标函数是最小化模型预测 $\hat{y} = f\_\theta(x^t)$ 的&lt;strong&gt;熵 $H(\hat{y})$&lt;/strong&gt;。论文中使用的&lt;strong&gt;香农熵&lt;/strong&gt;计算公式如下：&lt;/p&gt;
+&lt;p&gt;$$
+H(\hat{y}) = - \sum\_c p(\hat{y}\_c) \log p(\hat{y}\_c)
+$$&lt;/p&gt;
+&lt;p&gt;其中， $p(\hat{y}\_c)$ 表示模型预测目标数据 $x^t$ 属于类别 $c$ 的概率。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;最小化熵促使模型输出更“尖锐”或更“确定”的预测分布。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;优势&lt;/strong&gt;：熵是一种&lt;strong&gt;无监督目标&lt;/strong&gt;，仅依赖于模型预测，不需要真实标签。最小化熵与减少预测误差和数据漂移之间存在内在联系，因为更确定的预测通常意味着更正确的预测。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;modulation-parameters&#34;&gt;Modulation Parameters&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Tent&lt;/strong&gt; 不直接修改原始模型的全部参数 $\theta$。相反，它仅更新模型内部归一化层（如&lt;strong&gt;Batch Normalization layers&lt;/strong&gt;）中的线性且低维度的&lt;strong&gt;仿射变换&lt;/strong&gt;参数：尺度参数 $\gamma$ 和偏移参数 $\beta$。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
