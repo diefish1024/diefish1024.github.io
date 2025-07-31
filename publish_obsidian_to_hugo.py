@@ -5,9 +5,11 @@ import yaml
 import subprocess
 import logging
 from datetime import datetime
+from urllib.parse import unquote
 
 # --- Configuration ---
 OBSIDIAN_VAULT_PATH = r"D:\Document\00-Notes"
+OBSIDIAN_ATTACHMENTS_PATH = r"D:\Document\00-Notes\Attachments"
 HUGO_SITE_PATH = r"D:\My Projects\Blogs\my-personal-blog"
 HUGO_CONTENT_PATH = os.path.join(HUGO_SITE_PATH, "content")
 HUGO_STATIC_IMAGES_PATH = os.path.join(HUGO_SITE_PATH, "static", "images")
@@ -48,27 +50,25 @@ def slugify(text):
     return text
 
 
-def process_content(main_content, source_note_path, note_slug):
-    """Processes markdown content for LaTeX and standard image links ![]()."""
-    
-    # 1. Handle LaTeX subscript escaping
-    def escape_latex_underscores(match):
-        return f"{match.group(1)}{match.group(2).replace('_', r'\\_')}{match.group(1)}"
-    latex_pattern = re.compile(r'(\${1,2})(.+?)\1', re.DOTALL)
-    processed_content = latex_pattern.sub(escape_latex_underscores, main_content)
+def process_content(main_content, note_slug):
+    """Standard image links ![]()."""
 
-    # 2. Handle standard Markdown image links ![]()
+    processed_content = main_content
+
+    # Handle standard Markdown image links ![]()
     def replace_image_links(match):
         alt_text = match.group(1)
         original_path = match.group(2)
 
+        decoded_path = unquote(original_path)
+
         # Skip web links and absolute paths
-        if original_path.startswith(('http://', 'https://', '/')):
+        if decoded_path.startswith(('http://', 'https://', '/')):
             return match.group(0)
 
         # Resolve the absolute path of the source image
-        source_dir = os.path.dirname(source_note_path)
-        source_image_path = os.path.abspath(os.path.join(source_dir, original_path))
+        image_filename = os.path.basename(decoded_path)
+        source_image_path = os.path.join(OBSIDIAN_ATTACHMENTS_PATH, image_filename)
 
         if not os.path.exists(source_image_path):
             logging.warning(f"Image not found at resolved path: {source_image_path}")
@@ -112,6 +112,7 @@ def process_and_copy_note(source_path, dest_path):
         title = os.path.splitext(os.path.basename(source_path))[0]
         frontmatter_dict['title'] = title
         note_slug = slugify(title)
+        relative_source_path = os.path.relpath(source_path, OBSIDIAN_VAULT_PATH)
         
         # Set category automatically
         # 1. Prioritize the 'type' field from the source file's frontmatter.
@@ -128,7 +129,6 @@ def process_and_copy_note(source_path, dest_path):
         
         # 2. If 'type' doesn't exist, fall back to CATEGORY_MAP.
         else:
-            relative_source_path = os.path.relpath(source_path, OBSIDIAN_VAULT_PATH)
             source_root_folder = relative_source_path.split(os.sep)[0]
             if source_root_folder in CATEGORY_MAP:
                 frontmatter_dict['categories'] = [CATEGORY_MAP[source_root_folder]]
@@ -138,7 +138,7 @@ def process_and_copy_note(source_path, dest_path):
             frontmatter_dict['tags'] = []
         
         # Process content for LaTeX and images
-        processed_content = process_content(main_content, source_path, note_slug)
+        processed_content = process_content(main_content, note_slug)
 
         # Rebuild and write file
         new_fm_str = yaml.dump(frontmatter_dict, allow_unicode=True, sort_keys=False)
