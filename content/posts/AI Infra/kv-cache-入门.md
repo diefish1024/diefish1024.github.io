@@ -27,13 +27,13 @@ KV Cache，全称 **Key-Value Cache**，是一种优化技术，用于加速 Tra
 
 自注意力机制的计算过程为以下步骤：
 1.  计算 Query 与所有 Key 的点积，得到**注意力分数**
-2.  将注意力分数进行缩放，除以 $\sqrt{d\\_k}$（$d\\_k$ 是 Key 向量的维度)
+2.  将注意力分数进行缩放，除以 $\sqrt{d_k}$（$d_k$ 是 Key 向量的维度)
 3.  对缩放后的分数进行 Softmax，将其转换为**注意力权重**，表示每个 token 对当前 token 的重要性
 4.  将注意力权重与 Value 向量进行加权求和，得到当前 token 的注意力输出
 
 公式为：
 $$
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d\\_k}}\right)V
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
 $$
 其中矩阵 $Q,K,V \in \mathbb{R}^{L \times d}$ ，$L$ 为当前上下文长度
 
@@ -62,17 +62,17 @@ $$
 
 以生成“中华人民”为例，使用 KV Cache 的流程如下：
 1.  **输入**：“中”
-    - 计算“中”的 $K\\_1, V\\_1$ 
-    - 将 $K\\_1, V\\_1$ 存入 KV Cache
-    - 使用 $Q\\_1, K\\_1, V\\_1$ 计算 attention ，生成“华”
+    - 计算“中”的 $K_1, V_1$ 
+    - 将 $K_1, V_1$ 存入 KV Cache
+    - 使用 $Q_1, K_1, V_1$ 计算 attention ，生成“华”
 2.  **输入**：“华”（当前 token 只有“华”，但注意力要关注整个序列“中华”）
-    - 计算“华”的 $K\\_2, V\\_2$ 
-    - 将 $K\\_2, V\\_2$ 添加到 KV Cache。此时 KV Cache 包含 $[K\\_1, K\\_2]$ 和 $[V\\_1, V\\_2]$ 
-    - 使用当前 $Q\\_2$ 和缓存中的 $[K\\_1, K\\_2], [V\\_1, V\\_2]$ 计算 attention ，生成“人”
+    - 计算“华”的 $K_2, V_2$ 
+    - 将 $K_2, V_2$ 添加到 KV Cache。此时 KV Cache 包含 $[K_1, K_2]$ 和 $[V_1, V_2]$ 
+    - 使用当前 $Q_2$ 和缓存中的 $[K_1, K_2], [V_1, V_2]$ 计算 attention ，生成“人”
 3.  **输入**：“人”
-    - 计算“人”的 $K\\_3, V\\_3$ 
-    - 将 $K\\_3, V\\_3$ 添加到 KV Cache。此时 KV Cache 包含 $[K\\_1, K\\_2, K\\_3]$ 和 $[V\\_1, V\\_2, V\\_3]$ 
-    - 使用当前 $Q\\_3$ 和缓存中的 $[K\\_1, K\\_2, K\\_3], [V\\_1, V\\_2, V\\_3]$ 计算 attention ，生成“民”
+    - 计算“人”的 $K_3, V_3$ 
+    - 将 $K_3, V_3$ 添加到 KV Cache。此时 KV Cache 包含 $[K_1, K_2, K_3]$ 和 $[V_1, V_2, V_3]$ 
+    - 使用当前 $Q_3$ 和缓存中的 $[K_1, K_2, K_3], [V_1, V_2, V_3]$ 计算 attention ，生成“民”
 
 通过这种方式，每一步只需要计算**当前新生成 token** 的 $K, V$ 向量，而无需重新计算之前所有 token 的 $K, V$。
 
@@ -92,20 +92,20 @@ $$
 在数学上，当使用 KV Cache 进行自回归解码时，注意力公式中的 $K$ 和 $V$ 矩阵会随着生成过程的进行而不断增长。
 
 假设我们正在生成第 $t$ 个 token。
-- 当前 token 的 Q 向量是 $Q\\_t$ ，这是一个行向量，代表当前第 $t$ 个 token 的 Query ，维度为 $1 \times d\\_k$ 
-- K 矩阵 $K\\_{\text{cached}}$ 将包含从第一个 token 到第 $t$ 个 token 的所有 K 向量： $K\\_{\text{cached}} = [K\\_1^T, K\\_2^T, \dots, K\\_t^T]^T$ ，维度为 $t \times d\\_k$ 
-- V 矩阵 $V\\_{\text{cached}}$ 将包含从第一个 token 到第 $t$ 个 token 的所有 V 向量： $V\\_{\text{cached}} = [V\\_1^T, V\\_2^T, \dots, V\\_t^T]^T$ 。其维度为 $t \times d\\_v$ 
+- 当前 token 的 Q 向量是 $Q_t$ ，这是一个行向量，代表当前第 $t$ 个 token 的 Query ，维度为 $1 \times d_k$ 
+- K 矩阵 $K_{\text{cached}}$ 将包含从第一个 token 到第 $t$ 个 token 的所有 K 向量： $K_{\text{cached}} = [K_1^T, K_2^T, \dots, K_t^T]^T$ ，维度为 $t \times d_k$ 
+- V 矩阵 $V_{\text{cached}}$ 将包含从第一个 token 到第 $t$ 个 token 的所有 V 向量： $V_{\text{cached}} = [V_1^T, V_2^T, \dots, V_t^T]^T$ 。其维度为 $t \times d_v$ 
 
 那么，第 $t$ 个 token 的注意力计算变为：
 $$
-\text{Attention}\\_{t}(Q\\_t, K\\_{\text{cached}}, V\\_{\text{cached}}) = \text{softmax}\left(\frac{Q\\_t K\\_{\text{cached}}^T}{\sqrt{d\\_k}}\right)V\\_{\text{cached}}
+\text{Attention}_{t}(Q_t, K_{\text{cached}}, V_{\text{cached}}) = \text{softmax}\left(\frac{Q_t K_{\text{cached}}^T}{\sqrt{d_k}}\right)V_{\text{cached}}
 $$
 其中
-- $Q\\_t K\\_{\text{cached}}^T$ 是一个 $1 \times t$ 的行向量，代表当前 Query 与所有历史 Key 的相关性分数
+- $Q_t K_{\text{cached}}^T$ 是一个 $1 \times t$ 的行向量，代表当前 Query 与所有历史 Key 的相关性分数
 - $\text{softmax}$ 操作将这个 $1 \times t$ 的向量转化为注意力权重
-- 这个 $1 \times t$ 的注意力权重向量再与 $V\\_{\text{cached}}$ 矩阵（维度 $t \times d\\_v$）相乘，得到最终的注意力输出，维度是 $1 \times d\\_v$ 
+- 这个 $1 \times t$ 的注意力权重向量再与 $V_{\text{cached}}$ 矩阵（维度 $t \times d_v$）相乘，得到最终的注意力输出，维度是 $1 \times d_v$ 
 
-每次生成新的 token $t+1$ 时，我们只需要计算新的 $Q\\_{t+1}$，将新计算的 $K\\_{t+1}$ 和 $V\\_{t+1}$ 拼接到 $K\\_{\text{cached}}$ 和 $V\\_{\text{cached}}$ 末尾，形成 $K'\\_{\text{cached}} = \text{concat}(K\\_{\text{cached}}, K\\_{t+1})$ 和 $V'\\_{\text{cached}} = \text{concat}(V\\_{\text{cached}}, V\\_{t+1})$
+每次生成新的 token $t+1$ 时，我们只需要计算新的 $Q_{t+1}$，将新计算的 $K_{t+1}$ 和 $V_{t+1}$ 拼接到 $K_{\text{cached}}$ 和 $V_{\text{cached}}$ 末尾，形成 $K'_{\text{cached}} = \text{concat}(K_{\text{cached}}, K_{t+1})$ 和 $V'_{\text{cached}} = \text{concat}(V_{\text{cached}}, V_{t+1})$
 
 ### 7. Limitations and Considerations
 
