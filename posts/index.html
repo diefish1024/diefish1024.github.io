@@ -10,30 +10,30 @@
 在 c++ 代码中我们可以把条件放到 $\lambda$ 表达式中：
 1 2 3 4 5 6 7 8 9 10 11 12 std::mutex mtx; std::condition_variable cv; void T_player() { std::unique_lock lk(mtx); cv.wait(lk, []{ return can_proceed; } ); cv.notify_all(); lk.unlock(); } 注意条件变量在等待时需要带着一把锁（需要确保检查和等待是原子操作）
 ...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 15. 并发控制：同步条件变量" href=https://diefish1024.github.io/posts/nju-os-2025/15-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>DANN</h2></header><div class=entry-content><p>Introduction 类似 GAN 的对抗训练思想
-Domain Adaptation 给定源域 $D\{S}$ （有标签）和目标域 $D\{T}$ （无标签），目标是训练一个分类器 $\eta: X\to Y$ 使其在目标域上的目标风险 $$ R\{D\{T}}(\eta) = \underset{(\mathbf{x},y)\sim D\_{T}}{\mathrm{Pr}}(\eta(\mathbf{x}) \neq y) $$ 最小
-Domain Divergence 需要量化两个领域的“相似度”，从而引出了 H- 散度 的概念： $$ d\_{\mathcal{H}}(D\S, D\T) = 2 \sup\{\eta \in \mathcal{H}} \left| \Pr\{x \sim D\S}[\eta(x) = 1] - \Pr\{x \sim D\_T}[\eta(x) = 1] \right| $$ 含义是最优的分类器将目标域和源域判定为 1 的可能性之差，当 H- 散度非常小时，说明两个领域很难被区分，也就说明学习的特征实现了领域不变性的效果
-由于理论 H 散度是理想数据分布上的定义，实际中只有有限的样本集 $S$ 和 $T$ ，因此需要一定的近似，于是需要经验 H- 散度 $$ \hat{d}\{\mathcal{H}}(S, T) = 2 \left(1 - \min\{\eta \in \mathcal{H}} \left[ \dfrac{1}{n}\sum\_{i=1}^n \mathcal{I}[\eta(x\i) = 0] + \dfrac{1}{n’}\sum\{i=n+1}^N \mathcal{I}[\eta(x\_i) = 1] \right] \right) $$ 其中 $\mathcal{I}[\cdot]$ 表示条件为真时为 1，否则为 0
+Domain Adaptation 给定源域 $D_{S}$ （有标签）和目标域 $D_{T}$ （无标签），目标是训练一个分类器 $\eta: X\to Y$ 使其在目标域上的目标风险 $$ R_{D_{T}}(\eta) = \underset{(\mathbf{x},y)\sim D_{T}}{\mathrm{Pr}}(\eta(\mathbf{x}) \neq y) $$ 最小
+Domain Divergence 需要量化两个领域的“相似度”，从而引出了 H- 散度 的概念： $$ d_{\mathcal{H}}(D_S, D_T) = 2 \sup_{\eta \in \mathcal{H}} \left| \Pr_{x \sim D_S}[\eta(x) = 1] - \Pr_{x \sim D_T}[\eta(x) = 1] \right| $$ 含义是最优的分类器将目标域和源域判定为 1 的可能性之差，当 H- 散度非常小时，说明两个领域很难被区分，也就说明学习的特征实现了领域不变性的效果
+由于理论 H 散度是理想数据分布上的定义，实际中只有有限的样本集 $S$ 和 $T$ ，因此需要一定的近似，于是需要经验 H- 散度 $$ \hat{d}{\mathcal{H}}(S, T) = 2 \left(1 - \min{\eta \in \mathcal{H}} \left[ \dfrac{1}{n}\sum_{i=1}^n \mathcal{I}[\eta(x_i) = 0] + \dfrac{1}{n’}\sum_{i=n+1}^N \mathcal{I}[\eta(x_i) = 1] \right] \right) $$ 其中 $\mathcal{I}[\cdot]$ 表示条件为真时为 1，否则为 0
 ...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to DANN" href=https://diefish1024.github.io/posts/literature-notes/dann/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>KV Cache 入门</h2></header><div class=entry-content><p>推理效率对于 llm 是一个至关重要的问题。当模型生成文本时，尤其是以自回归方式逐词生成时，效率瓶颈会变得非常明显。KV Cache 就是为了解决这一问题而诞生的技术。
 1. What is KV Cache? KV Cache，全称 Key-Value Cache，是一种优化技术，用于加速 Transformer 架构在自回归生成过程中的推理速度。它的核心思想是缓存并重用在注意力机制中计算得到的 Key (K) 和 Value (V) 向量。
 2. Transformer Attention Mechanism Review 要理解 KV Cache，首先需要对 Transformer 架构中的自注意力机制有一个基本认识。自注意力机制允许模型在处理序列中的某个词时，考虑序列中所有其他词的重要性。
 每个输入 token（词或子词）在进入注意力层时，都会被转换成三个不同的向量：
 Q 向量：代表当前 token 的“查询”信息 K 向量：代表所有 token 的“键”信息，用于与 Query 进行匹配 V 向量：代表所有 token 的“值”信息，用于加权求和，得到最终的输出 自注意力机制的计算过程为以下步骤：
-计算 Query 与所有 Key 的点积，得到注意力分数 将注意力分数进行缩放，除以 $\sqrt{d\_k}$（$d\_k$ 是 Key 向量的维度) 对缩放后的分数进行 Softmax，将其转换为注意力权重，表示每个 token 对当前 token 的重要性 将注意力权重与 Value 向量进行加权求和，得到当前 token 的注意力输出 公式为： $$ \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V $$ 其中矩阵 $Q,K,V \in \mathbb{R}^{L \times d}$ ，$L$ 为当前上下文长度
+计算 Query 与所有 Key 的点积，得到注意力分数 将注意力分数进行缩放，除以 $\sqrt{d_k}$（$d_k$ 是 Key 向量的维度) 对缩放后的分数进行 Softmax，将其转换为注意力权重，表示每个 token 对当前 token 的重要性 将注意力权重与 Value 向量进行加权求和，得到当前 token 的注意力输出 公式为： $$ \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V $$ 其中矩阵 $Q,K,V \in \mathbb{R}^{L \times d}$ ，$L$ 为当前上下文长度
 ...</p></div><footer class=entry-footer>3 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to KV Cache 入门" href=https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>SSA</h2></header><div class=entry-content><p>Introduction TTA 在回归任务上的局限：为分类任务设计，一般基于熵最小化和特征对齐；熵最小化不适用，回归模型产生单一值，不产生概率分布；简单特征对齐对回归模型效果不佳，可能反而会稀释需要学习的特征
-Problem Setting 考虑一个回归模型 $f\\theta: \mathcal{X} \to \mathbb{R}$，可以进一步分解为特征提取器 $g\\phi: \mathcal{X} \to \mathbb{R}^D$（从输入 $\mathcal{X}$ 提取 $D$ 维特征 $z$）和线性回归器 $h\\psi(z) = w^T z + b$（或者 $h\{\psi}(z)=Wz+b$）
-$f\_\theta$ 首先在一个有标签的源数据集 $S = {(x\_i, y\i)}\{i=1}^{N\_s}$ 上进行预训练，数据从源域分布 $p\_s$ 中采样
-目标是使用一个无标签的目标数据集 $T = {x\j}\{j=1}^{N\t}$ 来适应预训练好的模型 $f\\theta$ 到目标域
+Problem Setting 考虑一个回归模型 $f_\theta: \mathcal{X} \to \mathbb{R}$，可以进一步分解为特征提取器 $g_\phi: \mathcal{X} \to \mathbb{R}^D$（从输入 $\mathcal{X}$ 提取 $D$ 维特征 $z$）和线性回归器 $h_\psi(z) = w^T z + b$（或者 $h_{\psi}(z)=Wz+b$）
+$f_\theta$ 首先在一个有标签的源数据集 $S = {(x_i, y_i)}_{i=1}^{N_s}$ 上进行预训练，数据从源域分布 $p_s$ 中采样
+目标是使用一个无标签的目标数据集 $T = {x_j}{j=1}^{N_t}$ 来适应预训练好的模型 $f\theta$ 到目标域
 我们假设存在 covariate shift ，这意味着：
-输入数据的分布在源域和目标域之间是不同的：$p\_s(x) \neq p\_t(x)$ 但给定输入后，输出的条件分布是相同的：$p\_s(y|x) = p\_t(y|x)$ Test-time Adaptation for Regression Basic Idea: Feature Alignment 朴素实现：
-计算源域特征统计量：在源域训练后，计算源域特征的均值 $\mu^s$ 和元素级方差 $\sigma^{s2}$ $$ \mu^s = \frac{1}{N\s} \sum\{i=1}^{N\_s} z\_i^s, \quad \sigma^{s2} = \frac{1}{N\s} \sum\{i=1}^{N\_s} (z\_i^s - \mu^s) \odot (z\_i^s - \mu^s) \quad \text{(1)} $$ 其中 $z\i^s = g\\phi(x\_i)$ 是源特征，$N\_s$ 是源数据样本数，$\odot$ 表示元素级乘积
-...</p></div><footer class=entry-footer>3 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to SSA" href=https://diefish1024.github.io/posts/literature-notes/ssa/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>T-TIME</h2></header><div class=entry-content><p>Method Problem Set EEG 数据 ${ X\{s,l}^{i},y\{s,l}^{i} }\{i=1}^{n\{s,l}}$ ，进行无监督在线 K 分类
+输入数据的分布在源域和目标域之间是不同的：$p_s(x) \neq p_t(x)$ 但给定输入后，输出的条件分布是相同的：$p_s(y|x) = p_t(y|x)$ Test-time Adaptation for Regression Basic Idea: Feature Alignment 朴素实现：
+计算源域特征统计量：在源域训练后，计算源域特征的均值 $\mu^s$ 和元素级方差 $\sigma^{s2}$ $$ \mu^s = \frac{1}{N_s} \sum_{i=1}^{N_s} z_i^s, \quad \sigma^{s2} = \frac{1}{N_s} \sum_{i=1}^{N_s} (z_i^s - \mu^s) \odot (z_i^s - \mu^s) \quad \text{(1)} $$ 其中 $z_i^s = g_\phi(x_i)$ 是源特征，$N_s$ 是源数据样本数，$\odot$ 表示元素级乘积
+...</p></div><footer class=entry-footer>3 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to SSA" href=https://diefish1024.github.io/posts/literature-notes/ssa/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>T-TIME</h2></header><div class=entry-content><p>Method Problem Set EEG 数据 ${ X_{s,l}^{i},y_{s,l}^{i} }{i=1}^{n{s,l}}$ ，进行无监督在线 K 分类
 Source Model Training 对源数据做 Euclidean alignment (EA) 数据对齐，减少不同个体 EEG 信号差异
-EA 计算每个个体所有 EEG 试次协方差矩阵的算术平均值 $$ R\{s,l} = \dfrac{1}{n}\sum\{i=1}^{n} X\{i}(X\{i})^{T} \implies \bar{X}\{i} = R\{s,l}^{-1/2}X\_{i} $$ 之后再整合经过对齐的受试者数据，形成“源域”
+EA 计算每个个体所有 EEG 试次协方差矩阵的算术平均值 $$ R_{s,l} = \dfrac{1}{n}\sum_{i=1}^{n} X_{i}(X_{i})^{T} \implies \bar{X}{i} = R{s,l}^{-1/2}X_{i} $$ 之后再整合经过对齐的受试者数据，形成“源域”
 在整合后的数据上独立训练 $M$ 个模型
 Incremental EA on Target Data 对新数据增量式更新协方差矩阵，再用新的矩阵更新所有测试数据
-Target Label Prediction 用训练好的 $M$ 模型初始化用于适应目标域的 $M$ 个 TTA 模型 $f\_{m}$
-新的 $X\{a}$ 经过 IEA 被变换为 $X\{a}’$ 后被输入到每个模型 $f\{m}$ 中进行分类，输出概率向量 $f\{m}(X\_{a}’)$
-之后结合这 $M$ 个概率向量来获得最终的预测标签 $\hat{y}\_{a}$
+Target Label Prediction 用训练好的 $M$ 模型初始化用于适应目标域的 $M$ 个 TTA 模型 $f_{m}$
+新的 $X_{a}$ 经过 IEA 被变换为 $X_{a}’$ 后被输入到每个模型 $f_{m}$ 中进行分类，输出概率向量 $f_{m}(X_{a}’)$
+之后结合这 $M$ 个概率向量来获得最终的预测标签 $\hat{y}_{a}$
 ...</p></div><footer class=entry-footer>1 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to T-TIME" href=https://diefish1024.github.io/posts/literature-notes/t-time/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://diefish1024.github.io/posts/page/2/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &

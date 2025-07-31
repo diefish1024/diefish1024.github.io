@@ -19,21 +19,21 @@
       <guid>https://diefish1024.github.io/posts/literature-notes/t-time/</guid>
       <description>&lt;h1 id=&#34;method&#34;&gt;Method&lt;/h1&gt;
 &lt;h3 id=&#34;problem-set&#34;&gt;Problem Set&lt;/h3&gt;
-&lt;p&gt;EEG 数据 ${ X\&lt;em&gt;{s,l}^{i},y\&lt;/em&gt;{s,l}^{i} }\&lt;em&gt;{i=1}^{n\&lt;/em&gt;{s,l}}$ ，进行无监督在线 K 分类&lt;/p&gt;
+&lt;p&gt;EEG 数据 ${ X_{s,l}^{i},y_{s,l}^{i} }&lt;em&gt;{i=1}^{n&lt;/em&gt;{s,l}}$ ，进行无监督在线 K 分类&lt;/p&gt;
 &lt;h3 id=&#34;source-model-training&#34;&gt;Source Model Training&lt;/h3&gt;
 &lt;p&gt;对源数据做 Euclidean alignment (EA) 数据对齐，减少不同个体 EEG 信号差异&lt;/p&gt;
 &lt;p&gt;EA 计算每个个体所有 EEG 试次协方差矩阵的算术平均值
 $$
-R\&lt;em&gt;{s,l} = \dfrac{1}{n}\sum\&lt;/em&gt;{i=1}^{n} X\&lt;em&gt;{i}(X\&lt;/em&gt;{i})^{T} \implies \bar{X}\&lt;em&gt;{i} = R\&lt;/em&gt;{s,l}^{-1/2}X\_{i}
+R_{s,l} = \dfrac{1}{n}\sum_{i=1}^{n} X_{i}(X_{i})^{T} \implies \bar{X}&lt;em&gt;{i} = R&lt;/em&gt;{s,l}^{-1/2}X_{i}
 $$
 之后再整合经过对齐的受试者数据，形成“源域”&lt;/p&gt;
 &lt;p&gt;在整合后的数据上独立训练 $M$ 个模型&lt;/p&gt;
 &lt;h3 id=&#34;incremental-ea-on-target-data&#34;&gt;Incremental EA on Target Data&lt;/h3&gt;
 &lt;p&gt;对新数据增量式更新协方差矩阵，再用新的矩阵更新所有测试数据&lt;/p&gt;
 &lt;h3 id=&#34;target-label-prediction&#34;&gt;Target Label Prediction&lt;/h3&gt;
-&lt;p&gt;用训练好的 $M$ 模型初始化用于适应目标域的 $M$ 个 TTA 模型 $f\_{m}$&lt;/p&gt;
-&lt;p&gt;新的 $X\&lt;em&gt;{a}$ 经过 IEA 被变换为 $X\&lt;/em&gt;{a}&amp;rsquo;$ 后被输入到每个模型 $f\&lt;em&gt;{m}$ 中进行分类，输出概率向量 $f\&lt;/em&gt;{m}(X\_{a}&amp;rsquo;)$&lt;/p&gt;
-&lt;p&gt;之后结合这 $M$ 个概率向量来获得最终的预测标签 $\hat{y}\_{a}$&lt;/p&gt;</description>
+&lt;p&gt;用训练好的 $M$ 模型初始化用于适应目标域的 $M$ 个 TTA 模型 $f_{m}$&lt;/p&gt;
+&lt;p&gt;新的 $X_{a}$ 经过 IEA 被变换为 $X_{a}&amp;rsquo;$ 后被输入到每个模型 $f_{m}$ 中进行分类，输出概率向量 $f_{m}(X_{a}&amp;rsquo;)$&lt;/p&gt;
+&lt;p&gt;之后结合这 $M$ 个概率向量来获得最终的预测标签 $\hat{y}_{a}$&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

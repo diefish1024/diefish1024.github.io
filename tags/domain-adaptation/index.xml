@@ -20,20 +20,20 @@
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;类似 GAN 的对抗训练思想&lt;/p&gt;
 &lt;h2 id=&#34;domain-adaptation&#34;&gt;Domain Adaptation&lt;/h2&gt;
-&lt;p&gt;给定源域 $D\&lt;em&gt;{S}$ （有标签）和目标域 $D\&lt;/em&gt;{T}$ （无标签），目标是训练一个分类器 $\eta: X\to Y$ 使其在目标域上的目标风险
+&lt;p&gt;给定源域 $D_{S}$ （有标签）和目标域 $D_{T}$ （无标签），目标是训练一个分类器 $\eta: X\to Y$ 使其在目标域上的目标风险
 $$
-R\&lt;em&gt;{D\&lt;/em&gt;{T}}(\eta) = \underset{(\mathbf{x},y)\sim D\_{T}}{\mathrm{Pr}}(\eta(\mathbf{x}) \neq y)
+R_{D_{T}}(\eta) = \underset{(\mathbf{x},y)\sim D_{T}}{\mathrm{Pr}}(\eta(\mathbf{x}) \neq y)
 $$
 最小&lt;/p&gt;
 &lt;h4 id=&#34;domain-divergence&#34;&gt;Domain Divergence&lt;/h4&gt;
 &lt;p&gt;需要量化两个领域的“相似度”，从而引出了 &lt;strong&gt;H- 散度&lt;/strong&gt; 的概念：
 $$
-d\_{\mathcal{H}}(D\&lt;em&gt;S, D\&lt;em&gt;T) = 2 \sup\&lt;/em&gt;{\eta \in \mathcal{H}} \left| \Pr\&lt;/em&gt;{x \sim D\&lt;em&gt;S}[\eta(x) = 1] - \Pr\&lt;/em&gt;{x \sim D\_T}[\eta(x) = 1] \right|
+d_{\mathcal{H}}(D_S, D_T) = 2 \sup_{\eta \in \mathcal{H}} \left| \Pr_{x \sim D_S}[\eta(x) = 1] - \Pr_{x \sim D_T}[\eta(x) = 1] \right|
 $$
 含义是最优的分类器将目标域和源域判定为 1 的可能性之差，当 H- 散度非常小时，说明两个领域很难被区分，也就说明学习的特征实现了领域不变性的效果&lt;/p&gt;
 &lt;p&gt;由于理论 H 散度是理想数据分布上的定义，实际中只有有限的样本集 $S$ 和 $T$ ，因此需要一定的近似，于是需要经验 H- 散度
 $$
-\hat{d}\&lt;em&gt;{\mathcal{H}}(S, T) = 2 \left(1 - \min\&lt;/em&gt;{\eta \in \mathcal{H}} \left[ \dfrac{1}{n}\sum\_{i=1}^n \mathcal{I}[\eta(x\&lt;em&gt;i) = 0] + \dfrac{1}{n&amp;rsquo;}\sum\&lt;/em&gt;{i=n+1}^N \mathcal{I}[\eta(x\_i) = 1] \right] \right)
+\hat{d}&lt;em&gt;{\mathcal{H}}(S, T) = 2 \left(1 - \min&lt;/em&gt;{\eta \in \mathcal{H}} \left[ \dfrac{1}{n}\sum_{i=1}^n \mathcal{I}[\eta(x_i) = 0] + \dfrac{1}{n&amp;rsquo;}\sum_{i=n+1}^N \mathcal{I}[\eta(x_i) = 1] \right] \right)
 $$
 其中 $\mathcal{I}[\cdot]$ 表示条件为真时为 1，否则为 0&lt;/p&gt;</description>
     </item>
