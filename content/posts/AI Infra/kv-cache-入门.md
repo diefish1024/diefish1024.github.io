@@ -1,7 +1,7 @@
 ---
 tags:
 - learning
-- cs
+- CS
 - ai-infra
 discipline: computer-science
 publish: true
