@@ -13,6 +13,74 @@
     <language>zh-cn</language>
     <atom:link href="https://diefish1024.github.io/categories/literature-note/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Benchmarking TTA</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/benchmarking-tta/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/benchmarking-tta/</guid>
+      <description>&lt;h3 id=&#34;a-general-paradigm-of-test-time-adaptation&#34;&gt;A General Paradigm of Test-Time Adaptation&lt;/h3&gt;
+&lt;p&gt;根据测试数据接收方式和适应过程，TTA 分为三种主要范式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Test-Time Batch Adaptation (TTBA) 测试时间批次适应：&lt;/strong&gt; 数据以小批次形式到达。模型会针对每个到来的小批次进行适应，并立即提供预测。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Online Test-Time Adaptation (OTTA) 在线测试时间适应：&lt;/strong&gt; 数据以序列化的方式（小批次）到达。模型进行增量更新，并且过去的适应经验会影响未来的预测。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Test-Time Domain Adaptation (TTDA) 测试时间域适应：&lt;/strong&gt; 整个目标域的数据（所有测试数据）可在预测前一次性用于适应。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;datasets-for-evaluation&#34;&gt;Datasets for Evaluation&lt;/h3&gt;
+&lt;p&gt;论文使用了两种不同类型的分布偏移数据集进行评估：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Corruption Datasets 损坏数据集：&lt;/strong&gt; 原始数据集（CIFAR-10，ImageNet）经过&lt;strong&gt;人为损坏处理&lt;/strong&gt;后得到的，通过添加不同类型的噪声、模糊等，模拟不同严重程度的分布偏移。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Natural-shift Datasets 自然偏移数据集：&lt;/strong&gt; 这些数据集代表数据分布中&lt;strong&gt;自然发生的变化&lt;/strong&gt;，收集自不同的真实世界来源或条件（Office-Home，DomainNet，其中图像可能是不同风格的艺术作品、剪贴画、真实世界照片或草图）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;results-on-natural-shift-datasets&#34;&gt;Results on Natural Shift Datasets&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;TTA 方法在自然偏移数据集上的表现与在损坏数据集上的表现有所不同。&lt;/li&gt;
+&lt;li&gt;PredBN 在损坏数据集上有效，但在自然偏移数据集上表现不佳，有时甚至比源模型更差。这可能是因为自然偏移对数据分布的影响与人工损坏不同。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;T3A&lt;/strong&gt; 在 OTTA 范式下的自然偏移数据集上表现优于其他 OTTA 算法。这归因于其特征生成方式及其分类器优化能力。&lt;/li&gt;
+&lt;li&gt;对于自然偏移数据集，&lt;strong&gt;TTDA 算法&lt;/strong&gt; 持续取得了最高的性能。一些 OTTA 方法的多轮次也能达到可比的成果。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>CoTTA</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/cotta/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/cotta/</guid>
+      <description>&lt;h1 id=&#34;setting&#34;&gt;Setting&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Continual Test-Time Domain Adaptation&lt;/strong&gt; 是一种更具挑战性的模型适应设定。在此设定下，一个在源数据上预训练好的模型，在测试时会遇到一个&lt;strong&gt;非平稳&lt;/strong&gt;且&lt;strong&gt;持续变化&lt;/strong&gt;的目标环境 。&lt;/p&gt;
+&lt;p&gt;CoTTA 与以下方法不同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Standard Domain Adaptation&lt;/strong&gt;：需要同时访问源数据和（静态的）目标数据进行训练。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Standard Test-Time Adaptation / Fully Test-Time Adaptation&lt;/strong&gt;：通常假设目标域是固定的或静态的，而 CoTTA 关注的是持续变化的目标域。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Test-Time Training (TTT)&lt;/strong&gt;：需要修改源模型的训练过程以加入辅助任务，因此无法使用任意的“开箱即用”预训练模型。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相比之下，CoTTA 专门解决在&lt;strong&gt;无源数据&lt;/strong&gt;的条件下，模型如何在线适应一个&lt;strong&gt;持续变化的&lt;/strong&gt;数据流，同时克服现有方法中常见的&lt;strong&gt;错误累积&lt;/strong&gt;和&lt;strong&gt;灾难性遗忘&lt;/strong&gt;问题。&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
+&lt;p&gt;论文的核心贡献是提出了&lt;strong&gt;CoTTA (Continual Test-Time Adaptation)&lt;/strong&gt; 方法，旨在通过&lt;strong&gt;减少错误累积&lt;/strong&gt;和&lt;strong&gt;避免灾难性遗忘&lt;/strong&gt;，实现模型在非平稳环境下的长期稳定适应，主要有两个关键部分。&lt;/p&gt;
+&lt;h3 id=&#34;1-减少错误累积-reducing-error-accumulation&#34;&gt;1. 减少错误累积 (Reducing Error Accumulation)&lt;/h3&gt;
+&lt;p&gt;为了生成更可靠的自训练信号，CoTTA 采用了平均化的伪标签策略，该策略结合了权重平均和数据增强平均。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;权重平均伪标签 (Weight-Averaged Pseudo-Labels)&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;该方法采用一个&lt;strong&gt;教师 - 学生 (teacher-student)&lt;/strong&gt; 框架。学生模型 (student model) 在线进行学习和更新。&lt;/li&gt;
+&lt;li&gt;教师模型 (teacher model) 的权重是学生模型权重的&lt;strong&gt;指数移动平均 (Exponential Moving Average, EMA)&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;由于教师模型的更新更平滑，其预测结果通常比学生模型更准确，因此用它来生成伪标签，可以有效减少错误累积。学生模型通过最小化与教师伪标签的&lt;strong&gt;一致性损失&lt;/strong&gt; (consistency loss) 来进行更新。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据增强平均伪标签 (Augmentation-Averaged Pseudo-Labels)&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;为了进一步提升伪标签在遇到较大域偏移时的质量，CoTTA 会有条件地使用数据增强。&lt;/li&gt;
+&lt;li&gt;它首先使用&lt;strong&gt;原始预训练模型&lt;/strong&gt;评估当前测试数据的&lt;strong&gt;预测置信度&lt;/strong&gt;，以此来近似域差异的大小。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;条件性应用&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;如果置信度&lt;strong&gt;高&lt;/strong&gt;（域差异小），则直接使用教师模型的预测作为伪标签 16。&lt;/li&gt;
+&lt;li&gt;如果置信度&lt;strong&gt;低&lt;/strong&gt;（域差异大），则对输入数据进行 N 次随机增强，并将教师模型对这些增强样本的平均预测结果作为伪标签 17171717。这可以进一步提高伪标签的鲁棒性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-避免灾难性遗忘-avoiding-catastrophic-forgetting&#34;&gt;2. 避免灾难性遗忘 (Avoiding Catastrophic Forgetting)&lt;/h3&gt;
+&lt;p&gt;为了在长期适应过程中保留从源域学到的知识，CoTTA 引入了&lt;strong&gt;随机恢复 (Stochastic Restoration)&lt;/strong&gt; 机制。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>DANN</title>
       <link>https://diefish1024.github.io/posts/literature-notes/dann/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
