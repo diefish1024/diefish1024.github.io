@@ -217,6 +217,43 @@
 &lt;/div&gt;&lt;p&gt;这样的错误虽然看起来很傻，但是在真实程序复杂的控制流中是可能出现的&lt;/p&gt;</description>
     </item>
     <item>
+      <title>18. 真实世界的并发编程 (1)</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/</guid>
+      <description>&lt;p&gt;并发编程的核心抽象是实现一个计算图，计算发生在节点上，边表示节点之间的依赖关系，同时计算图在运行时可能是动态变化的&lt;/p&gt;
+&lt;p&gt;使用条件变量、锁、信号量等 api 去实现计算图并不是一个优雅的实现方式，因为这样会在代码中引入众多&lt;strong&gt;干扰代码&lt;/strong&gt;，也可能导致一些问题&lt;/p&gt;
+&lt;p&gt;为此可以增加一些功能受限的&lt;strong&gt;语法&lt;/strong&gt;，可以在同样描述计算图的功能下减少了许多潜在的问题&lt;/p&gt;
+&lt;h2 id=&#34;高性能计算中的并行编程&#34;&gt;高性能计算中的并行编程&lt;/h2&gt;
+&lt;p&gt;在高性能计算中，计算图通常易于&lt;strong&gt;静态切分&lt;/strong&gt;，尤其适用于物理模拟的网格划分，为此 HPC 发展出多种高效的并行编程模型，具体学习可以参考 &lt;a href=&#34;https://xflops.sjtu.edu.cn/hpc-start-guide/parallel-computing/basic/&#34;&gt;SJTU HPC 学习手册&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;mpi-分布式内存并行&#34;&gt;MPI: 分布式内存并行&lt;/h4&gt;
+&lt;p&gt;每个 MPI 进程有独立的内存空间，进程间通过&lt;strong&gt;显式消息传递&lt;/strong&gt;（发送/接收）交换数据&lt;/p&gt;
+&lt;h4 id=&#34;openmp-共享内存并行&#34;&gt;OpenMP: 共享内存并行&lt;/h4&gt;
+&lt;p&gt;多个线程在同一地址空间中并行执行，所有线程可以直接访问相同的数据，使用 &lt;code&gt;#pragma omp&lt;/code&gt; 指令实现并行化&lt;/p&gt;
+&lt;p&gt;对非计算机专业来说非常友好，只需要在正常的代码上面加上编译指令即可，能轻松实现高效的并行优化&lt;/p&gt;
+&lt;h4 id=&#34;cuda-gpu-异构并行&#34;&gt;CUDA: GPU 异构并行&lt;/h4&gt;
+&lt;p&gt;CPU 调度，GPU 执行大规模并行计算&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;概念&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;核函数 (Kernel)&lt;/strong&gt; ：在 GPU 上并行执行的函数&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;线程层次&lt;/strong&gt;：线程 (&lt;code&gt;threadIdx&lt;/code&gt;) 组成线程块 (&lt;code&gt;blockIdx&lt;/code&gt;)，线程块组成网格 (&lt;code&gt;gridDim&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存层次&lt;/strong&gt;：寄存器、共享内存（块内高速）、全局内存（所有线程可访问）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;我们身边的并发编程&#34;&gt;我们身边的并发编程&lt;/h2&gt;
+&lt;h4 id=&#34;从-web-10-到-web-20&#34;&gt;从 Web 1.0 到 Web 2.0&lt;/h4&gt;
+&lt;p&gt;在 Web 时代用的最广泛的是 Javascript&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Asynchronous JavaScript and XML&lt;/strong&gt; (Ajax; ~1999)
+&lt;ul&gt;
+&lt;li&gt;允许网页实现“后台刷新”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;jQuery $ (2006): A DOM Query Language&lt;/strong&gt; (编程抽象)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;web-20-时代的并发编程&#34;&gt;Web 2.0 时代的并发编程&lt;/h4&gt;
+&lt;p&gt;线程开销大，并且大多数 Web 开发者难以进行并发编程&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>KV Cache 入门</title>
       <link>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

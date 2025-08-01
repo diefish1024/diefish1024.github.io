@@ -31,7 +31,18 @@ Case 1: 上错了锁
 死锁有两种：
 AA-Deadlock: 自己等待自己
 1 2 3 4 5 6 7 lock(&amp;lk); // lk->locked == ✅; proceed ... // Possibly in interrupt handler lock(&amp;lk); // while (lk->locked == ❌) ; 这样的错误虽然看起来很傻，但是在真实程序复杂的控制流中是可能出现的
-...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 17. 并发 Bugs" href=https://diefish1024.github.io/posts/nju-os-2025/17-%E5%B9%B6%E5%8F%91-bugs/></a></article></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
+...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 17. 并发 Bugs" href=https://diefish1024.github.io/posts/nju-os-2025/17-%E5%B9%B6%E5%8F%91-bugs/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>18. 真实世界的并发编程 (1)</h2></header><div class=entry-content><p>并发编程的核心抽象是实现一个计算图，计算发生在节点上，边表示节点之间的依赖关系，同时计算图在运行时可能是动态变化的
+使用条件变量、锁、信号量等 api 去实现计算图并不是一个优雅的实现方式，因为这样会在代码中引入众多干扰代码，也可能导致一些问题
+为此可以增加一些功能受限的语法，可以在同样描述计算图的功能下减少了许多潜在的问题
+高性能计算中的并行编程 在高性能计算中，计算图通常易于静态切分，尤其适用于物理模拟的网格划分，为此 HPC 发展出多种高效的并行编程模型，具体学习可以参考 SJTU HPC 学习手册
+MPI: 分布式内存并行 每个 MPI 进程有独立的内存空间，进程间通过显式消息传递（发送/接收）交换数据
+OpenMP: 共享内存并行 多个线程在同一地址空间中并行执行，所有线程可以直接访问相同的数据，使用 #pragma omp 指令实现并行化
+对非计算机专业来说非常友好，只需要在正常的代码上面加上编译指令即可，能轻松实现高效的并行优化
+CUDA: GPU 异构并行 CPU 调度，GPU 执行大规模并行计算
+概念：
+核函数 (Kernel) ：在 GPU 上并行执行的函数 线程层次：线程 (threadIdx) 组成线程块 (blockIdx)，线程块组成网格 (gridDim) 内存层次：寄存器、共享内存（块内高速）、全局内存（所有线程可访问） 我们身边的并发编程 从 Web 1.0 到 Web 2.0 在 Web 时代用的最广泛的是 Javascript
+Asynchronous JavaScript and XML (Ajax; ~1999) 允许网页实现“后台刷新” jQuery $ (2006): A DOM Query Language (编程抽象) Web 2.0 时代的并发编程 线程开销大，并且大多数 Web 开发者难以进行并发编程
+...</p></div><footer class=entry-footer>1 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 18. 真实世界的并发编程 (1)" href=https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/></a></article></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
