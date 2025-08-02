@@ -254,6 +254,44 @@
 &lt;p&gt;线程开销大，并且大多数 Web 开发者难以进行并发编程&lt;/p&gt;</description>
     </item>
     <item>
+      <title>19. 真实世界的并发编程 (2)</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/19-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/19-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-2/</guid>
+      <description>&lt;h2 id=&#34;cpu-内的并行编程&#34;&gt;CPU 内的并行编程&lt;/h2&gt;
+&lt;p&gt;CPU 的功耗 $ P=C\cdot V^{2}\cdot f $ 导致纵使有更大的电路，热功耗限制了性能上限，从而有一堵“功耗墙”限制了 CPU 的性能，为此需要考虑如何在降低 $ V $ 和 $ f $ 的同时用面积换性能&lt;/p&gt;
+&lt;p&gt;有两个思路：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;让一条指令能处理更多的数据&lt;/strong&gt;：SIMD (Single Instruction, Multiple Data)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“一条指令” 浪费的能量大致是定数&lt;/li&gt;
+&lt;li&gt;处理的数据越多，浪费越少&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;用更多更简单的处理器&lt;/strong&gt;：多处理器系统、异构多处理器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;同等面积，处理器越简单，数量越多&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;异构计算&lt;/strong&gt;：最经典的例子是&lt;strong&gt;大小核架构&lt;/strong&gt;（如 Apple M1）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;simd&#34;&gt;SIMD&lt;/h3&gt;
+&lt;p&gt;SIMD 的核心思想是在硬件层面实现数据级并行，它通过引入专门的硬件单元来达成这个目标：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;宽位寄存器 (Wide Registers)&lt;/strong&gt;：CPU 内部增加了比通用寄存器宽很多的专用寄存器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Intel 的 SSE 指令集引入了 128 位的 XMM 寄存器，而最新的 AVX-512 拥有 512 位的 ZMM 寄存器&lt;/li&gt;
+&lt;li&gt;这些宽位寄存器可以一次性装入多个数据元素，比如一个 128 位的寄存器可以同时容纳 4 个 32 位的浮点数，或者 16 个 8 位的整数&lt;/li&gt;
+&lt;li&gt;这些被打包在一起的数据被称为 Vector&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;向量处理单元 (Vector ALU)&lt;/strong&gt;：CPU 内部也配备了能够对整个向量进行并行计算的 ALU&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>KV Cache 入门</title>
       <link>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

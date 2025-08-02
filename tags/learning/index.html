@@ -42,13 +42,14 @@ CUDA: GPU 异构并行 CPU 调度，GPU 执行大规模并行计算
 概念：
 核函数 (Kernel) ：在 GPU 上并行执行的函数 线程层次：线程 (threadIdx) 组成线程块 (blockIdx)，线程块组成网格 (gridDim) 内存层次：寄存器、共享内存（块内高速）、全局内存（所有线程可访问） 我们身边的并发编程 从 Web 1.0 到 Web 2.0 在 Web 时代用的最广泛的是 Javascript
 Asynchronous JavaScript and XML (Ajax; ~1999) 允许网页实现“后台刷新” jQuery $ (2006): A DOM Query Language (编程抽象) Web 2.0 时代的并发编程 线程开销大，并且大多数 Web 开发者难以进行并发编程
-...</p></div><footer class=entry-footer>1 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 18. 真实世界的并发编程 (1)" href=https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>KV Cache 入门</h2></header><div class=entry-content><p>推理效率对于 llm 是一个至关重要的问题。当模型生成文本时，尤其是以自回归方式逐词生成时，效率瓶颈会变得非常明显。KV Cache 就是为了解决这一问题而诞生的技术。
-1. What is KV Cache? KV Cache，全称 Key-Value Cache，是一种优化技术，用于加速 Transformer 架构在自回归生成过程中的推理速度。它的核心思想是缓存并重用在注意力机制中计算得到的 Key (K) 和 Value (V) 向量。
-2. Transformer Attention Mechanism Review 要理解 KV Cache，首先需要对 Transformer 架构中的自注意力机制有一个基本认识。自注意力机制允许模型在处理序列中的某个词时，考虑序列中所有其他词的重要性。
-每个输入 token（词或子词）在进入注意力层时，都会被转换成三个不同的向量：
-Q 向量：代表当前 token 的“查询”信息 K 向量：代表所有 token 的“键”信息，用于与 Query 进行匹配 V 向量：代表所有 token 的“值”信息，用于加权求和，得到最终的输出 自注意力机制的计算过程为以下步骤：
-计算 Query 与所有 Key 的点积，得到注意力分数 将注意力分数进行缩放，除以 $ \sqrt{d_k} $（$ d_k $ 是 Key 向量的维度) 对缩放后的分数进行 Softmax，将其转换为注意力权重，表示每个 token 对当前 token 的重要性 将注意力权重与 Value 向量进行加权求和，得到当前 token 的注意力输出 公式为： $$ \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V $$ 其中矩阵 $ Q,K,V \in \mathbb{R}^{L \times d} $ ，$ L $ 为当前上下文长度
-...</p></div><footer class=entry-footer>3 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to KV Cache 入门" href=https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/></a></article></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
+...</p></div><footer class=entry-footer>1 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 18. 真实世界的并发编程 (1)" href=https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>19. 真实世界的并发编程 (2)</h2></header><div class=entry-content><p>CPU 内的并行编程 CPU 的功耗 $ P=C\cdot V^{2}\cdot f $ 导致纵使有更大的电路，热功耗限制了性能上限，从而有一堵“功耗墙”限制了 CPU 的性能，为此需要考虑如何在降低 $ V $ 和 $ f $ 的同时用面积换性能
+有两个思路：
+让一条指令能处理更多的数据：SIMD (Single Instruction, Multiple Data)
+“一条指令” 浪费的能量大致是定数 处理的数据越多，浪费越少 用更多更简单的处理器：多处理器系统、异构多处理器
+同等面积，处理器越简单，数量越多 异构计算：最经典的例子是大小核架构（如 Apple M1） SIMD SIMD 的核心思想是在硬件层面实现数据级并行，它通过引入专门的硬件单元来达成这个目标：
+宽位寄存器 (Wide Registers)：CPU 内部增加了比通用寄存器宽很多的专用寄存器
+Intel 的 SSE 指令集引入了 128 位的 XMM 寄存器，而最新的 AVX-512 拥有 512 位的 ZMM 寄存器 这些宽位寄存器可以一次性装入多个数据元素，比如一个 128 位的寄存器可以同时容纳 4 个 32 位的浮点数，或者 16 个 8 位的整数 这些被打包在一起的数据被称为 Vector 向量处理单元 (Vector ALU)：CPU 内部也配备了能够对整个向量进行并行计算的 ALU
+...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 19. 真实世界的并发编程 (2)" href=https://diefish1024.github.io/posts/nju-os-2025/19-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-2/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://diefish1024.github.io/tags/learning/page/2/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
