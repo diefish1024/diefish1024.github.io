@@ -292,6 +292,44 @@
 &lt;p&gt;&lt;strong&gt;向量处理单元 (Vector ALU)&lt;/strong&gt;：CPU 内部也配备了能够对整个向量进行并行计算的 ALU&lt;/p&gt;</description>
     </item>
     <item>
+      <title>20. 设备和驱动程序</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/20-%E8%AE%BE%E5%A4%87%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/20-%E8%AE%BE%E5%A4%87%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/</guid>
+      <description>&lt;h2 id=&#34;输入输出设备&#34;&gt;输入输出设备&lt;/h2&gt;
+&lt;h3 id=&#34;everything-is-a-file&#34;&gt;Everything is a File&lt;/h3&gt;
+&lt;p&gt;在 Unix-like 系统中，与外部设备交互的核心思想是 &lt;strong&gt;Everything is a File&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;文件描述符 (File Descriptor)&lt;/strong&gt;：操作系统为上层软件提供了一个统一的抽象，即文件描述符，它是一个指向内核中任何 I/O 对象的“指针”或句柄&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;统一接口&lt;/strong&gt;：无论是普通文件、硬件设备（如终端、磁盘）、还是网络连接，都可以通过 &lt;code&gt;open&lt;/code&gt; 获得一个文件描述符，然后使用相同的 &lt;code&gt;read&lt;/code&gt;/&lt;code&gt;write&lt;/code&gt; 等系统调用来进行操作，这极大地简化了应用程序的编写&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;设备控制器与-mmio&#34;&gt;设备控制器与 MMIO&lt;/h3&gt;
+&lt;p&gt;“文件”这个美好的抽象背后，是具体的硬件工作原理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;设备控制器 (Device Controller)&lt;/strong&gt;：每个 I/O 设备都有一个控制器，它是一个包含 CPU、内存和寄存器的微型计算机，作为 CPU 和物理设备之间的桥梁&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;设备寄存器&lt;/strong&gt;：控制器通过一组&lt;strong&gt;寄存器&lt;/strong&gt;与 CPU 通信，通常包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;状态寄存器&lt;/strong&gt;：用于表示设备当前是否繁忙、是否准备好等&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;指令寄存器&lt;/strong&gt;：CPU 写入指令，告诉设备要做什么&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据寄存器&lt;/strong&gt;：用于在 CPU 和设备之间传输数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;内存映射 I/O (MMIO)&lt;/strong&gt;：为了让 CPU 能访问这些寄存器，现代系统普遍采用 &lt;strong&gt;MMIO (Memory-Mapped I/O)&lt;/strong&gt;，操作系统会将设备的寄存器映射到物理内存地址空间中的特定区域，这样一来，CPU 就可以像访问普通内存一样，使用标准的 &lt;code&gt;load&lt;/code&gt;/&lt;code&gt;store&lt;/code&gt; 指令来读写设备寄存器，从而实现对设备的控制&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;gpio&#34;&gt;GPIO&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;GPIO (General-Purpose Input/Output)&lt;/strong&gt; 是理解 I/O 设备原理最直观的例子，GPIO 就是一个物理引脚，可以通过编程设置为输入或输出模式&lt;/p&gt;
+&lt;p&gt;通过 MMIO，一个 GPIO 引脚的电平状态被映射到一个特定的内存地址，当 CPU 向这个地址写入 &lt;code&gt;1&lt;/code&gt; 时，引脚就变为高电平；写入 &lt;code&gt;0&lt;/code&gt; 时，则变为低电平，这个过程将一条内存写指令直接转化为了一个物理世界的动作（比如点亮一个 LED）&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>KV Cache 入门</title>
       <link>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
