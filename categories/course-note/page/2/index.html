@@ -9,7 +9,29 @@
 状态寄存器：用于表示设备当前是否繁忙、是否准备好等 指令寄存器：CPU 写入指令，告诉设备要做什么 数据寄存器：用于在 CPU 和设备之间传输数据 内存映射 I/O (MMIO)：为了让 CPU 能访问这些寄存器，现代系统普遍采用 MMIO (Memory-Mapped I/O)，操作系统会将设备的寄存器映射到物理内存地址空间中的特定区域，这样一来，CPU 就可以像访问普通内存一样，使用标准的 load/store 指令来读写设备寄存器，从而实现对设备的控制
 GPIO GPIO (General-Purpose Input/Output) 是理解 I/O 设备原理最直观的例子，GPIO 就是一个物理引脚，可以通过编程设置为输入或输出模式
 通过 MMIO，一个 GPIO 引脚的电平状态被映射到一个特定的内存地址，当 CPU 向这个地址写入 1 时，引脚就变为高电平；写入 0 时，则变为低电平，这个过程将一条内存写指令直接转化为了一个物理世界的动作（比如点亮一个 LED）
-...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 20. 设备和驱动程序" href=https://diefish1024.github.io/posts/nju-os-2025/20-%E8%AE%BE%E5%A4%87%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://diefish1024.github.io/categories/course-note/>«&nbsp;Prev&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
+...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 20. 设备和驱动程序" href=https://diefish1024.github.io/posts/nju-os-2025/20-%E8%AE%BE%E5%A4%87%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>21. 存储设备原理</h2></header><div class=entry-content><p>科普性质，简单记录一下
+1-Bit 的存储：磁铁 要实现“持久化”存储，核心是要找到一个能反复改写的状态，很容易想到能够利用磁的特性，这就有了磁带的初步想法：
+一个长条的带子上面均匀有磁性物质 定位到特定位置之后通过放大感应电流读取 用电磁铁改变磁化方向来写入数据 为了提高存储密度，可以把这样的带子给卷起来，于是就得到了磁带
+这样的存储方式主要缺点是几乎不能随机读写（比如磁带收音机需要倒带），一般用于冷数据的存档和备份
+为了解决这个缺点，可以想到用旋转的二维平面来替代卷起来的带子，这样读写延迟就不会超过旋转的周期，这就得到了磁鼓：
+再在磁鼓的基础上进一步内卷，把用圆盘代替柱面，从而可以堆叠起来，进一步提高了存储密度，这就得到了磁盘：
+磁盘作为存储设备的随机读写性能虽然相比磁带有了很大的改善，但是还是需要等待定位到正确的位置，性能仍然不够优秀，为了读写定位到一个扇区通常需要花费几个毫秒的时间，这一点可以通过缓存和调度算法来缓解，让数据尽可能连续存储
+当我们在磁盘的基础上把读写头和盘片本体分开，我们就实现了数据的移动，这也就得到了软盘，这是上个数据数据发行的主要方式，虽然性能和可靠性都比较低，但是胜在了便捷、可移动
+1-Bit 的存储：挖坑 古人实现持久化存储的方式是在石头上刻字，也就是通过挖坑来存储信息，这种方式可以跨越非常长的时间
+而现代工业使我们可以挖出更加精细的坑，从而可以存储更高密度的信息
+为了读取这样的信息，我们可以从光学的角度考虑：在反射平面上挖粗糙坑，激光扫过表面，在平面会反射回来，在坑里会发生漫反射，于是我们只要检测是否收到反射光就可以识别是坑还是表面，这也就是光盘
+光盘最有趣的特性是容易复制，我们要制造光盘可以先仔细地制造一张反转的盘片，坑的位置对应其表面的突起，之后只需要直接用这个盘片压制加热的塑料再镀上反射膜就可以得到一张光盘，这种方式可以达到极高的写入速度
+当然这种挖坑方式的一个重要特性就是不能修改已经写入的内容的，很难填上一个已经挖了的坑（当然通过特殊的制造材料和工艺也是可以做到的），这也就是说里面存储的数据是 append only 的，想要修改之前的内容可以采用可持久化二叉树的结构
+光盘作为存储设备，价格低的同时容量和可靠性都比较高，同时顺序读性能一般，随机读性能低并且很难写入，一个重要的应用常见就是数字时代的内容分发
+现代这种挖坑的存储方式还有一种应用方式是回归古人石碑的形式，把信息刻在很稳定的材料上来做到永久存储
+1-Bit 的存储：电荷 前两种存储介质都存在比较大的缺陷：
+磁：依赖机械部件，从而无法避免 ms 级别的延迟 坑（光）：挖坑效率低，同时填坑很困难 而电荷则是一种非常理想的存储介质：电子的密度极高，并且电路的速度极快（还天然并行）
+在电路中实现 1-bit 的持久存储，一个想法是我们可以挖一个坑，两种状态分别是：
+在坑里填入电子 从坑里放跑电子 而这就得到了闪存 (Flash Memory) ： 其作为存储设备，价格低，容量和可靠性高，而且读写性能极高（由于电路天然并行，所以容量越大，速度越快）
+然而，闪存的物理原理也带来了其固有的缺陷，即会磨损 (wear out)
+每次放电 (erase) 操作都无法 100% 将电子放干净，这会对存储单元造成微小的、不可逆的损伤 在经历数千或数万次擦写循环后，一些存储单元会因为累积的损伤而失效，无法再可靠地存储数据，这被称为 “死单元 (Dead Cell)” 为了解决闪存的磨损问题，并将其更好地呈现给操作系统，现代固态存储设备（如 SSD、U 盘、SD 卡）内部实际上都集成了一个微型计算机系统
+这个系统运行着一层被称为 FTL (Flash Translation Layer) 的固件，它的核心功能之一是 磨损均衡 (Wear Leveling)
+...</p></div><footer class=entry-footer>1 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 21. 存储设备原理" href=https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://diefish1024.github.io/categories/course-note/>«&nbsp;Prev&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>

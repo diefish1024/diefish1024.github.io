@@ -330,6 +330,58 @@
 &lt;p&gt;通过 MMIO，一个 GPIO 引脚的电平状态被映射到一个特定的内存地址，当 CPU 向这个地址写入 &lt;code&gt;1&lt;/code&gt; 时，引脚就变为高电平；写入 &lt;code&gt;0&lt;/code&gt; 时，则变为低电平，这个过程将一条内存写指令直接转化为了一个物理世界的动作（比如点亮一个 LED）&lt;/p&gt;</description>
     </item>
     <item>
+      <title>21. 存储设备原理</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/</guid>
+      <description>&lt;p&gt;科普性质，简单记录一下&lt;/p&gt;
+&lt;h2 id=&#34;1-bit-的存储磁铁&#34;&gt;1-Bit 的存储：磁铁&lt;/h2&gt;
+&lt;p&gt;要实现“持久化”存储，核心是要找到一个能反复改写的状态，很容易想到能够利用磁的特性，这就有了磁带的初步想法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个长条的带子上面均匀有磁性物质&lt;/li&gt;
+&lt;li&gt;定位到特定位置之后通过放大感应电流读取&lt;/li&gt;
+&lt;li&gt;用电磁铁改变磁化方向来写入数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了提高存储密度，可以把这样的带子给卷起来，于是就得到了磁带&lt;/p&gt;
+&lt;p&gt;这样的存储方式主要缺点是&lt;strong&gt;几乎不能随机读写&lt;/strong&gt;（比如磁带收音机需要倒带），一般用于冷数据的存档和备份&lt;/p&gt;
+&lt;p&gt;为了解决这个缺点，可以想到用旋转的二维平面来替代卷起来的带子，这样读写延迟就不会超过旋转的周期，这就得到了&lt;strong&gt;磁鼓&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012735-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;再在磁鼓的基础上进一步内卷，把用圆盘代替柱面，从而可以堆叠起来，进一步提高了存储密度，这就得到了&lt;strong&gt;磁盘&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012958-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;磁盘作为存储设备的随机读写性能虽然相比磁带有了很大的改善，但是还是需要等待定位到正确的位置，性能仍然不够优秀，为了读写定位到一个扇区通常需要花费几个毫秒的时间，这一点可以通过缓存和调度算法来缓解，让数据尽可能连续存储&lt;/p&gt;
+&lt;p&gt;当我们在磁盘的基础上把读写头和盘片本体分开，我们就实现了数据的移动，这也就得到了&lt;strong&gt;软盘&lt;/strong&gt;，这是上个数据数据发行的主要方式，虽然性能和可靠性都比较低，但是胜在了便捷、可移动&lt;/p&gt;
+&lt;h2 id=&#34;1-bit-的存储挖坑&#34;&gt;1-Bit 的存储：挖坑&lt;/h2&gt;
+&lt;p&gt;古人实现持久化存储的方式是在石头上刻字，也就是通过挖坑来存储信息，这种方式可以跨越非常长的时间&lt;/p&gt;
+&lt;p&gt;而现代工业使我们可以挖出更加精细的坑，从而可以存储更高密度的信息&lt;/p&gt;
+&lt;p&gt;为了读取这样的信息，我们可以从光学的角度考虑：在反射平面上挖粗糙坑，激光扫过表面，在平面会反射回来，在坑里会发生漫反射，于是我们只要检测是否收到反射光就可以识别是坑还是表面，这也就是&lt;strong&gt;光盘&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;光盘最有趣的特性是容易复制，我们要制造光盘可以先仔细地制造一张反转的盘片，坑的位置对应其表面的突起，之后只需要直接用这个盘片压制加热的塑料再镀上反射膜就可以得到一张光盘，这种方式可以达到极高的写入速度&lt;/p&gt;
+&lt;p&gt;当然这种挖坑方式的一个重要特性就是不能修改已经写入的内容的，很难填上一个已经挖了的坑（当然通过特殊的制造材料和工艺也是可以做到的），这也就是说里面存储的数据是 append only 的，想要修改之前的内容可以采用可持久化二叉树的结构&lt;/p&gt;
+&lt;p&gt;光盘作为存储设备，价格低的同时容量和可靠性都比较高，同时顺序读性能一般，随机读性能低并且很难写入，一个重要的应用常见就是数字时代的内容分发&lt;/p&gt;
+&lt;p&gt;现代这种挖坑的存储方式还有一种应用方式是回归古人石碑的形式，把信息刻在很稳定的材料上来做到永久存储&lt;/p&gt;
+&lt;h2 id=&#34;1-bit-的存储电荷&#34;&gt;1-Bit 的存储：电荷&lt;/h2&gt;
+&lt;p&gt;前两种存储介质都存在比较大的缺陷：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;磁：依赖机械部件，从而无法避免 ms 级别的延迟&lt;/li&gt;
+&lt;li&gt;坑（光）：挖坑效率低，同时填坑很困难&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;而电荷则是一种非常理想的存储介质：电子的密度极高，并且电路的速度极快（还天然并行）&lt;/p&gt;
+&lt;p&gt;在电路中实现 1-bit 的持久存储，一个想法是我们可以挖一个坑，两种状态分别是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在坑里填入电子&lt;/li&gt;
+&lt;li&gt;从坑里放跑电子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;而这就得到了&lt;strong&gt;闪存 (Flash Memory)&lt;/strong&gt; ：
+&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805112704-png&#34;&gt;
+其作为存储设备，价格低，容量和可靠性高，而且读写性能极高（由于电路天然并行，所以容量越大，速度越快）&lt;/p&gt;
+&lt;p&gt;然而，闪存的物理原理也带来了其固有的缺陷，即&lt;strong&gt;会磨损 (wear out)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每次放电 (erase) 操作都无法 100% 将电子放干净，这会对存储单元造成微小的、不可逆的损伤&lt;/li&gt;
+&lt;li&gt;在经历数千或数万次擦写循环后，一些存储单元会因为累积的损伤而失效，无法再可靠地存储数据，这被称为 “&lt;strong&gt;死单元 (Dead Cell)&lt;/strong&gt;”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了解决闪存的磨损问题，并将其更好地呈现给操作系统，现代固态存储设备（如 SSD、U 盘、SD 卡）内部实际上都集成了一个微型计算机系统&lt;/p&gt;
+&lt;p&gt;这个系统运行着一层被称为 &lt;strong&gt;FTL (Flash Translation Layer)&lt;/strong&gt; 的固件，它的核心功能之一是 &lt;strong&gt;磨损均衡 (Wear Leveling)&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>KV Cache 入门</title>
       <link>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
