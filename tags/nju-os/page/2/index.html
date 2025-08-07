@@ -31,7 +31,23 @@ GPIO GPIO (General-Purpose Input/Output) 是理解 I/O 设备原理最直观的�
 然而，闪存的物理原理也带来了其固有的缺陷，即会磨损 (wear out)
 每次放电 (erase) 操作都无法 100% 将电子放干净，这会对存储单元造成微小的、不可逆的损伤 在经历数千或数万次擦写循环后，一些存储单元会因为累积的损伤而失效，无法再可靠地存储数据，这被称为 “死单元 (Dead Cell)” 为了解决闪存的磨损问题，并将其更好地呈现给操作系统，现代固态存储设备（如 SSD、U 盘、SD 卡）内部实际上都集成了一个微型计算机系统
 这个系统运行着一层被称为 FTL (Flash Translation Layer) 的固件，它的核心功能之一是 磨损均衡 (Wear Leveling)
-...</p></div><footer class=entry-footer>1 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 21. 存储设备原理" href=https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://diefish1024.github.io/tags/nju-os/>«&nbsp;Prev&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
+...</p></div><footer class=entry-footer>1 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 21. 存储设备原理" href=https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>22. 文件系统 API</h2></header><div class=entry-content><p>目录树 文件的抽象 操作系统将物理存储设备（如磁盘）的复杂性隐藏起来，提供了一个简单、统一的抽象——文件
+文件可以看作是一个虚拟的磁盘，即一个命名的、一维的字节序列，支持 read, write, lseek 等操作
+这种抽象使得上层应用无需关心数据在物理磁盘上的具体位置和存储方式
+目录的引入 当文件数量增多时，需要一种方式来组织和管理它们
+操作系统引入了目录 (Directory) 的概念，它是一种特殊的文件，其内容是其他文件或目录的列表
+通过将文件和目录组织成一个层次化的树状结构，即目录树，可以方便地对文件进行分类、查找和管理
+多数类 Unix 系统遵循 FHS (Filesystem Hierarchy Standard) 的目录结构约定，为软件和用户预测文件位置提供了便利
+目录操作 API 操作系统提供了一系列系统调用来操作目录树，核心操作围绕“增删改查”
+mkdir: 创建一个新的目录 rmdir: 删除一个空的目录 getdents: 读取目录中的条目 (directory entries) link / unlink: 创建或删除文件的链接 链接 链接是文件系统的一个重要特性，它允许一个文件拥有多个名字或存在于目录树的多个位置
+链接主要分为两种类型：硬链接和软链接（符号链接）
+硬链接 Hard Link 定义：硬链接是让多个目录条目（文件名）直接指向磁盘上同一个文件索引节点 (inode)
+每个文件在文件系统中都有一个唯一的 inode，它包含了文件的元数据（如权限、大小、数据块位置等）和数据本身
+创建一个硬链接，相当于为同一个 inode 增加了一个新的入口点（文件名）
+特性：
+所有指向同一个 inode 的硬链接地位平等，没有主次之分 inode 内部维护一个链接计数 (reference count), 只有当这个计数减到 0 时，文件系统才会真正删除该 inode 和对应的数据块，这也是 unlink 系统调用的由来 限制：
+不能为目录创建硬链接，以防止在目录树中产生循环 不能跨越不同的文件系统（因为 inode 号只在当前文件系统内唯一） 软链接 Symbolic Link 定义：软链接，也称符号链接 (symlink)，是一个特殊的文件，它的内容是另一个文件或目录的路径
+...</p></div><footer class=entry-footer>2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 22. 文件系统 API" href=https://diefish1024.github.io/posts/nju-os-2025/22-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-api/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://diefish1024.github.io/tags/nju-os/>«&nbsp;Prev&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
 <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>

@@ -382,6 +382,49 @@
 &lt;p&gt;这个系统运行着一层被称为 &lt;strong&gt;FTL (Flash Translation Layer)&lt;/strong&gt; 的固件，它的核心功能之一是 &lt;strong&gt;磨损均衡 (Wear Leveling)&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
+      <title>22. 文件系统 API</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/22-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-api/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/22-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-api/</guid>
+      <description>&lt;h2 id=&#34;目录树&#34;&gt;目录树&lt;/h2&gt;
+&lt;h3 id=&#34;文件的抽象&#34;&gt;文件的抽象&lt;/h3&gt;
+&lt;p&gt;操作系统将物理存储设备（如磁盘）的复杂性隐藏起来，提供了一个简单、统一的抽象——&lt;strong&gt;文件&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;文件可以看作是一个&lt;strong&gt;虚拟的磁盘&lt;/strong&gt;，即一个命名的、一维的&lt;strong&gt;字节序列&lt;/strong&gt;，支持 &lt;code&gt;read&lt;/code&gt;, &lt;code&gt;write&lt;/code&gt;, &lt;code&gt;lseek&lt;/code&gt; 等操作&lt;/p&gt;
+&lt;p&gt;这种抽象使得上层应用无需关心数据在物理磁盘上的具体位置和存储方式&lt;/p&gt;
+&lt;h3 id=&#34;目录的引入&#34;&gt;目录的引入&lt;/h3&gt;
+&lt;p&gt;当文件数量增多时，需要一种方式来组织和管理它们&lt;/p&gt;
+&lt;p&gt;操作系统引入了&lt;strong&gt;目录 (Directory)&lt;/strong&gt; 的概念，它是一种特殊的文件，其内容是其他文件或目录的列表&lt;/p&gt;
+&lt;p&gt;通过将文件和目录组织成一个层次化的&lt;strong&gt;树状结构&lt;/strong&gt;，即&lt;strong&gt;目录树&lt;/strong&gt;，可以方便地对文件进行分类、查找和管理&lt;/p&gt;
+&lt;p&gt;多数类 Unix 系统遵循 &lt;strong&gt;FHS (Filesystem Hierarchy Standard)&lt;/strong&gt; 的目录结构约定，为软件和用户预测文件位置提供了便利&lt;/p&gt;
+&lt;h3 id=&#34;目录操作-api&#34;&gt;目录操作 API&lt;/h3&gt;
+&lt;p&gt;操作系统提供了一系列系统调用来操作目录树，核心操作围绕“增删改查”&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mkdir&lt;/code&gt;: 创建一个新的目录&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rmdir&lt;/code&gt;: 删除一个空的目录&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;getdents&lt;/code&gt;: 读取目录中的条目 (&lt;strong&gt;d&lt;/strong&gt;irectory &lt;strong&gt;ent&lt;/strong&gt;rie&lt;strong&gt;s&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;link&lt;/code&gt; / &lt;code&gt;unlink&lt;/code&gt;: 创建或删除文件的链接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;链接&#34;&gt;链接&lt;/h3&gt;
+&lt;p&gt;链接是文件系统的一个重要特性，它允许一个文件拥有多个名字或存在于目录树的多个位置&lt;/p&gt;
+&lt;p&gt;链接主要分为两种类型：&lt;strong&gt;硬链接&lt;/strong&gt;和&lt;strong&gt;软链接（符号链接）&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&#34;硬链接-hard-link&#34;&gt;硬链接 Hard Link&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;：&lt;strong&gt;硬链接&lt;/strong&gt;是让多个目录条目（文件名）直接指向磁盘上同一个&lt;strong&gt;文件索引节点 (inode)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;每个文件在文件系统中都有一个唯一的 &lt;code&gt;inode&lt;/code&gt;，它包含了文件的元数据（如权限、大小、数据块位置等）和数据本身&lt;/p&gt;
+&lt;p&gt;创建一个硬链接，相当于为同一个 &lt;code&gt;inode&lt;/code&gt; 增加了一个新的入口点（文件名）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特性&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;所有指向同一个 &lt;code&gt;inode&lt;/code&gt; 的硬链接地位平等，没有主次之分&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;inode&lt;/code&gt; 内部维护一个&lt;strong&gt;链接计数 (reference count)&lt;/strong&gt;, 只有当这个计数减到 0 时，文件系统才会真正删除该 &lt;code&gt;inode&lt;/code&gt; 和对应的数据块，这也是 &lt;code&gt;unlink&lt;/code&gt; 系统调用的由来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;限制&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不能为目录创建硬链接，以防止在目录树中产生循环&lt;/li&gt;
+&lt;li&gt;不能跨越不同的文件系统（因为 &lt;code&gt;inode&lt;/code&gt; 号只在当前文件系统内唯一）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;软链接-symbolic-link&#34;&gt;软链接 Symbolic Link&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;：&lt;strong&gt;软链接&lt;/strong&gt;，也称&lt;strong&gt;符号链接 (symlink)&lt;/strong&gt;，是一个&lt;strong&gt;特殊的文件&lt;/strong&gt;，它的内容是另一个文件或目录的&lt;strong&gt;路径&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>KV Cache 入门</title>
       <link>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
