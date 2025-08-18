@@ -4,7 +4,7 @@ tags:
 - TTA
 title: Tent
 publish: true
-created: 2025-07-30 11:00
+date: '2025-07-30T11:00:00+08:00'
 categories:
 - literature-note
 ---

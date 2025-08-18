@@ -6,7 +6,7 @@ tags:
 - Transformer
 title: EmT
 publish: true
-created: 2025-07-30 12:55
+date: '2025-07-30T12:55:00+08:00'
 categories:
 - literature-note
 ---
@@ -69,7 +69,7 @@ EmT 是一个端到端的框架，包含四大模块：
 
 ---
 
-![](/images/emt/pasted-image-20250730164135-png)
+![](/Attachments/Pasted%20image%2020250730164135.png)
 
 ---
 ### EEG-Temporal-Graph Representations (TGC)
@@ -81,7 +81,7 @@ EmT 是一个端到端的框架，包含四大模块：
 
 ---
 
-![](/images/emt/pasted-image-20250731233612-png)
+![](/Attachments/Pasted%20image%2020250731233612.png)
 
 ---
 
@@ -289,14 +289,14 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 ### Implementation Details
 
 模型的三种变体：
-![](/images/emt/pasted-image-20250802162952-png)
+![](/Attachments/Pasted%20image%2020250802162952.png)
 
 ---
 ## Analyses
 
 ### Classification
 
-![](/images/emt/pasted-image-20250802163455-png)
+![](/Attachments/Pasted%20image%2020250802163455.png)
 
 ---
 
@@ -321,7 +321,7 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 ---
 ### Regression
 
-![](/images/emt/pasted-image-20250802164137-png)
+![](/Attachments/Pasted%20image%2020250802164137.png)
 
 ---
 
@@ -332,17 +332,17 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 ---
 ### Ablation Study
 
-![](/images/emt/pasted-image-20250802164718-png)
+![](/Attachments/Pasted%20image%2020250802164718.png)
 
 ---
 ### Effect of EEG Features
 
-![](/images/emt/pasted-image-20250802165136-png)
+![](/Attachments/Pasted%20image%2020250802165136.png)
 
 ---
 ### Effect of The Depth and Width of GCNs in RMPG
 
-![](/images/emt/pasted-image-20250802165509-png)
+![](/Attachments/Pasted%20image%2020250802165509.png)
 
 ---
 
@@ -352,7 +352,7 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 ---
 ### Effect of The Number of TCT Blocks
 
-![](/images/emt/pasted-image-20250802170025-png)
+![](/Attachments/Pasted%20image%2020250802170025.png)
 
 ---
 
@@ -365,7 +365,7 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 #### Learned Connections
 
 在 SEED 数据集上学习到的两种不同连接模式的可视化证据
-![](/images/emt/pasted-image-20250801002808-png)
+![](/Attachments/Pasted%20image%2020250801002808.png)
 
 ---
 
@@ -377,12 +377,12 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 #### Learned Temporal Contextual Information
 
 **Classfication (FACED)**
-![](/images/emt/pasted-image-20250802171153-png)
+![](/Attachments/Pasted%20image%2020250802171153.png)
 
 ---
 
 **Regression**
-![](/images/emt/pasted-image-20250802171249-png)
+![](/Attachments/Pasted%20image%2020250802171249.png)
 
 ---
 

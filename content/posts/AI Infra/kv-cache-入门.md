@@ -5,7 +5,7 @@ tags:
 - ai-infra
 discipline: computer-science
 publish: true
-created: 2025-07-30 22:21
+date: '2025-07-30T22:21:00+08:00'
 title: KV Cache 入门
 categories:
 - concept

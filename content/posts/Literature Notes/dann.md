@@ -4,7 +4,7 @@ tags:
 - domain-adaptation
 title: DANN
 publish: true
-created: 2025-07-30 10:59
+date: '2025-07-30T10:59:00+08:00'
 categories:
 - literature-note
 ---
