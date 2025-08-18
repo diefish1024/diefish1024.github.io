@@ -65,8 +65,8 @@ params:
     imageHeight: 120
     imageTitle: "diefish's image"
     buttons:
-      - name: "Posts"
-        url: "posts"
+      - name: "Archives"
+        url: "archives"
       - name: "Tags"
         url: "tags"
       - name: "Search"
@@ -101,17 +101,21 @@ params:
 
 menu:
   main:
-    - identifier: "posts"
-      name: "posts"
-      url: "/posts/"
+    - identifier: "Archives"
+      name: "archives"
+      url: "/archives/"
       weight: 10
-    - identifier: "tags"
+    - identifier: "Tags"
       name: "tags"
       url: "/tags/"
       weight: 20
-    - identifier: "search"
+    - identifier: "Categories"
+      name: "categories"
+      url: "/categories/"
+      weight: 25
+    - identifier: "Search"
       name: "search"
-      url: "search"
+      url: "/search/"
       weight: 30
 
 markup:
