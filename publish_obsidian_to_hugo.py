@@ -42,70 +42,49 @@ ENABLE_GIT_AUTO_COMMIT = True
 # --- Logging Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-
 def slugify(text):
     text = text.lower().strip()
     text = re.sub(r'[\s\.]+', '-', text)
     text = re.sub(r'[^\w-]', '', text)
     return text
 
-
 def process_content(main_content, note_slug):
     """Processes content to convert LaTeX to shortcodes and update image links."""
-
     processed_content = main_content
 
     # --- 1. Convert LaTeX to Shortcodes ---
-    # The order is important: process display math first, then inline math.
-
-    # Handle display math ($$ ... $$)
-    # The re.DOTALL flag allows the pattern to match across multiple lines.
     display_math_pattern = re.compile(r'\$\$(.*?)\$\$', re.DOTALL)
     content_after_display = display_math_pattern.sub(r'{{< math >}}\n\1\n{{< /math >}}', processed_content)
-
-    # Handle inline math ($ ... $)
-    # The pattern [^\$]+? ensures it's not greedy and doesn't match across different formulas.
     inline_math_pattern = re.compile(r'\$([^\$]+?)\$')
     content_after_latex = inline_math_pattern.sub(r'{{< imath >}}\1{{< /imath >}}', content_after_display)
 
-
     # --- 2. Process Image Links ---
-    # This part remains the same as your original script.
     def replace_image_links(match):
         alt_text = match.group(1)
         original_path = match.group(2)
-
         decoded_path = unquote(original_path)
-
-        # Skip web links and absolute paths
         if decoded_path.startswith(('http://', 'https://', '/')):
             return match.group(0)
 
-        # Resolve the absolute path of the source image
         image_filename = os.path.basename(decoded_path)
         source_image_path = os.path.join(OBSIDIAN_ATTACHMENTS_PATH, image_filename)
-
         if not os.path.exists(source_image_path):
             logging.warning(f"Image not found at resolved path: {source_image_path}")
             return f"![{alt_text}]()"
 
         image_name = os.path.basename(source_image_path)
-        slugified_image_name = slugify(image_name) # Using your existing slugify function
+        slugified_image_name = slugify(image_name)
         note_image_dir = os.path.join(HUGO_STATIC_IMAGES_PATH, note_slug)
         os.makedirs(note_image_dir, exist_ok=True)
         dest_image_path = os.path.join(note_image_dir, slugified_image_name)
-        
         shutil.copy2(source_image_path, dest_image_path)
         logging.info(f"  - Copied image: {image_name} -> {os.path.relpath(dest_image_path, HUGO_SITE_PATH)}")
-        
         web_path = f"/images/{note_slug}/{slugified_image_name}"
         return f"![{alt_text}]({web_path})"
 
     image_pattern = re.compile(r'!\[(.*?)\]\((.*?)\)')
     final_content = image_pattern.sub(replace_image_links, content_after_latex)
-    
     return final_content
-
 
 def process_and_copy_note(source_path, dest_path):
     """Reads, processes, and writes a single markdown note."""
@@ -121,7 +100,25 @@ def process_and_copy_note(source_path, dest_path):
             if len(parts) > 2:
                 frontmatter_dict = yaml.safe_load(parts[1]) or {}
                 main_content = parts[2].lstrip()
-        
+
+        # Converts 'created' field to 'date' and formats it to ISO 8601 for Hugo.
+        if 'created' in frontmatter_dict:
+            created_val = frontmatter_dict.pop('created') # Use .pop() to get the value and remove the key
+            try:
+                # Handle if PyYAML already converted it to a datetime object
+                if isinstance(created_val, datetime):
+                    dt_obj = created_val
+                else:
+                    # Handle the string format 'YYYY-MM-DD HH:MM'
+                    dt_obj = datetime.strptime(str(created_val).strip(), '%Y-%m-%d %H:%M')
+                
+                # Format to the required ISO 8601 standard with a timezone
+                frontmatter_dict['date'] = dt_obj.strftime('%Y-%m-%dT%H:%M:%S+08:00')
+            except (ValueError, TypeError) as e:
+                # If parsing fails, log a warning and put the original value back under the new 'date' key
+                logging.warning(f"Could not parse 'created' date '{created_val}' in {os.path.basename(source_path)}. Error: {e}. Using original value.")
+                frontmatter_dict['date'] = created_val
+
         # --- Automatic Title, Category, and Tag logic ---
         # Title is always the filename
         title = os.path.splitext(os.path.basename(source_path))[0]
@@ -130,19 +127,14 @@ def process_and_copy_note(source_path, dest_path):
         relative_source_path = os.path.relpath(source_path, OBSIDIAN_VAULT_PATH)
         
         # Set category automatically
-        # 1. Prioritize the 'type' field from the source file's frontmatter.
         if 'type' in frontmatter_dict and frontmatter_dict['type']:
             type_value = frontmatter_dict['type']
-            # Ensure 'categories' is always a list
             if isinstance(type_value, list):
                 frontmatter_dict['categories'] = type_value
             else:
                 frontmatter_dict['categories'] = [str(type_value)]
-            # Remove the old 'type' key to avoid redundancy
             del frontmatter_dict['type']
             logging.debug(f"Used 'type' field for categories in {os.path.basename(source_path)}")
-        
-        # 2. If 'type' doesn't exist, fall back to CATEGORY_MAP.
         else:
             source_root_folder = relative_source_path.split(os.sep)[0]
             if source_root_folder in CATEGORY_MAP:
@@ -175,7 +167,7 @@ def get_publish_status(file_path):
     """Quickly checks the 'publish' key in a file's frontmatter."""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
-            lines = f.readlines(1024) # Read first ~1KB
+            lines = f.readlines(1024)
             if not lines or lines[0].strip() != '---':
                 return False
             for line in lines[1:]:
@@ -187,8 +179,6 @@ def get_publish_status(file_path):
         return False
     return False
 
-# The rest of the script (`should_ignore`, `map_obsidian_path_to_hugo`, `sync_obsidian_to_hugo`, `run_git_commands`, `__main__`) can remain largely the same.
-# The `sync_obsidian_to_hugo` function will now call `get_publish_status`.
 def should_ignore(path, root_vault_path):
     relative_path = os.path.relpath(path, root_vault_path)
     for pattern in IGNORE_PATTERNS:
@@ -202,11 +192,9 @@ def map_obsidian_path_to_hugo(obsidian_file_path, vault_path, publish_map):
         if relative_path_in_vault.startswith(obs_source_dir):
             path_within_source = os.path.relpath(relative_path_in_vault, obs_source_dir)
             hugo_target_dir = os.path.join(HUGO_CONTENT_PATH, hugo_target_section)
-            # Use a slugified filename for the destination markdown file
             base_name = os.path.splitext(os.path.basename(path_within_source))[0]
             extension = os.path.splitext(path_within_source)[1]
             slugified_filename = slugify(base_name) + extension
-            # Preserve sub-directory structure within the section
             sub_dir = os.path.dirname(path_within_source)
             return os.path.join(hugo_target_dir, sub_dir, slugified_filename)
     return None
@@ -235,8 +223,6 @@ def sync_obsidian_to_hugo():
                             logging.info(f"Removed (publish not true): {os.path.relpath(hugo_target_path, HUGO_SITE_PATH)}")
     
     logging.info("Synchronization and processing finished.")
-    # Add cleanup logic here if needed
-    
     run_hugo_build_and_git()
 
 
