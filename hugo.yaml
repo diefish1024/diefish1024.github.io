@@ -11,7 +11,7 @@ buildFuture: false
 buildExpired: false
 
 pagination:
-  pagerSize: 5
+  pagerSize: 10
 
 minify:
   disableXML: true
