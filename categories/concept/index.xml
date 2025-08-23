@@ -11,11 +11,12 @@
     </image>
     <generator>Hugo -- 0.148.2</generator>
     <language>zh-cn</language>
+    <lastBuildDate>Wed, 30 Jul 2025 22:21:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/concept/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>KV Cache 入门</title>
       <link>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Jul 2025 22:21:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</guid>
       <description>&lt;p&gt;推理效率对于 llm 是一个至关重要的问题。当模型生成文本时，尤其是以自回归方式逐词生成时，效率瓶颈会变得非常明显。KV Cache 就是为了解决这一问题而诞生的技术。&lt;/p&gt;
 &lt;h3 id=&#34;1-what-is-kv-cache&#34;&gt;1. What is KV Cache?&lt;/h3&gt;

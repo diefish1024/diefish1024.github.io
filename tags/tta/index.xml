@@ -11,37 +11,74 @@
     </image>
     <generator>Hugo -- 0.148.2</generator>
     <language>zh-cn</language>
+    <lastBuildDate>Wed, 30 Jul 2025 11:00:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/tta/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Benchmarking TTA</title>
-      <link>https://diefish1024.github.io/posts/literature-notes/benchmarking-tta/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/literature-notes/benchmarking-tta/</guid>
-      <description>&lt;h3 id=&#34;a-general-paradigm-of-test-time-adaptation&#34;&gt;A General Paradigm of Test-Time Adaptation&lt;/h3&gt;
-&lt;p&gt;根据测试数据接收方式和适应过程，TTA 分为三种主要范式：&lt;/p&gt;
+      <title>SSA</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/ssa/</link>
+      <pubDate>Wed, 30 Jul 2025 11:00:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/ssa/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;TTA 在回归任务上的局限：为分类任务设计，一般基于熵最小化和特征对齐；熵最小化不适用，回归模型产生单一值，不产生概率分布；简单特征对齐对回归模型效果不佳，可能反而会稀释需要学习的特征&lt;/p&gt;
+&lt;h2 id=&#34;problem-setting&#34;&gt;Problem Setting&lt;/h2&gt;
+&lt;p&gt;考虑一个回归模型 $ f_\theta: \mathcal{X} \to \mathbb{R} $，可以进一步分解为&lt;strong&gt;特征提取器&lt;/strong&gt; $ g_\phi: \mathcal{X} \to \mathbb{R}^D $（从输入 $ \mathcal{X} $ 提取 $ D $ 维特征 $ z $）和&lt;strong&gt;线性回归器&lt;/strong&gt; $ h_\psi(z) = w^T z + b $（或者 $ h_{\psi}(z)=Wz+b $）&lt;/p&gt;
+&lt;p&gt;$ f_\theta $ 首先在一个有标签的&lt;strong&gt;源数据集&lt;/strong&gt; $ S = \{(x_i, y_i)\}_{i=1}^{N_s} $ 上进行预训练，数据从源域分布 $ p_s $ 中采样&lt;/p&gt;
+&lt;p&gt;目标是使用一个&lt;strong&gt;无标签的&lt;/strong&gt;目标数据集 $ T = \{x_j\}_{j=1}^{N_t} $ 来适应预训练好的模型 $ f_\theta $ 到目标域&lt;/p&gt;
+&lt;p&gt;我们假设存在 &lt;strong&gt;covariate shift&lt;/strong&gt; ，这意味着：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>T-TIME</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/t-time/</link>
+      <pubDate>Wed, 30 Jul 2025 11:00:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/t-time/</guid>
+      <description>&lt;h1 id=&#34;method&#34;&gt;Method&lt;/h1&gt;
+&lt;h3 id=&#34;problem-set&#34;&gt;Problem Set&lt;/h3&gt;
+&lt;p&gt;EEG 数据 $ \{ X_{s,l}^{i},y_{s,l}^{i} \}_{i=1}^{n_{s,l}} $ ，进行无监督在线 K 分类&lt;/p&gt;
+&lt;h3 id=&#34;source-model-training&#34;&gt;Source Model Training&lt;/h3&gt;
+&lt;p&gt;对源数据做 Euclidean alignment (EA) 数据对齐，减少不同个体 EEG 信号差异&lt;/p&gt;
+&lt;p&gt;EA 计算每个个体所有 EEG 试次协方差矩阵的算术平均值
+$$ 
+
+R_{s,l} = \dfrac{1}{n}\sum_{i=1}^{n} X_{i}(X_{i})^{T} \implies \bar{X}_{i} = R_{s,l}^{-1/2}X_{i}
+
+ $$
+之后再整合经过对齐的受试者数据，形成“源域”&lt;/p&gt;
+&lt;p&gt;在整合后的数据上独立训练 $ M $ 个模型&lt;/p&gt;
+&lt;h3 id=&#34;incremental-ea-on-target-data&#34;&gt;Incremental EA on Target Data&lt;/h3&gt;
+&lt;p&gt;对新数据增量式更新协方差矩阵，再用新的矩阵更新所有测试数据&lt;/p&gt;
+&lt;h3 id=&#34;target-label-prediction&#34;&gt;Target Label Prediction&lt;/h3&gt;
+&lt;p&gt;用训练好的 $ M $ 模型初始化用于适应目标域的 $ M $ 个 TTA 模型 $ f_{m} $&lt;/p&gt;
+&lt;p&gt;新的 $ X_{a} $ 经过 IEA 被变换为 $ X_{a}&#39; $ 后被输入到每个模型 $ f_{m} $ 中进行分类，输出概率向量 $ f_{m}(X_{a}&#39;) $&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Tent</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/tent/</link>
+      <pubDate>Wed, 30 Jul 2025 11:00:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/tent/</guid>
+      <description>&lt;h1 id=&#34;setting&#34;&gt;Setting&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Fully Test-Time Adaptation&lt;/strong&gt; 是一种独特的模型适应设定。在此设定下，模型 $ f_\theta(x) $ 在训练阶段已通过源数据 $ x^s $ 和标签 $ y^s $ 完成训练，获得参数 $ \theta $。但在测试阶段，模型将遇到与源数据分布不同的无标签目标数据 $ x^t $。&lt;/p&gt;
+&lt;p&gt;FTT-Adaptation 与以下方法不同：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Test-Time Batch Adaptation (TTBA) 测试时间批次适应：&lt;/strong&gt; 数据以小批次形式到达。模型会针对每个到来的小批次进行适应，并立即提供预测。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Online Test-Time Adaptation (OTTA) 在线测试时间适应：&lt;/strong&gt; 数据以序列化的方式（小批次）到达。模型进行增量更新，并且过去的适应经验会影响未来的预测。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Test-Time Domain Adaptation (TTDA) 测试时间域适应：&lt;/strong&gt; 整个目标域的数据（所有测试数据）可在预测前一次性用于适应。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fine-tuning&lt;/strong&gt;：需要目标标签进行重新训练。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Domain Adaptation&lt;/strong&gt;：需要源数据和目标数据进行联合训练。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Test-Time Training (TTT)&lt;/strong&gt;：需要修改训练过程并共同优化有监督及自监督损失。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;datasets-for-evaluation&#34;&gt;Datasets for Evaluation&lt;/h3&gt;
-&lt;p&gt;论文使用了两种不同类型的分布偏移数据集进行评估：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Corruption Datasets 损坏数据集：&lt;/strong&gt; 原始数据集（CIFAR-10，ImageNet）经过&lt;strong&gt;人为损坏处理&lt;/strong&gt;后得到的，通过添加不同类型的噪声、模糊等，模拟不同严重程度的分布偏移。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Natural-shift Datasets 自然偏移数据集：&lt;/strong&gt; 这些数据集代表数据分布中&lt;strong&gt;自然发生的变化&lt;/strong&gt;，收集自不同的真实世界来源或条件（Office-Home，DomainNet，其中图像可能是不同风格的艺术作品、剪贴画、真实世界照片或草图）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;results-on-natural-shift-datasets&#34;&gt;Results on Natural Shift Datasets&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;TTA 方法在自然偏移数据集上的表现与在损坏数据集上的表现有所不同。&lt;/li&gt;
-&lt;li&gt;PredBN 在损坏数据集上有效，但在自然偏移数据集上表现不佳，有时甚至比源模型更差。这可能是因为自然偏移对数据分布的影响与人工损坏不同。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;T3A&lt;/strong&gt; 在 OTTA 范式下的自然偏移数据集上表现优于其他 OTTA 算法。这归因于其特征生成方式及其分类器优化能力。&lt;/li&gt;
-&lt;li&gt;对于自然偏移数据集，&lt;strong&gt;TTDA 算法&lt;/strong&gt; 持续取得了最高的性能。一些 OTTA 方法的多轮次也能达到可比的成果。&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;p&gt;相比之下，FTT-Adaptation 仅能利用预训练模型 $ f_\theta $ 和无标签目标数据 $ x^t $ 进行适应，不依赖源数据或额外的监督信息。&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
+&lt;p&gt;论文的核心贡献是提出了 &lt;strong&gt;Tent&lt;/strong&gt; 方法，其核心思想是通过&lt;strong&gt;最小化测试熵&lt;/strong&gt;（&lt;strong&gt;Test Entropy Minimization&lt;/strong&gt;）来适应模型预测，旨在使模型对测试数据的预测结果更“有信心”。&lt;/p&gt;
+&lt;h3 id=&#34;entropy-objective&#34;&gt;Entropy Objective&lt;/h3&gt;
+&lt;p&gt;Tent 的测试时目标函数是最小化模型预测 $ \hat{y} = f_\theta(x^t) $ 的&lt;strong&gt;熵 $ H(\hat{y}) $&lt;/strong&gt;。论文中使用的&lt;strong&gt;香农熵&lt;/strong&gt;计算公式如下：&lt;/p&gt;
+$$ 
+
+H(\hat{y}) = - \sum_c p(\hat{y}_c) \log p(\hat{y}_c)
+
+ $$
+&lt;p&gt;其中， $ p(\hat{y}_c) $ 表示模型预测目标数据 $ x^t $ 属于类别 $ c $ 的概率。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CoTTA</title>
       <link>https://diefish1024.github.io/posts/literature-notes/cotta/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Jul 2025 10:59:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/posts/literature-notes/cotta/</guid>
       <description>&lt;h1 id=&#34;setting&#34;&gt;Setting&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Continual Test-Time Domain Adaptation&lt;/strong&gt; 是一种更具挑战性的模型适应设定。在此设定下，一个在源数据上预训练好的模型，在测试时会遇到一个&lt;strong&gt;非平稳&lt;/strong&gt;且&lt;strong&gt;持续变化&lt;/strong&gt;的目标环境 。&lt;/p&gt;
@@ -70,8 +107,8 @@
 &lt;li&gt;它首先使用&lt;strong&gt;原始预训练模型&lt;/strong&gt;评估当前测试数据的&lt;strong&gt;预测置信度&lt;/strong&gt;，以此来近似域差异的大小。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;条件性应用&lt;/strong&gt;：
 &lt;ul&gt;
-&lt;li&gt;如果置信度&lt;strong&gt;高&lt;/strong&gt;（域差异小），则直接使用教师模型的预测作为伪标签 16。&lt;/li&gt;
-&lt;li&gt;如果置信度&lt;strong&gt;低&lt;/strong&gt;（域差异大），则对输入数据进行 N 次随机增强，并将教师模型对这些增强样本的平均预测结果作为伪标签 17171717。这可以进一步提高伪标签的鲁棒性。&lt;/li&gt;
+&lt;li&gt;如果置信度&lt;strong&gt;高&lt;/strong&gt;（域差异小），则直接使用教师模型的预测作为伪标签。&lt;/li&gt;
+&lt;li&gt;如果置信度&lt;strong&gt;低&lt;/strong&gt;（域差异大），则对输入数据进行 N 次随机增强，并将教师模型对这些增强样本的平均预测结果作为伪标签。这可以进一步提高伪标签的鲁棒性。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -81,66 +118,30 @@
 &lt;p&gt;为了在长期适应过程中保留从源域学到的知识，CoTTA 引入了&lt;strong&gt;随机恢复 (Stochastic Restoration)&lt;/strong&gt; 机制。&lt;/p&gt;</description>
     </item>
     <item>
-      <title>SSA</title>
-      <link>https://diefish1024.github.io/posts/literature-notes/ssa/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/literature-notes/ssa/</guid>
-      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;TTA 在回归任务上的局限：为分类任务设计，一般基于熵最小化和特征对齐；熵最小化不适用，回归模型产生单一值，不产生概率分布；简单特征对齐对回归模型效果不佳，可能反而会稀释需要学习的特征&lt;/p&gt;
-&lt;h2 id=&#34;problem-setting&#34;&gt;Problem Setting&lt;/h2&gt;
-&lt;p&gt;考虑一个回归模型 $ f_\theta: \mathcal{X} \to \mathbb{R} $，可以进一步分解为&lt;strong&gt;特征提取器&lt;/strong&gt; $ g_\phi: \mathcal{X} \to \mathbb{R}^D $（从输入 $ \mathcal{X} $ 提取 $ D $ 维特征 $ z $）和&lt;strong&gt;线性回归器&lt;/strong&gt; $ h_\psi(z) = w^T z + b $（或者 $ h_{\psi}(z)=Wz+b $）&lt;/p&gt;
-&lt;p&gt;$ f_\theta $ 首先在一个有标签的&lt;strong&gt;源数据集&lt;/strong&gt; $ S = \{(x_i, y_i)\}_{i=1}^{N_s} $ 上进行预训练，数据从源域分布 $ p_s $ 中采样&lt;/p&gt;
-&lt;p&gt;目标是使用一个&lt;strong&gt;无标签的&lt;/strong&gt;目标数据集 $ T = \{x_j\}_{j=1}^{N_t} $ 来适应预训练好的模型 $ f_\theta $ 到目标域&lt;/p&gt;
-&lt;p&gt;我们假设存在 &lt;strong&gt;covariate shift&lt;/strong&gt; ，这意味着：&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>T-TIME</title>
-      <link>https://diefish1024.github.io/posts/literature-notes/t-time/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/literature-notes/t-time/</guid>
-      <description>&lt;h1 id=&#34;method&#34;&gt;Method&lt;/h1&gt;
-&lt;h3 id=&#34;problem-set&#34;&gt;Problem Set&lt;/h3&gt;
-&lt;p&gt;EEG 数据 $ \{ X_{s,l}^{i},y_{s,l}^{i} \}_{i=1}^{n_{s,l}} $ ，进行无监督在线 K 分类&lt;/p&gt;
-&lt;h3 id=&#34;source-model-training&#34;&gt;Source Model Training&lt;/h3&gt;
-&lt;p&gt;对源数据做 Euclidean alignment (EA) 数据对齐，减少不同个体 EEG 信号差异&lt;/p&gt;
-&lt;p&gt;EA 计算每个个体所有 EEG 试次协方差矩阵的算术平均值
-$$ 
-
-R_{s,l} = \dfrac{1}{n}\sum_{i=1}^{n} X_{i}(X_{i})^{T} \implies \bar{X}_{i} = R_{s,l}^{-1/2}X_{i}
-
- $$
-之后再整合经过对齐的受试者数据，形成“源域”&lt;/p&gt;
-&lt;p&gt;在整合后的数据上独立训练 $ M $ 个模型&lt;/p&gt;
-&lt;h3 id=&#34;incremental-ea-on-target-data&#34;&gt;Incremental EA on Target Data&lt;/h3&gt;
-&lt;p&gt;对新数据增量式更新协方差矩阵，再用新的矩阵更新所有测试数据&lt;/p&gt;
-&lt;h3 id=&#34;target-label-prediction&#34;&gt;Target Label Prediction&lt;/h3&gt;
-&lt;p&gt;用训练好的 $ M $ 模型初始化用于适应目标域的 $ M $ 个 TTA 模型 $ f_{m} $&lt;/p&gt;
-&lt;p&gt;新的 $ X_{a} $ 经过 IEA 被变换为 $ X_{a}&#39; $ 后被输入到每个模型 $ f_{m} $ 中进行分类，输出概率向量 $ f_{m}(X_{a}&#39;) $&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Tent</title>
-      <link>https://diefish1024.github.io/posts/literature-notes/tent/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/literature-notes/tent/</guid>
-      <description>&lt;h1 id=&#34;setting&#34;&gt;Setting&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;Fully Test-Time Adaptation&lt;/strong&gt; 是一种独特的模型适应设定。在此设定下，模型 $ f_\theta(x) $ 在训练阶段已通过源数据 $ x^s $ 和标签 $ y^s $ 完成训练，获得参数 $ \theta $。但在测试阶段，模型将遇到与源数据分布不同的无标签目标数据 $ x^t $。&lt;/p&gt;
-&lt;p&gt;FTT-Adaptation 与以下方法不同：&lt;/p&gt;
+      <title>Benchmarking TTA</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/benchmarking-tta/</link>
+      <pubDate>Wed, 30 Jul 2025 10:58:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/benchmarking-tta/</guid>
+      <description>&lt;h3 id=&#34;a-general-paradigm-of-test-time-adaptation&#34;&gt;A General Paradigm of Test-Time Adaptation&lt;/h3&gt;
+&lt;p&gt;根据测试数据接收方式和适应过程，TTA 分为三种主要范式：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Fine-tuning&lt;/strong&gt;：需要目标标签进行重新训练。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Domain Adaptation&lt;/strong&gt;：需要源数据和目标数据进行联合训练。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Test-Time Training (TTT)&lt;/strong&gt;：需要修改训练过程并共同优化有监督及自监督损失。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Test-Time Batch Adaptation (TTBA) 测试时间批次适应：&lt;/strong&gt; 数据以小批次形式到达。模型会针对每个到来的小批次进行适应，并立即提供预测。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Online Test-Time Adaptation (OTTA) 在线测试时间适应：&lt;/strong&gt; 数据以序列化的方式（小批次）到达。模型进行增量更新，并且过去的适应经验会影响未来的预测。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Test-Time Domain Adaptation (TTDA) 测试时间域适应：&lt;/strong&gt; 整个目标域的数据（所有测试数据）可在预测前一次性用于适应。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;相比之下，FTT-Adaptation 仅能利用预训练模型 $ f_\theta $ 和无标签目标数据 $ x^t $ 进行适应，不依赖源数据或额外的监督信息。&lt;/p&gt;
-&lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
-&lt;p&gt;论文的核心贡献是提出了 &lt;strong&gt;Tent&lt;/strong&gt; 方法，其核心思想是通过&lt;strong&gt;最小化测试熵&lt;/strong&gt;（&lt;strong&gt;Test Entropy Minimization&lt;/strong&gt;）来适应模型预测，旨在使模型对测试数据的预测结果更“有信心”。&lt;/p&gt;
-&lt;h3 id=&#34;entropy-objective&#34;&gt;Entropy Objective&lt;/h3&gt;
-&lt;p&gt;Tent 的测试时目标函数是最小化模型预测 $ \hat{y} = f_\theta(x^t) $ 的&lt;strong&gt;熵 $ H(\hat{y}) $&lt;/strong&gt;。论文中使用的&lt;strong&gt;香农熵&lt;/strong&gt;计算公式如下：&lt;/p&gt;
-$$ 
-
-H(\hat{y}) = - \sum_c p(\hat{y}_c) \log p(\hat{y}_c)
-
- $$
-&lt;p&gt;其中， $ p(\hat{y}_c) $ 表示模型预测目标数据 $ x^t $ 属于类别 $ c $ 的概率。&lt;/p&gt;</description>
+&lt;h3 id=&#34;datasets-for-evaluation&#34;&gt;Datasets for Evaluation&lt;/h3&gt;
+&lt;p&gt;论文使用了两种不同类型的分布偏移数据集进行评估：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Corruption Datasets 损坏数据集：&lt;/strong&gt; 原始数据集（CIFAR-10，ImageNet）经过&lt;strong&gt;人为损坏处理&lt;/strong&gt;后得到的，通过添加不同类型的噪声、模糊等，模拟不同严重程度的分布偏移。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Natural-shift Datasets 自然偏移数据集：&lt;/strong&gt; 这些数据集代表数据分布中&lt;strong&gt;自然发生的变化&lt;/strong&gt;，收集自不同的真实世界来源或条件（Office-Home，DomainNet，其中图像可能是不同风格的艺术作品、剪贴画、真实世界照片或草图）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;results-on-natural-shift-datasets&#34;&gt;Results on Natural Shift Datasets&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;TTA 方法在自然偏移数据集上的表现与在损坏数据集上的表现有所不同。&lt;/li&gt;
+&lt;li&gt;PredBN 在损坏数据集上有效，但在自然偏移数据集上表现不佳，有时甚至比源模型更差。这可能是因为自然偏移对数据分布的影响与人工损坏不同。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;T3A&lt;/strong&gt; 在 OTTA 范式下的自然偏移数据集上表现优于其他 OTTA 算法。这归因于其特征生成方式及其分类器优化能力。&lt;/li&gt;
+&lt;li&gt;对于自然偏移数据集，&lt;strong&gt;TTDA 算法&lt;/strong&gt; 持续取得了最高的性能。一些 OTTA 方法的多轮次也能达到可比的成果。&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
   </channel>
 </rss>

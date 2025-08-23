@@ -11,132 +11,220 @@
     </image>
     <generator>Hugo -- 0.148.2</generator>
     <language>zh-cn</language>
+    <lastBuildDate>Wed, 06 Aug 2025 23:35:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/nju-os/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>15. 并发控制：同步条件变量</title>
-      <link>https://diefish1024.github.io/posts/nju-os-2025/15-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/nju-os-2025/15-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F/</guid>
-      <description>&lt;h2 id=&#34;同步和条件变量&#34;&gt;同步和条件变量&lt;/h2&gt;
-&lt;p&gt;互斥实现了&lt;strong&gt;原子性&lt;/strong&gt;，但是无法实现&lt;strong&gt;确定性&lt;/strong&gt;，也就是无法正确实现 &amp;ldquo;happens-before&amp;rdquo; 的关系&lt;/p&gt;
-&lt;p&gt;因此需要引入条件变量来实现线程的同步，形成受控制的并发事件的&lt;strong&gt;发生顺序&lt;/strong&gt;（可以用乐团指挥来类比），把一系列不确定的状态在某一个时间点同步到了一个确定的状态，将发散的并发程序状态 “收束”&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;实现同步&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;实现 $ A\to B $：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;can_proceed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;signal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;can_proceed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wait&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;until&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;condition&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;satisfied&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;这样的思路大致正确，但是自选的循环有很大的性能问题，因此需要一个更加底层的机制来帮助实现这一点&lt;/p&gt;
-&lt;p&gt;最理想的 API 是 &lt;code&gt;wait_until(cond)&lt;/code&gt; ，但是过去为了简化设计，变成了&lt;/p&gt;
+      <title>22. 文件系统 API</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/22-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-api/</link>
+      <pubDate>Wed, 06 Aug 2025 23:35:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/22-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-api/</guid>
+      <description>&lt;h2 id=&#34;目录树&#34;&gt;目录树&lt;/h2&gt;
+&lt;h3 id=&#34;文件的抽象&#34;&gt;文件的抽象&lt;/h3&gt;
+&lt;p&gt;操作系统将物理存储设备（如磁盘）的复杂性隐藏起来，提供了一个简单、统一的抽象——&lt;strong&gt;文件&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;文件可以看作是一个&lt;strong&gt;虚拟的磁盘&lt;/strong&gt;，即一个命名的、一维的&lt;strong&gt;字节序列&lt;/strong&gt;，支持 &lt;code&gt;read&lt;/code&gt;, &lt;code&gt;write&lt;/code&gt;, &lt;code&gt;lseek&lt;/code&gt; 等操作&lt;/p&gt;
+&lt;p&gt;这种抽象使得上层应用无需关心数据在物理磁盘上的具体位置和存储方式&lt;/p&gt;
+&lt;h3 id=&#34;目录的引入&#34;&gt;目录的引入&lt;/h3&gt;
+&lt;p&gt;当文件数量增多时，需要一种方式来组织和管理它们&lt;/p&gt;
+&lt;p&gt;操作系统引入了&lt;strong&gt;目录 (Directory)&lt;/strong&gt; 的概念，它是一种特殊的文件，其内容是其他文件或目录的列表&lt;/p&gt;
+&lt;p&gt;通过将文件和目录组织成一个层次化的&lt;strong&gt;树状结构&lt;/strong&gt;，即&lt;strong&gt;目录树&lt;/strong&gt;，可以方便地对文件进行分类、查找和管理&lt;/p&gt;
+&lt;p&gt;多数类 Unix 系统遵循 &lt;strong&gt;FHS (Filesystem Hierarchy Standard)&lt;/strong&gt; 的目录结构约定，为软件和用户预测文件位置提供了便利&lt;/p&gt;
+&lt;h3 id=&#34;目录操作-api&#34;&gt;目录操作 API&lt;/h3&gt;
+&lt;p&gt;操作系统提供了一系列系统调用来操作目录树，核心操作围绕“增删改查”&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;条件不满足时等待：&lt;code&gt;wait&lt;/code&gt; - 直接睡眠等待&lt;/li&gt;
-&lt;li&gt;条件满足时继续：&lt;code&gt;signal/broadcast&lt;/code&gt; - 唤醒所有线程&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mkdir&lt;/code&gt;: 创建一个新的目录&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rmdir&lt;/code&gt;: 删除一个空的目录&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;getdents&lt;/code&gt;: 读取目录中的条目 (&lt;strong&gt;d&lt;/strong&gt;irectory &lt;strong&gt;ent&lt;/strong&gt;rie&lt;strong&gt;s&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;link&lt;/code&gt; / &lt;code&gt;unlink&lt;/code&gt;: 创建或删除文件的链接&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;（小时候的 scratch 编程其实已经有了这样的思想😂）&lt;/p&gt;
-&lt;p&gt;在 c++ 代码中我们可以把条件放到 $ \lambda $ 表达式中：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mutex&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mtx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;condition_variable&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;T_player&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unique_lock&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mtx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wait&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;p&#34;&gt;[]{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;can_proceed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;notify_all&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unlock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;注意条件变量在等待时需要带着一把锁（需要确保检查和等待是原子操作）&lt;/p&gt;</description>
+&lt;h3 id=&#34;链接&#34;&gt;链接&lt;/h3&gt;
+&lt;p&gt;链接是文件系统的一个重要特性，它允许一个文件拥有多个名字或存在于目录树的多个位置&lt;/p&gt;
+&lt;p&gt;链接主要分为两种类型：&lt;strong&gt;硬链接&lt;/strong&gt;和&lt;strong&gt;软链接（符号链接）&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&#34;硬链接-hard-link&#34;&gt;硬链接 Hard Link&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;：&lt;strong&gt;硬链接&lt;/strong&gt;是让多个目录条目（文件名）直接指向磁盘上同一个&lt;strong&gt;文件索引节点 (inode)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;每个文件在文件系统中都有一个唯一的 &lt;code&gt;inode&lt;/code&gt;，它包含了文件的元数据（如权限、大小、数据块位置等）和数据本身&lt;/p&gt;
+&lt;p&gt;创建一个硬链接，相当于为同一个 &lt;code&gt;inode&lt;/code&gt; 增加了一个新的入口点（文件名）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特性&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;所有指向同一个 &lt;code&gt;inode&lt;/code&gt; 的硬链接地位平等，没有主次之分&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;inode&lt;/code&gt; 内部维护一个&lt;strong&gt;链接计数 (reference count)&lt;/strong&gt;, 只有当这个计数减到 0 时，文件系统才会真正删除该 &lt;code&gt;inode&lt;/code&gt; 和对应的数据块，这也是 &lt;code&gt;unlink&lt;/code&gt; 系统调用的由来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;限制&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不能为目录创建硬链接，以防止在目录树中产生循环&lt;/li&gt;
+&lt;li&gt;不能跨越不同的文件系统（因为 &lt;code&gt;inode&lt;/code&gt; 号只在当前文件系统内唯一）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;软链接-symbolic-link&#34;&gt;软链接 Symbolic Link&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;：&lt;strong&gt;软链接&lt;/strong&gt;，也称&lt;strong&gt;符号链接 (symlink)&lt;/strong&gt;，是一个&lt;strong&gt;特殊的文件&lt;/strong&gt;，它的内容是另一个文件或目录的&lt;strong&gt;路径&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
-      <title>16. 并发控制：同步信号量</title>
-      <link>https://diefish1024.github.io/posts/nju-os-2025/16-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E4%BF%A1%E5%8F%B7%E9%87%8F/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/nju-os-2025/16-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E4%BF%A1%E5%8F%B7%E9%87%8F/</guid>
-      <description>&lt;h2 id=&#34;信号量&#34;&gt;信号量&lt;/h2&gt;
-&lt;p&gt;互斥锁在某种意义上也可以认为实现了 &amp;ldquo;happens-before&amp;rdquo; 的依赖关系—— release 必然发生在 acquire 之前。我们可以试着利用这种依赖关系来实现计算图的调度：为每条边分配一个互斥锁，代表数据或前置任务的完成；一个节点必须获得所有入边对应的互斥锁才能开始计算，计算完成后，就释放所有出边对应的互斥锁，通知下游节点输出就绪（但是这种直接使用互斥锁作为边状态信号的方式是 undefined behavior，因为互斥锁主要用于保护临界区，其释放通常要求由持有它的线程完成，若释放未曾获取的锁，则行为未定义）&lt;/p&gt;
-&lt;p&gt;我们可以从这种想法中抽象出其本质，也就是用一个“&lt;strong&gt;信号&lt;/strong&gt;”去获取资源的许可，类似餐厅的取号吃饭&lt;/p&gt;
-&lt;p&gt;这种&lt;strong&gt;信号&lt;/strong&gt;的思想很适合用来管理&lt;strong&gt;计数类型的同类资源&lt;/strong&gt;，比如停车场的空位，为了实现这种 producer-customer 的问题，用 &lt;a href=&#34;15.%20%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%EF%BC%9A%E5%90%8C%E6%AD%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F.md&#34;&gt;条件变量&lt;/a&gt; 可以轻易解决，进入的条件就是存在空位 &lt;code&gt;count &amp;lt; capacity&lt;/code&gt; ，那我们从减少变量的角度出发，这实际上也就是剩余空位的数量大于零，我们停车相当于&lt;strong&gt;消耗&lt;/strong&gt;了一个车位，离开相当于&lt;strong&gt;创造&lt;/strong&gt;了一个车位，这也就得到了所谓“&lt;strong&gt;信号量&lt;/strong&gt;”的机制&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;sem_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// Prolaag - try + decrease/down/wait/acquire
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;mutex_lock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;count&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nf&#34;&gt;cond_wait&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 消耗一个信号 (车位)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;mutex_unlock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;V&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;sem_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// Verhoog - increase/up/post/signal/release
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;mutex_lock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 创建一个信号 (车位)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;cond_broadcast&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nf&#34;&gt;mutex_unlock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;根据这个一路推出信号量的思路，或许可以认为这是互斥锁的扩展&lt;/p&gt;</description>
+      <title>21. 存储设备原理</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Mon, 04 Aug 2025 11:41:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/</guid>
+      <description>&lt;p&gt;科普性质，简单记录一下&lt;/p&gt;
+&lt;h2 id=&#34;1-bit-的存储磁铁&#34;&gt;1-Bit 的存储：磁铁&lt;/h2&gt;
+&lt;p&gt;要实现“持久化”存储，核心是要找到一个能反复改写的状态，很容易想到能够利用磁的特性，这就有了磁带的初步想法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个长条的带子上面均匀有磁性物质&lt;/li&gt;
+&lt;li&gt;定位到特定位置之后通过放大感应电流读取&lt;/li&gt;
+&lt;li&gt;用电磁铁改变磁化方向来写入数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了提高存储密度，可以把这样的带子给卷起来，于是就得到了磁带&lt;/p&gt;
+&lt;p&gt;这样的存储方式主要缺点是&lt;strong&gt;几乎不能随机读写&lt;/strong&gt;（比如磁带收音机需要倒带），一般用于冷数据的存档和备份&lt;/p&gt;
+&lt;p&gt;为了解决这个缺点，可以想到用旋转的二维平面来替代卷起来的带子，这样读写延迟就不会超过旋转的周期，这就得到了&lt;strong&gt;磁鼓&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012735-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;再在磁鼓的基础上进一步内卷，把用圆盘代替柱面，从而可以堆叠起来，进一步提高了存储密度，这就得到了&lt;strong&gt;磁盘&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012958-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;磁盘作为存储设备的随机读写性能虽然相比磁带有了很大的改善，但是还是需要等待定位到正确的位置，性能仍然不够优秀，为了读写定位到一个扇区通常需要花费几个毫秒的时间，这一点可以通过缓存和调度算法来缓解，让数据尽可能连续存储&lt;/p&gt;
+&lt;p&gt;当我们在磁盘的基础上把读写头和盘片本体分开，我们就实现了数据的移动，这也就得到了&lt;strong&gt;软盘&lt;/strong&gt;，这是上个数据数据发行的主要方式，虽然性能和可靠性都比较低，但是胜在了便捷、可移动&lt;/p&gt;
+&lt;h2 id=&#34;1-bit-的存储挖坑&#34;&gt;1-Bit 的存储：挖坑&lt;/h2&gt;
+&lt;p&gt;古人实现持久化存储的方式是在石头上刻字，也就是通过挖坑来存储信息，这种方式可以跨越非常长的时间&lt;/p&gt;
+&lt;p&gt;而现代工业使我们可以挖出更加精细的坑，从而可以存储更高密度的信息&lt;/p&gt;
+&lt;p&gt;为了读取这样的信息，我们可以从光学的角度考虑：在反射平面上挖粗糙坑，激光扫过表面，在平面会反射回来，在坑里会发生漫反射，于是我们只要检测是否收到反射光就可以识别是坑还是表面，这也就是&lt;strong&gt;光盘&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;光盘最有趣的特性是容易复制，我们要制造光盘可以先仔细地制造一张反转的盘片，坑的位置对应其表面的突起，之后只需要直接用这个盘片压制加热的塑料再镀上反射膜就可以得到一张光盘，这种方式可以达到极高的写入速度&lt;/p&gt;
+&lt;p&gt;当然这种挖坑方式的一个重要特性就是不能修改已经写入的内容的，很难填上一个已经挖了的坑（当然通过特殊的制造材料和工艺也是可以做到的），这也就是说里面存储的数据是 append only 的，想要修改之前的内容可以采用可持久化二叉树的结构&lt;/p&gt;
+&lt;p&gt;光盘作为存储设备，价格低的同时容量和可靠性都比较高，同时顺序读性能一般，随机读性能低并且很难写入，一个重要的应用常见就是数字时代的内容分发&lt;/p&gt;
+&lt;p&gt;现代这种挖坑的存储方式还有一种应用方式是回归古人石碑的形式，把信息刻在很稳定的材料上来做到永久存储&lt;/p&gt;
+&lt;h2 id=&#34;1-bit-的存储电荷&#34;&gt;1-Bit 的存储：电荷&lt;/h2&gt;
+&lt;p&gt;前两种存储介质都存在比较大的缺陷：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;磁：依赖机械部件，从而无法避免 ms 级别的延迟&lt;/li&gt;
+&lt;li&gt;坑（光）：挖坑效率低，同时填坑很困难&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;而电荷则是一种非常理想的存储介质：电子的密度极高，并且电路的速度极快（还天然并行）&lt;/p&gt;
+&lt;p&gt;在电路中实现 1-bit 的持久存储，一个想法是我们可以挖一个坑，两种状态分别是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在坑里填入电子&lt;/li&gt;
+&lt;li&gt;从坑里放跑电子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;而这就得到了&lt;strong&gt;闪存 (Flash Memory)&lt;/strong&gt; ：
+&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805112704-png&#34;&gt;
+其作为存储设备，价格低，容量和可靠性高，而且读写性能极高（由于电路天然并行，所以容量越大，速度越快）&lt;/p&gt;
+&lt;p&gt;然而，闪存的物理原理也带来了其固有的缺陷，即&lt;strong&gt;会磨损 (wear out)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每次放电 (erase) 操作都无法 100% 将电子放干净，这会对存储单元造成微小的、不可逆的损伤&lt;/li&gt;
+&lt;li&gt;在经历数千或数万次擦写循环后，一些存储单元会因为累积的损伤而失效，无法再可靠地存储数据，这被称为 “&lt;strong&gt;死单元 (Dead Cell)&lt;/strong&gt;”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了解决闪存的磨损问题，并将其更好地呈现给操作系统，现代固态存储设备（如 SSD、U 盘、SD 卡）内部实际上都集成了一个微型计算机系统&lt;/p&gt;
+&lt;p&gt;这个系统运行着一层被称为 &lt;strong&gt;FTL (Flash Translation Layer)&lt;/strong&gt; 的固件，它的核心功能之一是 &lt;strong&gt;磨损均衡 (Wear Leveling)&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>20. 设备和驱动程序</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/20-%E8%AE%BE%E5%A4%87%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/</link>
+      <pubDate>Sun, 03 Aug 2025 16:54:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/20-%E8%AE%BE%E5%A4%87%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/</guid>
+      <description>&lt;h2 id=&#34;输入输出设备&#34;&gt;输入输出设备&lt;/h2&gt;
+&lt;h3 id=&#34;everything-is-a-file&#34;&gt;Everything is a File&lt;/h3&gt;
+&lt;p&gt;在 Unix-like 系统中，与外部设备交互的核心思想是 &lt;strong&gt;Everything is a File&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;文件描述符 (File Descriptor)&lt;/strong&gt;：操作系统为上层软件提供了一个统一的抽象，即文件描述符，它是一个指向内核中任何 I/O 对象的“指针”或句柄&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;统一接口&lt;/strong&gt;：无论是普通文件、硬件设备（如终端、磁盘）、还是网络连接，都可以通过 &lt;code&gt;open&lt;/code&gt; 获得一个文件描述符，然后使用相同的 &lt;code&gt;read&lt;/code&gt;/&lt;code&gt;write&lt;/code&gt; 等系统调用来进行操作，这极大地简化了应用程序的编写&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;设备控制器与-mmio&#34;&gt;设备控制器与 MMIO&lt;/h3&gt;
+&lt;p&gt;“文件”这个美好的抽象背后，是具体的硬件工作原理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;设备控制器 (Device Controller)&lt;/strong&gt;：每个 I/O 设备都有一个控制器，它是一个包含 CPU、内存和寄存器的微型计算机，作为 CPU 和物理设备之间的桥梁&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;设备寄存器&lt;/strong&gt;：控制器通过一组&lt;strong&gt;寄存器&lt;/strong&gt;与 CPU 通信，通常包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;状态寄存器&lt;/strong&gt;：用于表示设备当前是否繁忙、是否准备好等&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;指令寄存器&lt;/strong&gt;：CPU 写入指令，告诉设备要做什么&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据寄存器&lt;/strong&gt;：用于在 CPU 和设备之间传输数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;内存映射 I/O (MMIO)&lt;/strong&gt;：为了让 CPU 能访问这些寄存器，现代系统普遍采用 &lt;strong&gt;MMIO (Memory-Mapped I/O)&lt;/strong&gt;，操作系统会将设备的寄存器映射到物理内存地址空间中的特定区域，这样一来，CPU 就可以像访问普通内存一样，使用标准的 &lt;code&gt;load&lt;/code&gt;/&lt;code&gt;store&lt;/code&gt; 指令来读写设备寄存器，从而实现对设备的控制&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;gpio&#34;&gt;GPIO&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;GPIO (General-Purpose Input/Output)&lt;/strong&gt; 是理解 I/O 设备原理最直观的例子，GPIO 就是一个物理引脚，可以通过编程设置为输入或输出模式&lt;/p&gt;
+&lt;p&gt;通过 MMIO，一个 GPIO 引脚的电平状态被映射到一个特定的内存地址，当 CPU 向这个地址写入 &lt;code&gt;1&lt;/code&gt; 时，引脚就变为高电平；写入 &lt;code&gt;0&lt;/code&gt; 时，则变为低电平，这个过程将一条内存写指令直接转化为了一个物理世界的动作（比如点亮一个 LED）&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>19. 真实世界的并发编程 (2)</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/19-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-2/</link>
+      <pubDate>Sat, 02 Aug 2025 22:51:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/19-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-2/</guid>
+      <description>&lt;h2 id=&#34;cpu-内的并行编程&#34;&gt;CPU 内的并行编程&lt;/h2&gt;
+&lt;p&gt;CPU 的功耗 $ P=C\cdot V^{2}\cdot f $ 导致纵使有更大的电路，热功耗限制了性能上限，从而有一堵“功耗墙”限制了 CPU 的性能，为此需要考虑如何在降低 $ V $ 和 $ f $ 的同时用面积换性能&lt;/p&gt;
+&lt;p&gt;有两个思路：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;让一条指令能处理更多的数据&lt;/strong&gt;：SIMD (Single Instruction, Multiple Data)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“一条指令” 浪费的能量大致是定数&lt;/li&gt;
+&lt;li&gt;处理的数据越多，浪费越少&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;用更多更简单的处理器&lt;/strong&gt;：多处理器系统、异构多处理器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;同等面积，处理器越简单，数量越多&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;异构计算&lt;/strong&gt;：最经典的例子是&lt;strong&gt;大小核架构&lt;/strong&gt;（如 Apple M1）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;simd&#34;&gt;SIMD&lt;/h3&gt;
+&lt;p&gt;SIMD 的核心思想是在硬件层面实现数据级并行，它通过引入专门的硬件单元来达成这个目标：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;宽位寄存器 (Wide Registers)&lt;/strong&gt;：CPU 内部增加了比通用寄存器宽很多的专用寄存器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Intel 的 SSE 指令集引入了 128 位的 XMM 寄存器，而最新的 AVX-512 拥有 512 位的 ZMM 寄存器&lt;/li&gt;
+&lt;li&gt;这些宽位寄存器可以一次性装入多个数据元素，比如一个 128 位的寄存器可以同时容纳 4 个 32 位的浮点数，或者 16 个 8 位的整数&lt;/li&gt;
+&lt;li&gt;这些被打包在一起的数据被称为 Vector&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;向量处理单元 (Vector ALU)&lt;/strong&gt;：CPU 内部也配备了能够对整个向量进行并行计算的 ALU&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>18. 真实世界的并发编程 (1)</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/</link>
+      <pubDate>Thu, 31 Jul 2025 19:36:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/</guid>
+      <description>&lt;p&gt;并发编程的核心抽象是实现一个计算图，计算发生在节点上，边表示节点之间的依赖关系，同时计算图在运行时可能是动态变化的&lt;/p&gt;
+&lt;p&gt;使用条件变量、锁、信号量等 api 去实现计算图并不是一个优雅的实现方式，因为这样会在代码中引入众多&lt;strong&gt;干扰代码&lt;/strong&gt;，也可能导致一些问题&lt;/p&gt;
+&lt;p&gt;为此可以增加一些功能受限的&lt;strong&gt;语法&lt;/strong&gt;，可以在同样描述计算图的功能下减少了许多潜在的问题&lt;/p&gt;
+&lt;h2 id=&#34;高性能计算中的并行编程&#34;&gt;高性能计算中的并行编程&lt;/h2&gt;
+&lt;p&gt;在高性能计算中，计算图通常易于&lt;strong&gt;静态切分&lt;/strong&gt;，尤其适用于物理模拟的网格划分，为此 HPC 发展出多种高效的并行编程模型，具体学习可以参考 &lt;a href=&#34;https://xflops.sjtu.edu.cn/hpc-start-guide/parallel-computing/basic/&#34;&gt;SJTU HPC 学习手册&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;mpi-分布式内存并行&#34;&gt;MPI: 分布式内存并行&lt;/h4&gt;
+&lt;p&gt;每个 MPI 进程有独立的内存空间，进程间通过&lt;strong&gt;显式消息传递&lt;/strong&gt;（发送/接收）交换数据&lt;/p&gt;
+&lt;h4 id=&#34;openmp-共享内存并行&#34;&gt;OpenMP: 共享内存并行&lt;/h4&gt;
+&lt;p&gt;多个线程在同一地址空间中并行执行，所有线程可以直接访问相同的数据，使用 &lt;code&gt;#pragma omp&lt;/code&gt; 指令实现并行化&lt;/p&gt;
+&lt;p&gt;对非计算机专业来说非常友好，只需要在正常的代码上面加上编译指令即可，能轻松实现高效的并行优化&lt;/p&gt;
+&lt;h4 id=&#34;cuda-gpu-异构并行&#34;&gt;CUDA: GPU 异构并行&lt;/h4&gt;
+&lt;p&gt;CPU 调度，GPU 执行大规模并行计算&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;概念&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;核函数 (Kernel)&lt;/strong&gt; ：在 GPU 上并行执行的函数&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;线程层次&lt;/strong&gt;：线程 (&lt;code&gt;threadIdx&lt;/code&gt;) 组成线程块 (&lt;code&gt;blockIdx&lt;/code&gt;)，线程块组成网格 (&lt;code&gt;gridDim&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存层次&lt;/strong&gt;：寄存器、共享内存（块内高速）、全局内存（所有线程可访问）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;我们身边的并发编程&#34;&gt;我们身边的并发编程&lt;/h2&gt;
+&lt;h4 id=&#34;从-web-10-到-web-20&#34;&gt;从 Web 1.0 到 Web 2.0&lt;/h4&gt;
+&lt;p&gt;在 Web 时代用的最广泛的是 Javascript&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Asynchronous JavaScript and XML&lt;/strong&gt; (Ajax; ~1999)
+&lt;ul&gt;
+&lt;li&gt;允许网页实现“后台刷新”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;jQuery $ (2006): A DOM Query Language&lt;/strong&gt; (编程抽象)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;web-20-时代的并发编程&#34;&gt;Web 2.0 时代的并发编程&lt;/h4&gt;
+&lt;p&gt;线程开销大，并且大多数 Web 开发者难以进行并发编程&lt;/p&gt;</description>
     </item>
     <item>
       <title>17. 并发 Bugs</title>
       <link>https://diefish1024.github.io/posts/nju-os-2025/17-%E5%B9%B6%E5%8F%91-bugs/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 31 Jul 2025 12:12:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/posts/nju-os-2025/17-%E5%B9%B6%E5%8F%91-bugs/</guid>
       <description>&lt;h2 id=&#34;数据竞争&#34;&gt;数据竞争&lt;/h2&gt;
 &lt;p&gt;大多并发 bug 最后都会体现为&lt;strong&gt;数据竞争 (Data Race)&lt;/strong&gt;&lt;/p&gt;
@@ -217,212 +305,125 @@
 &lt;/div&gt;&lt;p&gt;这样的错误虽然看起来很傻，但是在真实程序复杂的控制流中是可能出现的&lt;/p&gt;</description>
     </item>
     <item>
-      <title>18. 真实世界的并发编程 (1)</title>
-      <link>https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/nju-os-2025/18-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-1/</guid>
-      <description>&lt;p&gt;并发编程的核心抽象是实现一个计算图，计算发生在节点上，边表示节点之间的依赖关系，同时计算图在运行时可能是动态变化的&lt;/p&gt;
-&lt;p&gt;使用条件变量、锁、信号量等 api 去实现计算图并不是一个优雅的实现方式，因为这样会在代码中引入众多&lt;strong&gt;干扰代码&lt;/strong&gt;，也可能导致一些问题&lt;/p&gt;
-&lt;p&gt;为此可以增加一些功能受限的&lt;strong&gt;语法&lt;/strong&gt;，可以在同样描述计算图的功能下减少了许多潜在的问题&lt;/p&gt;
-&lt;h2 id=&#34;高性能计算中的并行编程&#34;&gt;高性能计算中的并行编程&lt;/h2&gt;
-&lt;p&gt;在高性能计算中，计算图通常易于&lt;strong&gt;静态切分&lt;/strong&gt;，尤其适用于物理模拟的网格划分，为此 HPC 发展出多种高效的并行编程模型，具体学习可以参考 &lt;a href=&#34;https://xflops.sjtu.edu.cn/hpc-start-guide/parallel-computing/basic/&#34;&gt;SJTU HPC 学习手册&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&#34;mpi-分布式内存并行&#34;&gt;MPI: 分布式内存并行&lt;/h4&gt;
-&lt;p&gt;每个 MPI 进程有独立的内存空间，进程间通过&lt;strong&gt;显式消息传递&lt;/strong&gt;（发送/接收）交换数据&lt;/p&gt;
-&lt;h4 id=&#34;openmp-共享内存并行&#34;&gt;OpenMP: 共享内存并行&lt;/h4&gt;
-&lt;p&gt;多个线程在同一地址空间中并行执行，所有线程可以直接访问相同的数据，使用 &lt;code&gt;#pragma omp&lt;/code&gt; 指令实现并行化&lt;/p&gt;
-&lt;p&gt;对非计算机专业来说非常友好，只需要在正常的代码上面加上编译指令即可，能轻松实现高效的并行优化&lt;/p&gt;
-&lt;h4 id=&#34;cuda-gpu-异构并行&#34;&gt;CUDA: GPU 异构并行&lt;/h4&gt;
-&lt;p&gt;CPU 调度，GPU 执行大规模并行计算&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;概念&lt;/strong&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;核函数 (Kernel)&lt;/strong&gt; ：在 GPU 上并行执行的函数&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;线程层次&lt;/strong&gt;：线程 (&lt;code&gt;threadIdx&lt;/code&gt;) 组成线程块 (&lt;code&gt;blockIdx&lt;/code&gt;)，线程块组成网格 (&lt;code&gt;gridDim&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;内存层次&lt;/strong&gt;：寄存器、共享内存（块内高速）、全局内存（所有线程可访问）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;我们身边的并发编程&#34;&gt;我们身边的并发编程&lt;/h2&gt;
-&lt;h4 id=&#34;从-web-10-到-web-20&#34;&gt;从 Web 1.0 到 Web 2.0&lt;/h4&gt;
-&lt;p&gt;在 Web 时代用的最广泛的是 Javascript&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Asynchronous JavaScript and XML&lt;/strong&gt; (Ajax; ~1999)
-&lt;ul&gt;
-&lt;li&gt;允许网页实现“后台刷新”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;jQuery $ (2006): A DOM Query Language&lt;/strong&gt; (编程抽象)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;web-20-时代的并发编程&#34;&gt;Web 2.0 时代的并发编程&lt;/h4&gt;
-&lt;p&gt;线程开销大，并且大多数 Web 开发者难以进行并发编程&lt;/p&gt;</description>
+      <title>16. 并发控制：同步信号量</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/16-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E4%BF%A1%E5%8F%B7%E9%87%8F/</link>
+      <pubDate>Mon, 21 Jul 2025 14:56:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/16-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E4%BF%A1%E5%8F%B7%E9%87%8F/</guid>
+      <description>&lt;h2 id=&#34;信号量&#34;&gt;信号量&lt;/h2&gt;
+&lt;p&gt;互斥锁在某种意义上也可以认为实现了 &amp;ldquo;happens-before&amp;rdquo; 的依赖关系—— release 必然发生在 acquire 之前。我们可以试着利用这种依赖关系来实现计算图的调度：为每条边分配一个互斥锁，代表数据或前置任务的完成；一个节点必须获得所有入边对应的互斥锁才能开始计算，计算完成后，就释放所有出边对应的互斥锁，通知下游节点输出就绪（但是这种直接使用互斥锁作为边状态信号的方式是 undefined behavior，因为互斥锁主要用于保护临界区，其释放通常要求由持有它的线程完成，若释放未曾获取的锁，则行为未定义）&lt;/p&gt;
+&lt;p&gt;我们可以从这种想法中抽象出其本质，也就是用一个“&lt;strong&gt;信号&lt;/strong&gt;”去获取资源的许可，类似餐厅的取号吃饭&lt;/p&gt;
+&lt;p&gt;这种&lt;strong&gt;信号&lt;/strong&gt;的思想很适合用来管理&lt;strong&gt;计数类型的同类资源&lt;/strong&gt;，比如停车场的空位，为了实现这种 producer-customer 的问题，用 &lt;a href=&#34;15.%20%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%EF%BC%9A%E5%90%8C%E6%AD%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F.md&#34;&gt;条件变量&lt;/a&gt; 可以轻易解决，进入的条件就是存在空位 &lt;code&gt;count &amp;lt; capacity&lt;/code&gt; ，那我们从减少变量的角度出发，这实际上也就是剩余空位的数量大于零，我们停车相当于&lt;strong&gt;消耗&lt;/strong&gt;了一个车位，离开相当于&lt;strong&gt;创造&lt;/strong&gt;了一个车位，这也就得到了所谓“&lt;strong&gt;信号量&lt;/strong&gt;”的机制&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;sem_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// Prolaag - try + decrease/down/wait/acquire
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;mutex_lock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;count&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nf&#34;&gt;cond_wait&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 消耗一个信号 (车位)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;mutex_unlock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;V&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;sem_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// Verhoog - increase/up/post/signal/release
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;mutex_lock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 创建一个信号 (车位)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nf&#34;&gt;cond_broadcast&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nf&#34;&gt;mutex_unlock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;根据这个一路推出信号量的思路，或许可以认为这是互斥锁的扩展&lt;/p&gt;</description>
     </item>
     <item>
-      <title>19. 真实世界的并发编程 (2)</title>
-      <link>https://diefish1024.github.io/posts/nju-os-2025/19-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/nju-os-2025/19-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-2/</guid>
-      <description>&lt;h2 id=&#34;cpu-内的并行编程&#34;&gt;CPU 内的并行编程&lt;/h2&gt;
-&lt;p&gt;CPU 的功耗 $ P=C\cdot V^{2}\cdot f $ 导致纵使有更大的电路，热功耗限制了性能上限，从而有一堵“功耗墙”限制了 CPU 的性能，为此需要考虑如何在降低 $ V $ 和 $ f $ 的同时用面积换性能&lt;/p&gt;
-&lt;p&gt;有两个思路：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;让一条指令能处理更多的数据&lt;/strong&gt;：SIMD (Single Instruction, Multiple Data)&lt;/p&gt;
+      <title>15. 并发控制：同步条件变量</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/15-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F/</link>
+      <pubDate>Mon, 21 Jul 2025 14:55:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/15-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%90%8C%E6%AD%A5%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F/</guid>
+      <description>&lt;h2 id=&#34;同步和条件变量&#34;&gt;同步和条件变量&lt;/h2&gt;
+&lt;p&gt;互斥实现了&lt;strong&gt;原子性&lt;/strong&gt;，但是无法实现&lt;strong&gt;确定性&lt;/strong&gt;，也就是无法正确实现 &amp;ldquo;happens-before&amp;rdquo; 的关系&lt;/p&gt;
+&lt;p&gt;因此需要引入条件变量来实现线程的同步，形成受控制的并发事件的&lt;strong&gt;发生顺序&lt;/strong&gt;（可以用乐团指挥来类比），把一系列不确定的状态在某一个时间点同步到了一个确定的状态，将发散的并发程序状态 “收束”&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;实现同步&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;实现 $ A\to B $：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;can_proceed&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;signal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;can_proceed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wait&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;until&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;condition&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;satisfied&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这样的思路大致正确，但是自选的循环有很大的性能问题，因此需要一个更加底层的机制来帮助实现这一点&lt;/p&gt;
+&lt;p&gt;最理想的 API 是 &lt;code&gt;wait_until(cond)&lt;/code&gt; ，但是过去为了简化设计，变成了&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;“一条指令” 浪费的能量大致是定数&lt;/li&gt;
-&lt;li&gt;处理的数据越多，浪费越少&lt;/li&gt;
+&lt;li&gt;条件不满足时等待：&lt;code&gt;wait&lt;/code&gt; - 直接睡眠等待&lt;/li&gt;
+&lt;li&gt;条件满足时继续：&lt;code&gt;signal/broadcast&lt;/code&gt; - 唤醒所有线程&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;用更多更简单的处理器&lt;/strong&gt;：多处理器系统、异构多处理器&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;同等面积，处理器越简单，数量越多&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;异构计算&lt;/strong&gt;：最经典的例子是&lt;strong&gt;大小核架构&lt;/strong&gt;（如 Apple M1）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&#34;simd&#34;&gt;SIMD&lt;/h3&gt;
-&lt;p&gt;SIMD 的核心思想是在硬件层面实现数据级并行，它通过引入专门的硬件单元来达成这个目标：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;宽位寄存器 (Wide Registers)&lt;/strong&gt;：CPU 内部增加了比通用寄存器宽很多的专用寄存器&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Intel 的 SSE 指令集引入了 128 位的 XMM 寄存器，而最新的 AVX-512 拥有 512 位的 ZMM 寄存器&lt;/li&gt;
-&lt;li&gt;这些宽位寄存器可以一次性装入多个数据元素，比如一个 128 位的寄存器可以同时容纳 4 个 32 位的浮点数，或者 16 个 8 位的整数&lt;/li&gt;
-&lt;li&gt;这些被打包在一起的数据被称为 Vector&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;向量处理单元 (Vector ALU)&lt;/strong&gt;：CPU 内部也配备了能够对整个向量进行并行计算的 ALU&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>20. 设备和驱动程序</title>
-      <link>https://diefish1024.github.io/posts/nju-os-2025/20-%E8%AE%BE%E5%A4%87%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/nju-os-2025/20-%E8%AE%BE%E5%A4%87%E5%92%8C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/</guid>
-      <description>&lt;h2 id=&#34;输入输出设备&#34;&gt;输入输出设备&lt;/h2&gt;
-&lt;h3 id=&#34;everything-is-a-file&#34;&gt;Everything is a File&lt;/h3&gt;
-&lt;p&gt;在 Unix-like 系统中，与外部设备交互的核心思想是 &lt;strong&gt;Everything is a File&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;文件描述符 (File Descriptor)&lt;/strong&gt;：操作系统为上层软件提供了一个统一的抽象，即文件描述符，它是一个指向内核中任何 I/O 对象的“指针”或句柄&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;统一接口&lt;/strong&gt;：无论是普通文件、硬件设备（如终端、磁盘）、还是网络连接，都可以通过 &lt;code&gt;open&lt;/code&gt; 获得一个文件描述符，然后使用相同的 &lt;code&gt;read&lt;/code&gt;/&lt;code&gt;write&lt;/code&gt; 等系统调用来进行操作，这极大地简化了应用程序的编写&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;设备控制器与-mmio&#34;&gt;设备控制器与 MMIO&lt;/h3&gt;
-&lt;p&gt;“文件”这个美好的抽象背后，是具体的硬件工作原理&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;设备控制器 (Device Controller)&lt;/strong&gt;：每个 I/O 设备都有一个控制器，它是一个包含 CPU、内存和寄存器的微型计算机，作为 CPU 和物理设备之间的桥梁&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;设备寄存器&lt;/strong&gt;：控制器通过一组&lt;strong&gt;寄存器&lt;/strong&gt;与 CPU 通信，通常包括：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;状态寄存器&lt;/strong&gt;：用于表示设备当前是否繁忙、是否准备好等&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;指令寄存器&lt;/strong&gt;：CPU 写入指令，告诉设备要做什么&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;数据寄存器&lt;/strong&gt;：用于在 CPU 和设备之间传输数据&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;内存映射 I/O (MMIO)&lt;/strong&gt;：为了让 CPU 能访问这些寄存器，现代系统普遍采用 &lt;strong&gt;MMIO (Memory-Mapped I/O)&lt;/strong&gt;，操作系统会将设备的寄存器映射到物理内存地址空间中的特定区域，这样一来，CPU 就可以像访问普通内存一样，使用标准的 &lt;code&gt;load&lt;/code&gt;/&lt;code&gt;store&lt;/code&gt; 指令来读写设备寄存器，从而实现对设备的控制&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;gpio&#34;&gt;GPIO&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;GPIO (General-Purpose Input/Output)&lt;/strong&gt; 是理解 I/O 设备原理最直观的例子，GPIO 就是一个物理引脚，可以通过编程设置为输入或输出模式&lt;/p&gt;
-&lt;p&gt;通过 MMIO，一个 GPIO 引脚的电平状态被映射到一个特定的内存地址，当 CPU 向这个地址写入 &lt;code&gt;1&lt;/code&gt; 时，引脚就变为高电平；写入 &lt;code&gt;0&lt;/code&gt; 时，则变为低电平，这个过程将一条内存写指令直接转化为了一个物理世界的动作（比如点亮一个 LED）&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>21. 存储设备原理</title>
-      <link>https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/nju-os-2025/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/</guid>
-      <description>&lt;p&gt;科普性质，简单记录一下&lt;/p&gt;
-&lt;h2 id=&#34;1-bit-的存储磁铁&#34;&gt;1-Bit 的存储：磁铁&lt;/h2&gt;
-&lt;p&gt;要实现“持久化”存储，核心是要找到一个能反复改写的状态，很容易想到能够利用磁的特性，这就有了磁带的初步想法：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;一个长条的带子上面均匀有磁性物质&lt;/li&gt;
-&lt;li&gt;定位到特定位置之后通过放大感应电流读取&lt;/li&gt;
-&lt;li&gt;用电磁铁改变磁化方向来写入数据&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;为了提高存储密度，可以把这样的带子给卷起来，于是就得到了磁带&lt;/p&gt;
-&lt;p&gt;这样的存储方式主要缺点是&lt;strong&gt;几乎不能随机读写&lt;/strong&gt;（比如磁带收音机需要倒带），一般用于冷数据的存档和备份&lt;/p&gt;
-&lt;p&gt;为了解决这个缺点，可以想到用旋转的二维平面来替代卷起来的带子，这样读写延迟就不会超过旋转的周期，这就得到了&lt;strong&gt;磁鼓&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012735-png&#34;&gt;&lt;/p&gt;
-&lt;p&gt;再在磁鼓的基础上进一步内卷，把用圆盘代替柱面，从而可以堆叠起来，进一步提高了存储密度，这就得到了&lt;strong&gt;磁盘&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012958-png&#34;&gt;&lt;/p&gt;
-&lt;p&gt;磁盘作为存储设备的随机读写性能虽然相比磁带有了很大的改善，但是还是需要等待定位到正确的位置，性能仍然不够优秀，为了读写定位到一个扇区通常需要花费几个毫秒的时间，这一点可以通过缓存和调度算法来缓解，让数据尽可能连续存储&lt;/p&gt;
-&lt;p&gt;当我们在磁盘的基础上把读写头和盘片本体分开，我们就实现了数据的移动，这也就得到了&lt;strong&gt;软盘&lt;/strong&gt;，这是上个数据数据发行的主要方式，虽然性能和可靠性都比较低，但是胜在了便捷、可移动&lt;/p&gt;
-&lt;h2 id=&#34;1-bit-的存储挖坑&#34;&gt;1-Bit 的存储：挖坑&lt;/h2&gt;
-&lt;p&gt;古人实现持久化存储的方式是在石头上刻字，也就是通过挖坑来存储信息，这种方式可以跨越非常长的时间&lt;/p&gt;
-&lt;p&gt;而现代工业使我们可以挖出更加精细的坑，从而可以存储更高密度的信息&lt;/p&gt;
-&lt;p&gt;为了读取这样的信息，我们可以从光学的角度考虑：在反射平面上挖粗糙坑，激光扫过表面，在平面会反射回来，在坑里会发生漫反射，于是我们只要检测是否收到反射光就可以识别是坑还是表面，这也就是&lt;strong&gt;光盘&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;光盘最有趣的特性是容易复制，我们要制造光盘可以先仔细地制造一张反转的盘片，坑的位置对应其表面的突起，之后只需要直接用这个盘片压制加热的塑料再镀上反射膜就可以得到一张光盘，这种方式可以达到极高的写入速度&lt;/p&gt;
-&lt;p&gt;当然这种挖坑方式的一个重要特性就是不能修改已经写入的内容的，很难填上一个已经挖了的坑（当然通过特殊的制造材料和工艺也是可以做到的），这也就是说里面存储的数据是 append only 的，想要修改之前的内容可以采用可持久化二叉树的结构&lt;/p&gt;
-&lt;p&gt;光盘作为存储设备，价格低的同时容量和可靠性都比较高，同时顺序读性能一般，随机读性能低并且很难写入，一个重要的应用常见就是数字时代的内容分发&lt;/p&gt;
-&lt;p&gt;现代这种挖坑的存储方式还有一种应用方式是回归古人石碑的形式，把信息刻在很稳定的材料上来做到永久存储&lt;/p&gt;
-&lt;h2 id=&#34;1-bit-的存储电荷&#34;&gt;1-Bit 的存储：电荷&lt;/h2&gt;
-&lt;p&gt;前两种存储介质都存在比较大的缺陷：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;磁：依赖机械部件，从而无法避免 ms 级别的延迟&lt;/li&gt;
-&lt;li&gt;坑（光）：挖坑效率低，同时填坑很困难&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;而电荷则是一种非常理想的存储介质：电子的密度极高，并且电路的速度极快（还天然并行）&lt;/p&gt;
-&lt;p&gt;在电路中实现 1-bit 的持久存储，一个想法是我们可以挖一个坑，两种状态分别是：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;在坑里填入电子&lt;/li&gt;
-&lt;li&gt;从坑里放跑电子&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;而这就得到了&lt;strong&gt;闪存 (Flash Memory)&lt;/strong&gt; ：
-&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805112704-png&#34;&gt;
-其作为存储设备，价格低，容量和可靠性高，而且读写性能极高（由于电路天然并行，所以容量越大，速度越快）&lt;/p&gt;
-&lt;p&gt;然而，闪存的物理原理也带来了其固有的缺陷，即&lt;strong&gt;会磨损 (wear out)&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;每次放电 (erase) 操作都无法 100% 将电子放干净，这会对存储单元造成微小的、不可逆的损伤&lt;/li&gt;
-&lt;li&gt;在经历数千或数万次擦写循环后，一些存储单元会因为累积的损伤而失效，无法再可靠地存储数据，这被称为 “&lt;strong&gt;死单元 (Dead Cell)&lt;/strong&gt;”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;为了解决闪存的磨损问题，并将其更好地呈现给操作系统，现代固态存储设备（如 SSD、U 盘、SD 卡）内部实际上都集成了一个微型计算机系统&lt;/p&gt;
-&lt;p&gt;这个系统运行着一层被称为 &lt;strong&gt;FTL (Flash Translation Layer)&lt;/strong&gt; 的固件，它的核心功能之一是 &lt;strong&gt;磨损均衡 (Wear Leveling)&lt;/strong&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>22. 文件系统 API</title>
-      <link>https://diefish1024.github.io/posts/nju-os-2025/22-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-api/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/posts/nju-os-2025/22-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-api/</guid>
-      <description>&lt;h2 id=&#34;目录树&#34;&gt;目录树&lt;/h2&gt;
-&lt;h3 id=&#34;文件的抽象&#34;&gt;文件的抽象&lt;/h3&gt;
-&lt;p&gt;操作系统将物理存储设备（如磁盘）的复杂性隐藏起来，提供了一个简单、统一的抽象——&lt;strong&gt;文件&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;文件可以看作是一个&lt;strong&gt;虚拟的磁盘&lt;/strong&gt;，即一个命名的、一维的&lt;strong&gt;字节序列&lt;/strong&gt;，支持 &lt;code&gt;read&lt;/code&gt;, &lt;code&gt;write&lt;/code&gt;, &lt;code&gt;lseek&lt;/code&gt; 等操作&lt;/p&gt;
-&lt;p&gt;这种抽象使得上层应用无需关心数据在物理磁盘上的具体位置和存储方式&lt;/p&gt;
-&lt;h3 id=&#34;目录的引入&#34;&gt;目录的引入&lt;/h3&gt;
-&lt;p&gt;当文件数量增多时，需要一种方式来组织和管理它们&lt;/p&gt;
-&lt;p&gt;操作系统引入了&lt;strong&gt;目录 (Directory)&lt;/strong&gt; 的概念，它是一种特殊的文件，其内容是其他文件或目录的列表&lt;/p&gt;
-&lt;p&gt;通过将文件和目录组织成一个层次化的&lt;strong&gt;树状结构&lt;/strong&gt;，即&lt;strong&gt;目录树&lt;/strong&gt;，可以方便地对文件进行分类、查找和管理&lt;/p&gt;
-&lt;p&gt;多数类 Unix 系统遵循 &lt;strong&gt;FHS (Filesystem Hierarchy Standard)&lt;/strong&gt; 的目录结构约定，为软件和用户预测文件位置提供了便利&lt;/p&gt;
-&lt;h3 id=&#34;目录操作-api&#34;&gt;目录操作 API&lt;/h3&gt;
-&lt;p&gt;操作系统提供了一系列系统调用来操作目录树，核心操作围绕“增删改查”&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;mkdir&lt;/code&gt;: 创建一个新的目录&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;rmdir&lt;/code&gt;: 删除一个空的目录&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;getdents&lt;/code&gt;: 读取目录中的条目 (&lt;strong&gt;d&lt;/strong&gt;irectory &lt;strong&gt;ent&lt;/strong&gt;rie&lt;strong&gt;s&lt;/strong&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;link&lt;/code&gt; / &lt;code&gt;unlink&lt;/code&gt;: 创建或删除文件的链接&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;链接&#34;&gt;链接&lt;/h3&gt;
-&lt;p&gt;链接是文件系统的一个重要特性，它允许一个文件拥有多个名字或存在于目录树的多个位置&lt;/p&gt;
-&lt;p&gt;链接主要分为两种类型：&lt;strong&gt;硬链接&lt;/strong&gt;和&lt;strong&gt;软链接（符号链接）&lt;/strong&gt;&lt;/p&gt;
-&lt;h4 id=&#34;硬链接-hard-link&#34;&gt;硬链接 Hard Link&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;：&lt;strong&gt;硬链接&lt;/strong&gt;是让多个目录条目（文件名）直接指向磁盘上同一个&lt;strong&gt;文件索引节点 (inode)&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;每个文件在文件系统中都有一个唯一的 &lt;code&gt;inode&lt;/code&gt;，它包含了文件的元数据（如权限、大小、数据块位置等）和数据本身&lt;/p&gt;
-&lt;p&gt;创建一个硬链接，相当于为同一个 &lt;code&gt;inode&lt;/code&gt; 增加了一个新的入口点（文件名）&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;特性&lt;/strong&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;所有指向同一个 &lt;code&gt;inode&lt;/code&gt; 的硬链接地位平等，没有主次之分&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;inode&lt;/code&gt; 内部维护一个&lt;strong&gt;链接计数 (reference count)&lt;/strong&gt;, 只有当这个计数减到 0 时，文件系统才会真正删除该 &lt;code&gt;inode&lt;/code&gt; 和对应的数据块，这也是 &lt;code&gt;unlink&lt;/code&gt; 系统调用的由来&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;限制&lt;/strong&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;不能为目录创建硬链接，以防止在目录树中产生循环&lt;/li&gt;
-&lt;li&gt;不能跨越不同的文件系统（因为 &lt;code&gt;inode&lt;/code&gt; 号只在当前文件系统内唯一）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;软链接-symbolic-link&#34;&gt;软链接 Symbolic Link&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;：&lt;strong&gt;软链接&lt;/strong&gt;，也称&lt;strong&gt;符号链接 (symlink)&lt;/strong&gt;，是一个&lt;strong&gt;特殊的文件&lt;/strong&gt;，它的内容是另一个文件或目录的&lt;strong&gt;路径&lt;/strong&gt;&lt;/p&gt;</description>
+&lt;p&gt;（小时候的 scratch 编程其实已经有了这样的思想😂）&lt;/p&gt;
+&lt;p&gt;在 c++ 代码中我们可以把条件放到 $ \lambda $ 表达式中：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mutex&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mtx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;condition_variable&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;T_player&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unique_lock&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mtx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wait&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;p&#34;&gt;[]{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;can_proceed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;cv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;notify_all&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;lk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unlock&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;注意条件变量在等待时需要带着一把锁（需要确保检查和等待是原子操作）&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

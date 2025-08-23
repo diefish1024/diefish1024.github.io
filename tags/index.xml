@@ -11,75 +11,76 @@
     </image>
     <generator>Hugo -- 0.148.2</generator>
     <language>zh-cn</language>
+    <lastBuildDate>Wed, 06 Aug 2025 23:35:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Ai-Infra</title>
-      <link>https://diefish1024.github.io/tags/ai-infra/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/tags/ai-infra/</guid>
-      <description></description>
-    </item>
     <item>
       <title>CS</title>
       <link>https://diefish1024.github.io/tags/cs/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 06 Aug 2025 23:35:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/cs/</guid>
       <description></description>
     </item>
     <item>
-      <title>Domain-Adaptation</title>
-      <link>https://diefish1024.github.io/tags/domain-adaptation/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/tags/domain-adaptation/</guid>
+      <title>Learning</title>
+      <link>https://diefish1024.github.io/tags/learning/</link>
+      <pubDate>Wed, 06 Aug 2025 23:35:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/learning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Nju-Os</title>
+      <link>https://diefish1024.github.io/tags/nju-os/</link>
+      <pubDate>Wed, 06 Aug 2025 23:35:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/nju-os/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ai-Infra</title>
+      <link>https://diefish1024.github.io/tags/ai-infra/</link>
+      <pubDate>Wed, 30 Jul 2025 22:21:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/ai-infra/</guid>
       <description></description>
     </item>
     <item>
       <title>EEG</title>
       <link>https://diefish1024.github.io/tags/eeg/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Jul 2025 12:55:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/eeg/</guid>
       <description></description>
     </item>
     <item>
       <title>Emotion-Recognition</title>
       <link>https://diefish1024.github.io/tags/emotion-recognition/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Jul 2025 12:55:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/emotion-recognition/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Learning</title>
-      <link>https://diefish1024.github.io/tags/learning/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/tags/learning/</guid>
       <description></description>
     </item>
     <item>
       <title>Literature-Note</title>
       <link>https://diefish1024.github.io/tags/literature-note/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Jul 2025 12:55:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/literature-note/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Nju-Os</title>
-      <link>https://diefish1024.github.io/tags/nju-os/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://diefish1024.github.io/tags/nju-os/</guid>
       <description></description>
     </item>
     <item>
       <title>Transformer</title>
       <link>https://diefish1024.github.io/tags/transformer/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Jul 2025 12:55:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/transformer/</guid>
       <description></description>
     </item>
     <item>
       <title>TTA</title>
       <link>https://diefish1024.github.io/tags/tta/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Jul 2025 11:00:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/tta/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Domain-Adaptation</title>
+      <link>https://diefish1024.github.io/tags/domain-adaptation/</link>
+      <pubDate>Wed, 30 Jul 2025 10:59:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/domain-adaptation/</guid>
       <description></description>
     </item>
   </channel>
