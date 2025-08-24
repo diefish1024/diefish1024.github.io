@@ -150,3 +150,6 @@ OpenMP 允许通过环境变量在运行时控制并行行为，而无需重新�
 g++ -fopenmp my_program.cpp -o my_program
 ```
 
+### Reference
+
+- [HPC 入门指南](https://xflops.sjtu.edu.cn/hpc-start-guide/parallel-computing/openmp/)
