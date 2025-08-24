@@ -22,9 +22,6 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;问题&lt;/strong&gt;：现有 EEG 情绪识别方法对长期上下文信息关注不足，导致跨被试泛化能力减弱&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;方案&lt;/strong&gt;：提出 &lt;strong&gt;Emotion Transformer (EmT)&lt;/strong&gt; ，为 Graph-Transformer 混和架构&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;核心模块&lt;/strong&gt;：
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;TGC&lt;/strong&gt;：将 EEG 信号转换为时序图序列&lt;/li&gt;
@@ -35,7 +32,6 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;成果&lt;/strong&gt;：在多个公开数据集的广义跨被试任务上面超过了 baseline&lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h2 id=&#34;introduction--related-work&#34;&gt;Introduction &amp;amp; Related Work&lt;/h2&gt;
 &lt;p&gt;为什么 EEG 难以使用跨被试 (cross-subject) 的场景？&lt;/p&gt;
 &lt;ul&gt;
@@ -43,7 +39,6 @@
 &lt;li&gt;&lt;strong&gt;低信噪比&lt;/strong&gt;：EEG 信号容易受到外源噪声干扰（肌电、眼电……）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;目标是学习一种&lt;strong&gt;跨被试共享&lt;/strong&gt;、具有&lt;strong&gt;泛化能力&lt;/strong&gt;的情绪表征&lt;/p&gt;
-&lt;hr&gt;
 &lt;h3 id=&#34;gpaph-neural-networks&#34;&gt;Gpaph Neural Networks&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;核心思想&lt;/strong&gt;：EEG 数据具有非欧图结构，适合使用 GNN 来处理&lt;/li&gt;
@@ -55,7 +50,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id=&#34;temporal-context-learning&#34;&gt;Temporal Context Learning&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;核心理念&lt;/strong&gt;: 情绪是连续认知过程，EEG 信号中嵌入时序上下文信息&lt;/li&gt;
@@ -66,7 +60,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id=&#34;eeg-emotion-recognition&#34;&gt;EEG Emotion Recognition&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;核心理念&lt;/strong&gt;：EEG 情绪识别面临个体差异大、信噪比低等挑战，需提取光谱、空间、时序特征&lt;/li&gt;
@@ -77,7 +70,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
 &lt;p&gt;EmT 是一个端到端的框架，包含四大模块：&lt;/p&gt;</description>
     </item>
