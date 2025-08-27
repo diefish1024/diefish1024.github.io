@@ -265,18 +265,18 @@ int main(int argc, char** argv) {
 
 MPI 提供了不同的通信模式，以应对不同的性能需求。
 
-- **阻塞通信 (Blocking)**: `MPI_Send` 和 `MPI_Recv` 都是阻塞的。
+- **阻塞通信 (Blocking)**：`MPI_Send` 和 `MPI_Recv` 都是阻塞的。
     - `MPI_Send` 会一直等待，直到发送缓冲区的数据可以被安全地重用（通常是数据已被拷贝到系统缓冲区或已发送到接收方）。
     - `MPI_Recv` 会一直等待，直到消息完全接收到接收缓冲区。
     - **优点**：编程简单，逻辑清晰。
     - **缺点**：可能导致进程长时间等待，造成性能瓶颈。
 
-- **非阻塞通信 (Non-blocking)**: `MPI_Isend` 和 `MPI_Irecv` 是非阻塞的。
+- **非阻塞通信 (Non-blocking)**：`MPI_Isend` 和 `MPI_Irecv` 是非阻塞的。
     - 函数会立即返回，允许程序在通信进行的同时执行其他计算任务。
     - 需要配合 `MPI_Wait` 或 `MPI_Test` 来检查通信是否完成。
     - **优点**：可以实现 **计算和通信的重叠**，是 MPI 性能优化的关键。
     - **缺点**：编程复杂度更高。
-    - **核心函数**:
+    - **核心函数**：
         - `MPI_Isend`: 非阻塞发送。
         - `MPI_Irecv`: 非阻塞接收。
         - `MPI_Wait`: 等待一个非阻塞操作完成。
@@ -289,13 +289,13 @@ MPI 提供了不同的通信模式，以应对不同的性能需求。
 sudo apt-get install openmpi-bin libopenmpi-dev
 ```
 
-**编译**：使用 `mpicc` 编译器包装器，它会自动链接 MPI 库。
+- **编译**：使用 `mpicc` 编译器包装器，它会自动链接 MPI 库。
 
 ```bash
 mpicc my_program.c -o my_program
 ```
 
-**运行**：使用 `mpirun` 或 `mpiexec` 命令启动程序。`-np` 参数指定要启动的进程总数。
+- **运行**：使用 `mpirun` 或 `mpiexec` 命令启动程序。`-np` 参数指定要启动的进程总数。
 
 ```bash
 # 启动 4 个进程来运行程序
