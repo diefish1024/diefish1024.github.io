@@ -2,7 +2,7 @@
 tags:
 - learning
 - CS
-- ai-infra
+- AI-Infra
 discipline: computer-science
 publish: true
 date: '2025-07-30T22:21:00+08:00'

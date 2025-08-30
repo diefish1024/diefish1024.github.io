@@ -2,6 +2,7 @@
 tags:
 - learning
 - CS
+- HPC
 discipline: computer-science
 publish: true
 date: '2025-08-26T17:15:00+08:00'

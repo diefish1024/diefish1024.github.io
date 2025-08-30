@@ -4,6 +4,7 @@ tags:
 - EEG
 - emotion-recognition
 - Transformer
+- GNN
 title: EmT
 publish: true
 date: '2025-07-30T12:55:00+08:00'
@@ -40,7 +41,7 @@ categories:
 
 ### Temporal Context Learning
 
-- **核心理念**: 情绪是连续认知过程，EEG 信号中嵌入时序上下文信息
+- **核心理念**：情绪是连续认知过程，EEG 信号中嵌入时序上下文信息
 - **代表工作**：
 	- LSTM / TCN / TESANet / Conformer / AMDET
 	- **局限性**：这些方法通常从扁平化的 EEG 特征向量学习，可能**未能有效学习空间关系**；EmT 则通过并行 GCN 和 STA 层更有效地捕捉时空信息
