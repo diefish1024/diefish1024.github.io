@@ -8,25 +8,25 @@ publish: true
 date: '2025-08-30T16:44:00+08:00'
 title: HPC 中的 C 和 C++
 categories:
-- course-note
+- concept
 ---
-### 1. Why Memory Performance Matters in HPC?
+## 1. Why Memory Performance Matters in HPC?
 
 在 HPC 领域，我们常常关注 CPU 的浮点运算能力 (FLOPS)，但真正的性能瓶颈往往不在于计算本身，而在于**数据访问**。现代 CPU 的计算速度远超于内存的访问速度，这种差距被称为**内存墙 (Memory Wall)**。程序的大部分时间可能都消耗在等待数据从内存加载到 CPU 寄存器的过程中。因此，优化内存访问模式，最大限度地利用 Cache，是提升 C/C++ 程序性能至关重要的一环。
 
-### 2. Memory Alignment
+## 2. Memory Alignment
 
 内存对齐是指一个数据对象的内存地址是其自身大小或特定字节数（通常是 2 的幂）的整数倍。例如一个 4 字节的 `int` 类型变量，如果其内存地址是 4 的倍数（如 `0x...00`, `0x...04`, `0x...08`），那么它就是内存对齐的。
 
-#### 2.2 Why is Alignment Important?
+### 2.2 Why is Alignment Important?
 
-CPU 并不是逐字节地从内存中读取数据，而是以块（通常是 **缓存行 (Cache Line)**，例如 64 字节）为单位进行读取。
+CPU 并不是逐字节地从内存中读取数据，而是以块（通常是**缓存行 (Cache Line)**，例如 64 字节）为单位进行读取。
 
 - **性能提升**：如果一个数据跨越了两个缓存行，CPU 就需要执行两次内存读取操作才能获取这一个数据，这会浪费一倍的时间。如果数据是对齐的，就可以保证它完整地落在一个缓存行内，CPU 只需一次读取操作。
 
 - **硬件要求**：许多现代 CPU 指令集，尤其是用于并行计算的 **SIMD** 指令强制要求操作的数据必须是内存对齐的，对未对齐的数据执行这些指令可能会导致程序崩溃或性能急剧下降。
 
-#### 2.3 How to Achieve Alignment in C/C++?
+### 2.3 How to Achieve Alignment in C/C++?
 
 - **C++11 `alignas`**：这是 Modern C++ 的标准方式，可以指定变量或类型的对齐要求。
 ```c++
@@ -56,11 +56,11 @@ float* dynamic_array = (float*)aligned_alloc(64, 1024 * sizeof(float));
 free(dynamic_array); // 必须用 free 释放
 ```
 
-### 3. Data Locality
+## 3. Data Locality
 
 数据局部性是缓存工作的基本原理，也是性能优化的核心。描述了 CPU 访问内存地址的集中程度。
 
-#### 3.1 Temporal and Spatial Locality
+### 3.1 Temporal and Spatial Locality
 
 - **时间局部性 (Temporal Locality)**：如果一个数据项被访问，那么在不久的将来它很可能再次被访问。
 
@@ -68,7 +68,7 @@ free(dynamic_array); // 必须用 free 释放
 
 当 CPU 访问一个内存地址时，它会将包含该地址的整个缓存行加载到缓存中。充分利用这两个局部性原则，可以极大地提高**缓存命中率 (Cache Hit Rate)**，减少访问主内存的次数。
 
-#### 3.2 Optimizing Storage Layout
+### 3.2 Optimizing Storage Layout
 
 数据在内存中的布局方式直接影响空间局部性，尤其是在处理大量对象时。
 
@@ -100,7 +100,7 @@ Points points;
 
 在 HPC 中，大量的计算通常是针对某一特定属性的，因此 **SoA 布局往往能带来更好的性能**，尤其是在需要向量化优化时。
 
-#### 3.3 Optimizing Access Patterns
+### 3.3 Optimizing Access Patterns
 
 一旦数据在内存中完成布局，程序访问它的顺序就成为影响性能的下一个关键因素。以符合其存储顺序并最大化缓存利用率的方式访问数据，是挖掘数据局部性潜力的基础。
 
@@ -167,7 +167,7 @@ for (int i0 = 0; i0 < N; i0 += block_size) {
 
 通过分块，程序可以把一小块数据加载到缓存中并充分复用，然后再处理下一块，大大提高了缓存命中率。
 
-### 4. False Sharing in Parallel Computing
+## 4. False Sharing in Parallel Computing
 
 在多核并行编程（如 OpenMP, pthreads）中，一个非常隐蔽的性能杀手是**伪共享**。
 
@@ -194,7 +194,7 @@ struct PaddedResult {
 PaddedResult results[NUM_THREADS];
 ```
 
-### Summary
+## Summary
 
 - **内存对齐**是利用硬件特性的基础，确保单次操作的效率和 SIMD 的可行性。
 
@@ -202,6 +202,6 @@ PaddedResult results[NUM_THREADS];
 
 - 在并行环境中，必须警惕**伪共享**等陷阱，通过合理的内存布局避免多核间的性能干扰。
 
-### References
+## References
 
 - [HPC 中的 C/C++ - HPC 入门指南](https://xflops.sjtu.edu.cn/hpc-start-guide/coding/cpp-of-HPC/)

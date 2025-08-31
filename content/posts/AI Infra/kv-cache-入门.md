@@ -12,11 +12,11 @@ categories:
 ---
 推理效率对于 llm 是一个至关重要的问题。当模型生成文本时，尤其是以自回归方式逐词生成时，效率瓶颈会变得非常明显。KV Cache 就是为了解决这一问题而诞生的技术。
 
-### 1. What is KV Cache?
+## 1. What is KV Cache?
 
 KV Cache，全称 **Key-Value Cache**，是一种优化技术，用于加速 Transformer 架构在自回归生成过程中的推理速度。它的核心思想是**缓存**并**重用**在注意力机制中计算得到的 **Key (K)** 和 **Value (V)** 向量。
 
-### 2. Transformer Attention Mechanism Review
+## 2. Transformer Attention Mechanism Review
 
 要理解 KV Cache，首先需要对 Transformer 架构中的自注意力机制有一个基本认识。自注意力机制允许模型在处理序列中的某个词时，考虑序列中所有其他词的重要性。
 
@@ -41,7 +41,7 @@ KV Cache，全称 **Key-Value Cache**，是一种优化技术，用于加速 Tra
 
 （处于简洁性的考虑，忽略了 Causal Mask ，实际上 {{< imath >}}QK^{T}{{< /imath >}} 应该 Mask 成下三角矩阵来强制不能看到序列未来的信息）
 
-### 3. The Problem KV Cache Solves
+## 3. The Problem KV Cache Solves
 
 在大型语言模型中，当模型以自回归方式生成文本时（每次生成一个新 token，并将其添加到输入序列中，然后根据整个序列生成下一个 token），会遇到一个效率问题：
 
@@ -58,7 +58,7 @@ KV Cache，全称 **Key-Value Cache**，是一种优化技术，用于加速 Tra
 
 可以看到，在每一步生成新 token 时，都需要重新计算**之前已经处理过的所有 token** 的 {{< imath >}}K{{< /imath >}} 和 {{< imath >}}V{{< /imath >}} 向量。这种重复计算在序列较长时会消耗大量的计算资源和时间，效率低下。
 
-### 4. How KV Cache Works
+## 4. How KV Cache Works
 
 根据上面分析得到的问题，很容易想到 KV Cache 的核心思想：**将已经计算过的 Key 和 Value 向量缓存起来，在后续的生成步骤中直接重用，而不是重新计算。**
 
@@ -78,7 +78,7 @@ KV Cache，全称 **Key-Value Cache**，是一种优化技术，用于加速 Tra
 
 通过这种方式，每一步只需要计算**当前新生成 token** 的 {{< imath >}}K, V{{< /imath >}} 向量，而无需重新计算之前所有 token 的 {{< imath >}}K, V{{< /imath >}}。
 
-### 5. Why Not QKV Cache?
+## 5. Why Not QKV Cache?
 
 可能会好奇，既然 K 和 V 都需要缓存，为什么不也缓存 Q 呢？也就是说，为什么是 KV Cache 而不是 QKV Cache？
 
@@ -89,7 +89,7 @@ KV Cache，全称 **Key-Value Cache**，是一种优化技术，用于加速 Tra
 
 因此，不缓存 Q 是因为它在每一步都是一个新的计算结果；而缓存 K 和 V 则可以显著减少重复计算，从而提高效率。
 
-### 6. KV Cache in Attention Mechanism
+## 6. KV Cache in Attention Mechanism
 
 在数学上，当使用 KV Cache 进行自回归解码时，注意力公式中的 {{< imath >}}K{{< /imath >}} 和 {{< imath >}}V{{< /imath >}} 矩阵会随着生成过程的进行而不断增长。
 
@@ -111,18 +111,18 @@ KV Cache，全称 **Key-Value Cache**，是一种优化技术，用于加速 Tra
 
 每次生成新的 token {{< imath >}}t+1{{< /imath >}} 时，我们只需要计算新的 {{< imath >}}Q_{t+1}{{< /imath >}}，将新计算的 {{< imath >}}K_{t+1}{{< /imath >}} 和 {{< imath >}}V_{t+1}{{< /imath >}} 拼接到 {{< imath >}}K_{\text{cached}}{{< /imath >}} 和 {{< imath >}}V_{\text{cached}}{{< /imath >}} 末尾，形成 {{< imath >}}K'_{\text{cached}} = \text{concat}(K_{\text{cached}}, K_{t+1}){{< /imath >}} 和 {{< imath >}}V'_{\text{cached}} = \text{concat}(V_{\text{cached}}, V_{t+1}){{< /imath >}}
 
-### 7. Limitations and Considerations
+## 7. Limitations and Considerations
 
 尽管 KV Cache 带来了巨大的性能提升，但也存在一些问题：
 
 - **内存占用**：KV Cache 需要存储所有已处理 token 的 Key 和 Value 向量。对于大型模型和长上下文序列，这些缓存可能非常大，导致显存（GPU Memory）成为瓶颈。
 - **上下文长度限制**：由于内存限制，KV Cache 会限制模型能够处理的最大上下文长度。一旦达到内存上限，就需要采取策略来管理缓存，例如丢弃最早的 Key/Value 对（类似于循环缓冲区），但这可能会影响模型对长距离依赖的理解。
 
-### Summary
+## Summary
 
 KV Cache 是 Transformer 模型在自回归推理过程中非常重要的一种优化技术。通过缓存并重用已经计算过的 Key 和 Value 向量，它极大地减少了重复计算，从而显著提升了大型语言模型的生成速度。
 
-### References
+## References
 
 - [KV Cache 原理讲解 ](https://www.bilibili.com/video/BV17CPkeEEzk)（Bilibili）
 	- *注意：此视频内容存在部分错误*

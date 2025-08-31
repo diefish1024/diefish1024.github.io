@@ -12,11 +12,11 @@ categories:
 ---
 HPC 领域中，除了基于共享内存的 OpenMP, 还有一种更广泛应用于**分布式内存**系统的并行编程范式——**消息传递接口 (MPI)**。MPI 不依赖于共享内存，而是通过进程间的显式消息传递来实现数据交换和同步，从而能支持更大规模的集群计算，是构建大规模 HPC 集群不可或缺的工具。
 
-### 1. What is MPI?
+## 1. What is MPI?
 
 MPI (Message Passing Interface) 是一种用于**分布式内存**系统并行编程的标准化通信协议和库函数规范。它定义了一套可移植的函数接口，允许在并行计算环境中独立运行的进程之间进行**消息传递**，从而实现数据交换和协同工作。MPI 不指定如何启动进程，也不要求所有进程在同一台机器上，这使得它非常适合用于**集群或多节点环境**中的大规模并行计算。
 
-### 2. The MPI Programming Model
+## 2. The MPI Programming Model
 
 **分布式内存模型**
 
@@ -36,7 +36,7 @@ MPI (Message Passing Interface) 是一种用于**分布式内存**系统并行�
 
 - **通信协议**：MPI 提供了多种通信协议，如阻塞通信（Blocking）、非阻塞通信（Non-blocking）、同步通信（Synchronous）等。
 
-### 3. Basic Functions and Concepts
+## 3. Basic Functions and Concepts
 
 一个基础的 MPI 程序总是包含初始化、执行并行代码和结束这几个部分。
 
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
 - **`MPI_Comm_rank()`**：获取当前进程在指定通信子中的秩。
 - **`MPI_Finalize()`**：清理并结束 MPI 环境，必须是最后一个被调用的 MPI 函数。
 
-### 4. Point-to-Point Communication
+## 4. Point-to-Point Communication
 
 点对点通信是 MPI 中最基本的通信模式，用于在一个进程向另一个进程发送数据。核心操作是 `Send` 和 `Recv`。
 
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
     - `source`：源进程的秩。
     - `status`：返回消息的状态信息 (可填 `MPI_STATUS_IGNORE` 忽略)。
 
-### 5. Collective Communication
+## 5. Collective Communication
 
 集体通信是涉及一个通信子中所有进程的通信操作，常用于实现数据分发、结果收集和同步等复杂操作。
 
@@ -262,7 +262,7 @@ int main(int argc, char** argv) {
 }
 ```
 
-### 6. Communication Modes: Blocking vs. Non-blocking
+## 6. Communication Modes
 
 MPI 提供了不同的通信模式，以应对不同的性能需求。
 
@@ -282,7 +282,7 @@ MPI 提供了不同的通信模式，以应对不同的性能需求。
         - `MPI_Irecv`: 非阻塞接收。
         - `MPI_Wait`: 等待一个非阻塞操作完成。
 
-### 7. How to Compile and Run
+## 7. How to Compile and Run
 
 通常 HPC 集群会预装 MPI 环境。在 Ubuntu/Debian 系统上，可以这样安装：
 
@@ -302,11 +302,11 @@ mpicc my_program.c -o my_program
 # 启动 4 个进程来运行程序
 mpirun -np 4 ./my_program
 ```
-### Summary
+## Summary
 
 MPI 是分布式内存并行编程的基石，它通过一套标准化的函数接口，实现了进程间的显式消息传递。其核心思想是将一个大任务分解给多个独立进程，通过 **点对点通信** 和 **集体通信** 协同工作。虽然编程模型比 OpenMP 更复杂，但它摆脱了单机内存的限制，能够扩展到数千个计算节点，是解决超大规模计算问题的首选工具。
 
-### References
+## References
 
 - [MPI - HPC入门指南](https://xflops.sjtu.edu.cn/hpc-start-guide/parallel-computing/mpi/)
 - [Open MPI 入门笔记 | JinBridge](https://jinbridger.github.io/docs/hpc/openmpi-programming-101/)

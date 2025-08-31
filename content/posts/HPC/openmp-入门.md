@@ -12,11 +12,11 @@ categories:
 ---
 由于高性能计算场景下的并行编程任务的特性，OpenMP 可以通过简单受限的语法极大地化简了并行编程的复杂性，在普通的串行代码中添加一些指令就能够实现高效并行化。
 
-### 1. What is OpenMP?
+## 1. What is OpenMP?
 
 OpenMP (Open Multi-Processing) 是一种用于**共享内存**多处理器系统并行编程的 API。它通过在 C, C++, 或 Fortran 代码中添加 `#pragma` 的方式，让开发者可以轻松地将串行代码并行化，而无需手动管理复杂的线程创建、同步和销毁过程。
 
-### 2. The OpenMP Programming Model
+## 2. The OpenMP Programming Model
 
 **共享内存模型**：所有线程在同一个地址空间中共享数据。这意味着不同线程可以访问相同的内存位置，并且可以共享变量的值。
 
@@ -32,7 +32,7 @@ OpenMP (Open Multi-Processing) 是一种用于**共享内存**多处理器系统
 
 ![](/images/openmp-入门/pasted-image-20250827105206-png)
 
-### 3. Core Directives and Constructs
+## 3. Core Directives and Constructs
 
 OpenMP 的功能主要是通过编译指令（Directives）和相关的子句（Clauses）来实现的。
 
@@ -64,7 +64,7 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-### 4. Data Scoping
+## 4. Data Scoping
 
 数据作用域定义了并行区域中变量如何被线程共享或者私有，OpenMP 通过子句 clauses 来控制变量属性。
 
@@ -99,7 +99,7 @@ for (int i = 0; i < 10; i++) {
 }
 ```
 
-### 5. Loop Scheduling
+## 5. Loop Scheduling
 
 当使用 `omp for` 时，OpenMP 需要决定如何将循环的迭代次数分配给线程。这通过 `schedule` 子句控制，其选择会影响**负载均衡 (Load Balancing)** 和**开销 (Overhead)**。
 
@@ -121,7 +121,7 @@ for (int i = 0; i < n; i++) {
 
 ![](/images/openmp-入门/pasted-image-20250824155508-png)
 
-### 6. Synchronization Control
+## 6. Synchronization Control
 
 同步是用来协调线程间的执行顺序和保证对共享数据访问的正确性。
 
@@ -135,7 +135,7 @@ for (int i = 0; i < n; i++) {
 
 - **`single`**：指定一块代码只由线程组中第一个到达的线程执行。
 
-### 7. Environment Variables
+## 7. Environment Variables
 
 OpenMP 允许通过环境变量在运行时控制并行行为，而无需重新编译代码。
 
@@ -145,7 +145,7 @@ OpenMP 允许通过环境变量在运行时控制并行行为，而无需重新�
 
 - **`OMP_PROC_BIND`**：控制线程与处理器核心的亲和性（绑定关系），对性能优化非常重要。
 
-### 8. How to Compile and Run
+## 8. How to Compile and Run
 
 编译 C/C++ 代码时，需要添加一个特定的编译器标志来启用 OpenMP 支持。
 
@@ -154,7 +154,7 @@ OpenMP 允许通过环境变量在运行时控制并行行为，而无需重新�
 g++ -fopenmp my_program.cpp -o my_program
 ```
 
-### Reference
+## Reference
 
 - [HPC 入门指南](https://xflops.sjtu.edu.cn/hpc-start-guide/parallel-computing/openmp/)
 - [OpenMP 入门笔记 | JinBridge](https://jinbridge.dev/docs/hpc/openmp-programming-101/)
