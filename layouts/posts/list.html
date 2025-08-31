@@ -1,0 +1,49 @@
+{{- define "main" }}
+
+{{- if not .IsHome | and .Title }}
+<header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{- if .Description }}
+    <div class="post-description">
+        {{ .Description | markdownify }}
+    </div>
+    {{- end }}
+</header>
+{{- end }}
+
+{{- if .Content }}
+<div class="post-content">
+    {{- .Content -}}
+</div>
+{{- end }}
+{{- if .Sections }}
+
+    {{- /* 步骤 1: 获取所有子分区 (hpc, ai-infra 等)，并按标题进行字母/拼音升序排列 */}}
+    {{- $sortedSections := sort .Sections "Title" "asc" -}}
+
+    {{- /* 步骤 2: 遍历每一个排好序的子分区 */}}
+    {{- range $section := $sortedSections }}
+    <div class="post-group">
+        {{- /* 步骤 3: 显示分组标题。这个标题来自子目录中 _index.md 的 title */}}
+        <h2 class="post-group-title">{{ .Title }}</h2>
+
+        {{- /* 步骤 4: 在每个分组内部，获取该分区下的所有常规文章，并按日期降序排列 */}}
+        {{- $pagesInSection := sort .RegularPages "Date" "desc" -}}
+        
+        {{- /* 步骤 5: 遍历并显示组内的文章，并用一个带边距的 div 包裹起来 */}}
+        <div style="margin-top: 1rem;">
+        {{- range $pagesInSection }}
+            {{- partial "post_entry.html" . -}}
+        {{- end }}
+        </div>
+    </div>
+    {{- end }}
+
+{{- else }}
+    {{- $pages := .RegularPages.ByDate.Reverse }}
+    {{- range $pages }}
+        {{- partial "post_entry.html" . -}}
+    {{- end }}
+{{- end }}
+
+{{- end }}{{/* end define main */}}
