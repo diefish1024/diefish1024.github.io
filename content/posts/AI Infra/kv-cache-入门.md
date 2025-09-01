@@ -1,6 +1,5 @@
 ---
 tags:
-- learning
 - CS
 - AI-Infra
 discipline: computer-science

@@ -1,6 +1,5 @@
 ---
 tags:
-- learning
 - CS
 - HPC
 discipline: computer-science
