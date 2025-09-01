@@ -11,8 +11,46 @@
     </image>
     <generator>Hugo -- 0.149.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 30 Jul 2025 12:55:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 28 Aug 2025 10:10:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/gnn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matcha</title>
+      <link>https://diefish1024.github.io/posts/literature-notes/matcha/</link>
+      <pubDate>Thu, 28 Aug 2025 10:10:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/literature-notes/matcha/</guid>
+      <description>&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
+&lt;p&gt;现有 TTA 方法在处理图数据时，对&lt;strong&gt;节点属性偏移&lt;/strong&gt;有效，但是对&lt;strong&gt;图结构偏移&lt;/strong&gt;（同质性、节点度的变化）效果很差。原因是&lt;strong&gt;结构偏移会严重破坏节点表示的质量&lt;/strong&gt;，使不同类别的节点在特征空间中混在一起。为此论文提出了 Matcha 框架，通过在测试的时候&lt;strong&gt;自适应地调整 GNN 的“跳数聚合参数 (hop-aggregation parameters)”&lt;/strong&gt;，并且引入了新的&lt;strong&gt;预测感知的聚类损失函数&lt;/strong&gt;来表示恢复节点表示的质量，从而有效应对结构偏移，并能和现有 TTA 方法相结合，进一步提高性能。&lt;/p&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;GNN 的脆弱性&lt;/strong&gt;：GNNs 在各类图任务上的表现依赖于训练数据和测试数据分布相同的假设，然而在现实世界中，图的分布常常会发生变化（分布偏移），分为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;属性偏移 (Attribute Shift)&lt;/strong&gt;：节点的特征发生变化。例如不同社交平台，即使用户一样，其账号的内容也会因为平台差异而不同。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;结构偏移 (Structure Shift)&lt;/strong&gt;：节点的连接方式发生变化。比如工作平台用户倾向于连接同事，生活平台用户倾向于连接家人朋友。这种连接模式的变化就是结构偏移，具体表现为 &lt;strong&gt;同质性 (Homophily)&lt;/strong&gt; 和 &lt;strong&gt;节点度 (Degree)&lt;/strong&gt; 的变化。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;TTA 的局限性&lt;/strong&gt;：TTA 允许一个预训练好的模型在不访问原始训练数据的情况下，利用无标签的测试数据进行自适应调整 。目前 TTA 在计算机视觉领域处理图像损坏、风格变化等属性偏移问题上很成功 。然而为图像处理设计的 TTA 方法直接应用到图上时，其在处理图结构偏移时的性能提升非常有限，几乎失效。&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;400&#34; loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/matcha/pasted-image-20250828111414-png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;analysis&#34;&gt;Analysis&lt;/h2&gt;
+&lt;p&gt;两种偏移方式对 GNN 的影响存在本质不同。&lt;/p&gt;
+&lt;h3 id=&#34;perliminaries&#34;&gt;Perliminaries&lt;/h3&gt;
+&lt;p&gt;论文聚焦于 GTTA 任务。一个 GNN 模型可以被看成两个部分的组合，一个&lt;strong&gt;特征提取器 $ f_{S} $&lt;/strong&gt; ，一个 &lt;strong&gt;分类器 $ g_{S} $&lt;/strong&gt; ，通常是一个线性层。&lt;/p&gt;
+&lt;p&gt;两种偏移的正式定义：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;属性偏移&lt;/strong&gt;：源图和目标图中，节点的条件概率分布不同 $ \mathbb{P}^{S}_{x | y} \neq \mathbb{P}^{T}_{x | y} $ 。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;结构偏移&lt;/strong&gt;：图的邻接矩阵和标签的联合分布不同，即 $ \mathbb{P}^{S}_{A \times Y} \neq \mathbb{P}^{T}_{A \times Y} $ 。论文主要关注两种具体的结构偏移：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;度偏移&lt;/strong&gt;：源图和目标图的平均节点度数不同。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;同质性偏移&lt;/strong&gt;：源图和目标图的同质性水平不同。其中图的所有节点同质性的平均值 $ h(\mathcal{G}) = \dfrac{1}{N}\sum_{i}h_{i} $ ，单个节点 $ v_{i} $ 的同质性计算公式为： $$ 
+ h_{i} = \dfrac{\left| \{ v_{j} \in \mathbb{N}(v_{i}): y_{j} = y_{i} \} \right|}{d_{i}}  
+ $$ 其中 $ y $ 表示节点标签，$ d $ 表示节点度数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;impact-of-distribution-shifts&#34;&gt;Impact of Distribution Shifts&lt;/h3&gt;
+&lt;p&gt;通过数学建模来显示两种偏移的不同影响机制。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>EmT</title>
       <link>https://diefish1024.github.io/posts/literature-notes/emt/</link>
