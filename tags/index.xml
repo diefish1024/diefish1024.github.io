@@ -11,13 +11,27 @@
     </image>
     <generator>Hugo -- 0.149.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 30 Aug 2025 16:44:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 01 Sep 2025 11:22:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CS</title>
       <link>https://diefish1024.github.io/tags/cs/</link>
-      <pubDate>Sat, 30 Aug 2025 16:44:00 +0800</pubDate>
+      <pubDate>Mon, 01 Sep 2025 11:22:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/cs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Optimizer</title>
+      <link>https://diefish1024.github.io/tags/optimizer/</link>
+      <pubDate>Mon, 01 Sep 2025 11:22:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/optimizer/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tool</title>
+      <link>https://diefish1024.github.io/tags/tool/</link>
+      <pubDate>Mon, 01 Sep 2025 11:22:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/tool/</guid>
       <description></description>
     </item>
     <item>
@@ -30,7 +44,7 @@
     <item>
       <title>Learning</title>
       <link>https://diefish1024.github.io/tags/learning/</link>
-      <pubDate>Sat, 30 Aug 2025 16:44:00 +0800</pubDate>
+      <pubDate>Wed, 06 Aug 2025 23:35:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/learning/</guid>
       <description></description>
     </item>
