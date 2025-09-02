@@ -21,6 +21,7 @@ PUBLISH_SOURCE_MAP = {
     "02-CS": "posts",
     "06-Knowledge Base": "posts",
     "03-Research": "posts",
+    "04-Projects": "posts",
 }
 
 # 2. Automatically assign categories based on the source folder.
@@ -29,6 +30,7 @@ CATEGORY_MAP = {
     "02-CS": "course-note",
     "03-Research": "research",
     "06-Knowledge Base": "concept",
+    "04-Projects/Solutions": "solution"
 }
 
 # Directories or files to ignore during synchronization
