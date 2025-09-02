@@ -11,8 +11,27 @@
     </image>
     <generator>Hugo -- 0.149.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 30 Aug 2025 16:44:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 02 Sep 2025 16:13:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/hpc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SIMD 入门</title>
+      <link>https://diefish1024.github.io/posts/hpc/simd-%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Tue, 02 Sep 2025 16:13:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/hpc/simd-%E5%85%A5%E9%97%A8/</guid>
+      <description>&lt;h2 id=&#34;1-what-is-simd&#34;&gt;1. What is SIMD?&lt;/h2&gt;
+&lt;p&gt;SIMD，即 &lt;strong&gt;Single Instruction Multiple Data&lt;/strong&gt; ，是一种并行计算的模式。传统的单指令单数据模型，也就是一条指令 CPU 只能处理一份数据，这在科学计算和图像渲染等大量数据密集的任务中是非常低效的。&lt;/p&gt;
+&lt;p&gt;SIMD 的核心思想是&lt;strong&gt;用一条指令同时对多个数据进行操作&lt;/strong&gt;，现代的 CPU 为此设计了特殊的硬件单元，包括宽位（比如 128、256 或 512 位）的&lt;strong&gt;向量寄存器 (Vector Registers)&lt;/strong&gt; 和能够操作这些寄存器的&lt;strong&gt;向量指令 (Vector Instructions)&lt;/strong&gt;。一个向量操作可以同时完成多个标量操作，从而实现&lt;strong&gt;数据并行 (Data Parallelism)&lt;/strong&gt;，提高效率。假设一个 256 位的向量寄存器可以容纳 8 个 32 位浮点数，一条向量加法指令就可以一次性完成 8 个浮点数的加法，理论上将这部分计算的吞吐量提升至原来的 8 倍；并且相比于执行 8 条独立的标量加法指令，CPU 只需要获取并解码一条向量加法指令，这降低了指令流水线的压力。&lt;/p&gt;
+&lt;h2 id=&#34;2-how-simd-works&#34;&gt;2. How SIMD Works&lt;/h2&gt;
+&lt;p&gt;要理解 SIMD 的工作原理，需要了解两个核心概念：向量寄存器和向量指令。&lt;/p&gt;
+&lt;h3 id=&#34;21-vector-registers&#34;&gt;2.1. Vector Registers&lt;/h3&gt;
+&lt;p&gt;向量寄存器是 CPU 内部的特殊存储单元，其宽度远大于通用寄存器。不同的 &lt;strong&gt;Instruction Set Architecture (ISA, 指令集架构)&lt;/strong&gt; 提供了不同宽度和名称的向量寄存器。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;SSE (Streaming SIMD Extensions)&lt;/strong&gt;：提供了 128 位的 &lt;code&gt;XMM&lt;/code&gt; 寄存器。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;AVX (Advanced Vector Extensions)&lt;/strong&gt;：提供了 256 位的 &lt;code&gt;YMM&lt;/code&gt; 寄存器。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>HPC 中的 C 和 C&#43;&#43;</title>
       <link>https://diefish1024.github.io/posts/hpc/hpc-%E4%B8%AD%E7%9A%84-c-%E5%92%8C-c/</link>
