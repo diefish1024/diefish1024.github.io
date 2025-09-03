@@ -90,7 +90,25 @@ Creating Environment and Model:
 Basic Properties 在模型求解后，可以通过以下属性获取其基本信息：
 model.status：模型解的状态。此属性指示模型是否找到了最优解、无可行解等。例如，COPT.OPTIMAL 表示已找到最优解。 model.objval：目标函数值。此属性存储模型的最优目标函数值。 Adding Variables 可以通过 addVar() 和 addVars() 方法向模型中添加决策变量。
 Adding a Single Variable:
-...</p></div><footer class=entry-footer><span title='2025-09-01 11:22:00 +0800 +0800'>September 1, 2025</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to COPT 求解器学习笔记" href=https://diefish1024.github.io/posts/misc/copt-%E6%B1%82%E8%A7%A3%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/></a></article></div></div><div class=post-group><h2 class=post-group-title>NJU OS 2025</h2><div style=margin-top:1rem><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>22. 文件系统 API</h2></header><div class=entry-content><p>目录树 文件的抽象 操作系统将物理存储设备（如磁盘）的复杂性隐藏起来，提供了一个简单、统一的抽象——文件
+...</p></div><footer class=entry-footer><span title='2025-09-01 11:22:00 +0800 +0800'>September 1, 2025</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to COPT 求解器学习笔记" href=https://diefish1024.github.io/posts/misc/copt-%E6%B1%82%E8%A7%A3%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/></a></article></div></div><div class=post-group><h2 class=post-group-title>NJU OS 2025</h2><div style=margin-top:1rem><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>23. 文件系统的实现</h2></header><div class=entry-content><p>File Allocation Table 要设计并实现一个文件系统，我们首先需要关注并解决存储媒介带来的两大核心挑战：
+读写放大 (Read/Write Amplification)：现代存储设备（无论是机械硬盘还是固态硬盘）的物理特性决定了，它们最高效的读写方式是操作连续的大块数据区域，我们称之为一个块 (Block)。如果需要修改一个块中哪怕一个字节的数据，也必须将整个块读入内存、修改、再完整写回。这种“操作少量数据却导致整块数据被读写”的现象就是读写放大，它会严重影响性能。
+局部性 (Locality)：程序的内存访问行为通常具有局部性原理 (Principle of Locality)，即在一段时间内，访问的地址会集中在某个区域。文件系统可以通过合理的数据排布，让物理上相邻的数据块在逻辑上也相关联（例如，属于同一个文件），从而在读取一块数据时，可以利用预读机制将后续可能被访问的数据也加载到内存缓存中，提高效率。
+在软盘上实现文件系统 我们的需求是为一个存储容量很小的设备（如软盘）设计一个文件系统。在这种场景下，使用复杂的树形数据结构（如 B+ 树）会因为元数据本身占用过多空间而显得浪费。因此，一个简单的链式结构是更合适的选择。
+目录的实现
+在简单的文件系统中，目录本身可以被实现为一个普通的文件。这个文件的特殊之处在于，它的内容遵循一种固定格式，即一个目录项数组。
+1 2 3 4 5 6 // 一个简单的目录项 (dentry) 结构 struct dentry { char filename[256]; // 文件名 unsigned int start_block; // 文件数据起始块的编号 unsigned int size; // 文件大小 (以字节为单位) }; 当我们需要打开一个目录时，文件系统只需读取这个文件的内容，并将其解析为一个 struct dentry 数组即可。
+文件数据的存储
+用链表来组织一个文件的所有数据块，主要有两种实现思路。
+方法一：在每个数据块后放置指针
+这种方法非常直观。每个数据块的末尾都留出一小块空间，用于存放下一个数据块的地址或编号。
+优点：实现简单，逻辑清晰。
+缺点：
+极差的随机访问性能：要访问文件的第 N 个数据块，必须从第一个块开始，依次读入前 N-1 个块来找到第 N 块的指针。这需要 N-1 次磁盘 I/O，对于大文件而言是毁灭性的。
+空间浪费：每个数据块都不能被 100% 用来存储文件内容，必须牺牲一部分空间给指针。
+方法二：将指针集中存放在文件系统的某个区域
+为了解决上述问题，我们可以将所有数据块的“链表指针”抽离出来，集中存放在一个被称为文件分配表 (File Allocation Table, FAT) 的核心数据结构中。
+FAT 本质上是一个大数组。数组的下标与磁盘上的数据块编号一一对应。数组中存储的值则是该文件链表中的下一个数据块的编号。
+...</p></div><footer class=entry-footer><span title='2025-08-31 20:34:00 +0800 +0800'>August 31, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;diefish</footer><a class=entry-link aria-label="post link to 23. 文件系统的实现" href=https://diefish1024.github.io/posts/nju-os-2025/23-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>22. 文件系统 API</h2></header><div class=entry-content><p>目录树 文件的抽象 操作系统将物理存储设备（如磁盘）的复杂性隐藏起来，提供了一个简单、统一的抽象——文件
 文件可以看作是一个虚拟的磁盘，即一个命名的、一维的字节序列，支持 read, write, lseek 等操作
 这种抽象使得上层应用无需关心数据在物理磁盘上的具体位置和存储方式
 目录的引入 当文件数量增多时，需要一种方式来组织和管理它们

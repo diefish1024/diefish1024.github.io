@@ -11,8 +11,74 @@
     </image>
     <generator>Hugo -- 0.149.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 06 Aug 2025 23:35:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 31 Aug 2025 20:34:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/nju-os/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>23. 文件系统的实现</title>
+      <link>https://diefish1024.github.io/posts/nju-os-2025/23-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Sun, 31 Aug 2025 20:34:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/nju-os-2025/23-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+      <description>&lt;h2 id=&#34;file-allocation-table&#34;&gt;File Allocation Table&lt;/h2&gt;
+&lt;p&gt;要设计并实现一个文件系统，我们首先需要关注并解决存储媒介带来的两大核心挑战：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;读写放大 (Read/Write Amplification)&lt;/strong&gt;：现代存储设备（无论是机械硬盘还是固态硬盘）的物理特性决定了，它们最高效的读写方式是操作连续的大块数据区域，我们称之为一个&lt;strong&gt;块 (Block)&lt;/strong&gt;。如果需要修改一个块中哪怕一个字节的数据，也必须将整个块读入内存、修改、再完整写回。这种“操作少量数据却导致整块数据被读写”的现象就是读写放大，它会严重影响性能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;局部性 (Locality)&lt;/strong&gt;：程序的内存访问行为通常具有&lt;strong&gt;局部性原理 (Principle of Locality)&lt;/strong&gt;，即在一段时间内，访问的地址会集中在某个区域。文件系统可以通过合理的数据排布，让物理上相邻的数据块在逻辑上也相关联（例如，属于同一个文件），从而在读取一块数据时，可以利用预读机制将后续可能被访问的数据也加载到内存缓存中，提高效率。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;在软盘上实现文件系统&#34;&gt;在软盘上实现文件系统&lt;/h3&gt;
+&lt;p&gt;我们的需求是为一个存储容量很小的设备（如软盘）设计一个文件系统。在这种场景下，使用复杂的树形数据结构（如 B+ 树）会因为元数据本身占用过多空间而显得浪费。因此，一个简单的链式结构是更合适的选择。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;目录的实现&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在简单的文件系统中，目录本身可以被实现为一个普通的文件。这个文件的特殊之处在于，它的内容遵循一种固定格式，即一个目录项数组。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 一个简单的目录项 (dentry) 结构
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dentry&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;256&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 文件名
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;unsigned&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;start_block&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 文件数据起始块的编号
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;unsigned&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;         &lt;span class=&#34;c1&#34;&gt;// 文件大小 (以字节为单位)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;当我们需要打开一个目录时，文件系统只需读取这个文件的内容，并将其解析为一个 &lt;code&gt;struct dentry&lt;/code&gt; 数组即可。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;文件数据的存储&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;用链表来组织一个文件的所有数据块，主要有两种实现思路。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;方法一：在每个数据块后放置指针&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这种方法非常直观。每个数据块的末尾都留出一小块空间，用于存放下一个数据块的地址或编号。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;优点&lt;/strong&gt;：实现简单，逻辑清晰。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;缺点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;极差的随机访问性能&lt;/strong&gt;：要访问文件的第 N 个数据块，必须从第一个块开始，依次读入前 N-1 个块来找到第 N 块的指针。这需要 N-1 次磁盘 I/O，对于大文件而言是毁灭性的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;空间浪费&lt;/strong&gt;：每个数据块都不能被 100% 用来存储文件内容，必须牺牲一部分空间给指针。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;方法二：将指针集中存放在文件系统的某个区域&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;为了解决上述问题，我们可以将所有数据块的“链表指针”抽离出来，集中存放在一个被称为&lt;strong&gt;文件分配表 (File Allocation Table, FAT)&lt;/strong&gt; 的核心数据结构中。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;FAT&lt;/strong&gt; 本质上是一个大数组。数组的&lt;strong&gt;下标&lt;/strong&gt;与磁盘上的数据块编号一一对应。数组中存储的&lt;strong&gt;值&lt;/strong&gt;则是该文件链表中的&lt;strong&gt;下一个数据块的编号&lt;/strong&gt;。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>22. 文件系统 API</title>
       <link>https://diefish1024.github.io/posts/nju-os-2025/22-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-api/</link>
