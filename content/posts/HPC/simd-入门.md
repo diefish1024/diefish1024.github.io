@@ -2,6 +2,7 @@
 tags:
 - CS
 - HPC
+- CXX
 discipline: computer-science
 publish: true
 date: '2025-09-02T16:13:00+08:00'
