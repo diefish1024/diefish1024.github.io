@@ -19,7 +19,7 @@
       <pubDate>Fri, 12 Sep 2025 10:36:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/posts/hpc/%E5%85%B3%E4%BA%8E%E5%86%85%E5%AD%98/</guid>
       <description>&lt;p&gt;如何更好更快地访问内存是 HPC 中最大的瓶颈之一，仅仅了解 SIMD 或并行编程接口是不足够的，本文将梳理计算机的内存层次结构、缓存友好编程、内存墙现象、NUMA 架构以及预取技术。&lt;/p&gt;
-&lt;h2 id=&#34;1-understanding-memory-hierarchy&#34;&gt;1. Understanding Memory Hierarchy&lt;/h2&gt;
+&lt;h2 id=&#34;understanding-memory-hierarchy&#34;&gt;Understanding Memory Hierarchy&lt;/h2&gt;
 &lt;p&gt;为了充分利用现代 CPU 的性能，我们必须理解数据是如何在不同层级的内存组件之间流动的。&lt;/p&gt;
 &lt;h3 id=&#34;registers-caches-and-main-memory&#34;&gt;Registers, Caches, and Main Memory&lt;/h3&gt;
 &lt;ul&gt;
