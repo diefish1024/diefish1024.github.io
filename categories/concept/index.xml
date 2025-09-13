@@ -9,10 +9,37 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.149.0</generator>
+    <generator>Hugo -- 0.150.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 02 Sep 2025 16:13:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 12 Sep 2025 10:36:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/concept/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于内存</title>
+      <link>https://diefish1024.github.io/posts/hpc/%E5%85%B3%E4%BA%8E%E5%86%85%E5%AD%98/</link>
+      <pubDate>Fri, 12 Sep 2025 10:36:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/hpc/%E5%85%B3%E4%BA%8E%E5%86%85%E5%AD%98/</guid>
+      <description>&lt;p&gt;如何更好更快地访问内存是 HPC 中最大的瓶颈之一，仅仅了解 SIMD 或并行编程接口是不足够的，本文将梳理计算机的内存层次结构、缓存友好编程、内存墙现象、NUMA 架构以及预取技术。&lt;/p&gt;
+&lt;h2 id=&#34;1-understanding-memory-hierarchy&#34;&gt;1. Understanding Memory Hierarchy&lt;/h2&gt;
+&lt;p&gt;为了充分利用现代 CPU 的性能，我们必须理解数据是如何在不同层级的内存组件之间流动的。&lt;/p&gt;
+&lt;h3 id=&#34;registers-caches-and-main-memory&#34;&gt;Registers, Caches, and Main Memory&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;寄存器 (Registers)&lt;/strong&gt;： CPU 内置的、容量最小但速度最快的数据存储单元，用于存储正在被 CPU 活跃操作的数据。CPU 直接在寄存器上执行大部分计算。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;缓存 (Cache)&lt;/strong&gt;： 位于 CPU 和主内存之间的小容量、高速存储区域。它们的目的是通过存储最可能被 CPU 再次访问的数据来减少对主内存的访问延迟。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;L1 缓存 (Level 1 Cache)&lt;/strong&gt;：最小、最快，通常分为数据缓存 (L1d) 和指令缓存 (L1i)，每个 CPU 核心独有。其访问速度与 CPU 核心时钟周期相近。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;L2 缓存 (Level 2 Cache)&lt;/strong&gt;：比 L1 大且慢，每个 CPU 核心独有或由几个核心共享。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;L3 缓存 (Level 3 Cache)&lt;/strong&gt;：最大、最慢的缓存，通常由同一 CPU 插槽上的所有核心共享。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;主内存 (Main Memory/RAM)&lt;/strong&gt;： 容量远大于缓存，但访问速度慢得多。当数据不在任何缓存中时，CPU 必须从主内存中获取。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;TLB (Translation Lookaside Buffer)&lt;/strong&gt;： TLB 是一个专用的高性能缓存，用于存储虚拟地址到物理地址的转换映射。当 CPU 访问一个虚拟地址时，它首先检查 TLB。如果找到对应的物理地址（TLB 命中），则可以快速进行内存访问；如果未找到（TLB 未命中），则需要查询页表，这将导致显著的延迟。理解 TLB 对于优化内存页访问模式，尤其是在处理大型数据集时至关重要。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>SIMD 入门</title>
       <link>https://diefish1024.github.io/posts/hpc/simd-%E5%85%A5%E9%97%A8/</link>
