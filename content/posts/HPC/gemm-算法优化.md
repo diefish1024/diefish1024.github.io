@@ -286,7 +286,7 @@ inline void AddDot4x4_SSE(int K, const float* Aij, const float* Bkj, float* Cij,
 尽管 SIMD 和寄存器分块（微内核）带来了巨大的性能提升，但当矩阵尺寸超出 CPU 缓存容量时，性能仍会因高昂的内存访问延迟而下降。**缓存分块 (Cache Blocking)** 旨在将矩阵操作分解成一系列小块操作，使这些块的数据能够长时间驻留在不同级别的缓存中（例如 L1、L2、L3），从而实现数据重用最大化。
 
 ```cpp
-// 简化的缓存分块 + 4x4 微内核
+// 缓存分块 + 4x4 微内核
 void gemm_blocked_4x4(int M, int N, int K, const float* A, const float* B, float* C) {
     const int MR = 4, NR = 4;
     const int KC = 128; // 需按架构调优
@@ -396,7 +396,7 @@ inline void AddDot4x4_packed(int Kc, const float* Ap, const float* Bp, float* Ci
 - **FLOPs**：不变。
 - **DRAM 访存**：与“理想分块”一致（{{< imath >}}M K + K N + 2 M N{{< /imath >}}），但常数项更小（线性、对齐、可预取），SIMD 装载更高效。
 
-## OpenMP 并行化
+## OpenMP Parallelization
 
 在多核 CPU 上，使用 OpenMP 对外层块循环并行是提升性能的有效手段。推荐在线程之间划分 {{< imath >}}(i, j){{< /imath >}} 的宏块，避免对同一 {{< imath >}}C{{< /imath >}} 子块的写冲突。
 
