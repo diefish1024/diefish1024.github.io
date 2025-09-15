@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on diefish&#39;s blog</title>
-    <link>https://diefish1024.github.io/posts/</link>
-    <description>Recent content in Posts on diefish&#39;s blog</description>
+    <title>MATH2701 on diefish&#39;s blog</title>
+    <link>https://diefish1024.github.io/tags/math2701/</link>
+    <description>Recent content in MATH2701 on diefish&#39;s blog</description>
     <image>
       <title>diefish&#39;s blog</title>
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
@@ -12,7 +12,7 @@
     <generator>Hugo -- 0.150.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 15 Sep 2025 10:47:00 +0800</lastBuildDate>
-    <atom:link href="https://diefish1024.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://diefish1024.github.io/tags/math2701/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lect1-课程简介</title>
       <link>https://diefish1024.github.io/posts/math2701-%E6%A6%82%E7%8E%87%E8%AE%BA/lect1-%E8%AF%BE%E7%A8%8B%E7%AE%80%E4%BB%8B/</link>

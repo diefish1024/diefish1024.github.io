@@ -11,8 +11,29 @@
     </image>
     <generator>Hugo -- 0.150.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 31 Aug 2025 20:34:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 15 Sep 2025 10:47:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lect1-课程简介</title>
+      <link>https://diefish1024.github.io/posts/math2701-%E6%A6%82%E7%8E%87%E8%AE%BA/lect1-%E8%AF%BE%E7%A8%8B%E7%AE%80%E4%BB%8B/</link>
+      <pubDate>Mon, 15 Sep 2025 10:47:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/math2701-%E6%A6%82%E7%8E%87%E8%AE%BA/lect1-%E8%AF%BE%E7%A8%8B%E7%AE%80%E4%BB%8B/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://chihaozhang.com/teaching/Prob2025/lectures/lec1/lec1.html&#34;&gt;课程讲义&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在这门课里，我们会专注于所谓的 &lt;a href=&#34;https://en.wikipedia.org/wiki/Probability_axioms&#34;&gt;科尔莫哥洛夫（Kolmogorov）的公理体系&lt;/a&gt;，它使得我们能够使用数学分析的工具来研究概率。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;stpetersburg-paradox&#34;&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/St._Petersburg_paradox&#34;&gt;St. Petersburg Paradox&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;圣彼得堡悖论。假设一个基于抛硬币赌博的游戏，庄家会一直扔硬币直到结果是正面，如果扔了 $ k $ 次，那么就会给玩家 $ 2^{k} $ 元的奖金。现在的问题是你愿意花多少钱来购买一次玩这个游戏的机会。&lt;/p&gt;
+&lt;p&gt;一个很自然的想法是计算游戏的期望，那么我们很容易发现期望收益是
+$$ 
+
+\sum_{k \geq  1} 2^{k}\cdot 2^{-k} = 1 + 1 + \dots = +\infty
+
+ $$
+这说明平均每一轮我们的收益是无穷大，然而在现实生活中你真的愿意花大价钱去玩这个游戏吗？或者可以写一个简单的程序模拟一下就会发现，在比如门票定为 $ 100 $ 元，玩几百局，还是会轻易地输掉几万块钱。我们生活中一个常见的直觉是如果重复一个随机过程足够多次，平均收益就会逐渐趋近于期望收益，这在概率论中叫做&lt;strong&gt;大数定律（&lt;a href=&#34;https://en.wikipedia.org/wiki/Law_of_large_numbers&#34;&gt;Law of large numbers&lt;/a&gt;）&lt;/strong&gt;，但是在现实生活中我们并没有能力重复足够多游戏轮数去达到这个期望值。那么现在的问题就是如果定价用 $ a\cdot n $ 元来购买 $ n $ 次游戏机会，$ a $ 定为多少是合理的？&lt;/p&gt;
+&lt;p&gt;用这门课中后续会学习到的数学工具，我们可以得到答案为 $ \log n $ （这个结果也符合我们实际的直觉）。&lt;/p&gt;
+&lt;h2 id=&#34;随机游走&#34;&gt;随机游走&lt;/h2&gt;
+&lt;p&gt;对二维随机游走问题的一个简化的建模是在 $ \mathbb{Z}^{2} $ 的网格上随机游走，从原点 $ (0,0) $ 出发，每次以 $ \dfrac{1}{4} $ 的概率往上下左右四个方向移动。我们现在询问，这个随机游走的路径是否会无数次回到原点？用 $ T $ 来表示第一次回到原点的时间，那么可以证明无数次回到原点等价于 $ \mathbb{P}[T &lt; \infty] = 1 $ ，也就是 $ T $ 以 $ 1 $ 的概率是有限的，当然目前只能从直觉上去理解，这个写法需要在后续的课程中去严格定义。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>23. 文件系统的实现</title>
       <link>https://diefish1024.github.io/posts/nju-os-2025/23-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
