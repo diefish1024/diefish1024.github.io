@@ -2,11 +2,11 @@
 tags:
 - learning
 - math
-- MATH2701
+- probability-theory
 discipline: mathematics
 publish: true
 date: '2025-09-15T10:47:00+08:00'
-title: Lect1-课程简介
+title: Lect1-Introduction
 categories:
 - course-note
 ---
@@ -64,10 +64,10 @@ R(T):=\sum_{t=1}^{T} r_{a_{t}}^{(t)}
 
 算法会每一轮维护一个分布 {{< imath >}}D_{t}{{< /imath >}}，玩家的决策来自于从这个分布中的采样，并且算法会根据每个回合的反馈来更新这个分布。
 
-- 初始情况 {{< imath >}}D_{1}=\left( \dfrac{1}{2}, \dfrac{1}{2} \right){{< /imath >}}.
+- 初始情况 {{< imath >}}D_{0}=\left( \dfrac{1}{2}, \dfrac{1}{2} \right){{< /imath >}}.
 - 对于 {{< imath >}}t=1,2,\dots,T{{< /imath >}} 
 	1. 选择股票 {{< imath >}}a_{t}\sim D_{t}{{< /imath >}}，并观察得到的 {{< imath >}}r_{1}^{(t)},r_{2}^{(t)}{{< /imath >}}.
-	2. 更新 {{< imath >}}D_{t+1}{{< /imath >}}，使得 {{< imath >}}D_{t+1}(i) = \dfrac{D_{t}(i)\exp(-\eta \cdot(1 - r_{i}^{(t)}))}{\sum_{k=1,2}D_{t}(k)\exp(-\eta \cdot(1 - r_{k}^{(t)}))}{{< /imath >}}.
+	2. 更新 {{< imath >}}D_{t+1}{{< /imath >}}，使得 {{< imath >}}D_{t+1}(i) = \dfrac{D_{t}(i)\exp(-\eta \cdot(1 - r_{i}^{(t)}))}{\sum_{k=1,2}D_{t}(k)\exp(-\eta \cdot(1 - r_{k}^{(t)}))}{{< /imath >}}. 
 其中的参数 {{< imath >}}\eta=\sqrt{ \dfrac{1}{T} }{{< /imath >}} 。
 
 算法本身思想很简单：这一轮哪个股票表现好，就在下一轮增加它被选取的概率。然后为什么要像算法这样操作，能不能用别的方式计算，背后的道理就要复杂得多。
