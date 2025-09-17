@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Math on diefish&#39;s blog</title>
-    <link>https://diefish1024.github.io/tags/math/</link>
-    <description>Recent content in Math on diefish&#39;s blog</description>
+    <title>Probability-Theory on diefish&#39;s blog</title>
+    <link>https://diefish1024.github.io/tags/probability-theory/</link>
+    <description>Recent content in Probability-Theory on diefish&#39;s blog</description>
     <image>
       <title>diefish&#39;s blog</title>
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
@@ -12,7 +12,7 @@
     <generator>Hugo -- 0.150.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 17 Sep 2025 09:53:00 +0800</lastBuildDate>
-    <atom:link href="https://diefish1024.github.io/tags/math/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://diefish1024.github.io/tags/probability-theory/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lect2-Probability Space</title>
       <link>https://diefish1024.github.io/posts/math2701-probability-theory/lect2-probability-space/</link>

@@ -11,13 +11,58 @@
     </image>
     <generator>Hugo -- 0.150.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 15 Sep 2025 10:47:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 17 Sep 2025 09:53:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Lect1-课程简介</title>
-      <link>https://diefish1024.github.io/posts/math2701-%E6%A6%82%E7%8E%87%E8%AE%BA/lect1-%E8%AF%BE%E7%A8%8B%E7%AE%80%E4%BB%8B/</link>
+      <title>Lect2-Probability Space</title>
+      <link>https://diefish1024.github.io/posts/math2701-probability-theory/lect2-probability-space/</link>
+      <pubDate>Wed, 17 Sep 2025 09:53:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/math2701-probability-theory/lect2-probability-space/</guid>
+      <description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;例题：在圆上“随机”选一段弧，问弧长大于圆周的 $ \frac{1}{3} $ 的概率？（&lt;a href=&#34;https://en.wikipedia.org/wiki/Bertrand_paradox_(probability)&#34;&gt;Bertrand paradox&lt;/a&gt;）&lt;/p&gt;
+&lt;p&gt;至少三种自然的“均匀化”模型会给出不同答案：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对弧长参数均匀（在 $ [0, 2\pi) $ 上均匀取长度，再随机起点）。&lt;/li&gt;
+&lt;li&gt;对端点在圆上独立均匀（等价于随机两点确定弧，需指定取较短或较长弧）。&lt;/li&gt;
+&lt;li&gt;对中心角或几何构造的中间量均匀（如均匀选角度后裁剪）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;核心问题：如何定义“随机”？不同“随机化”方案导致不同答案。&lt;/p&gt;
+&lt;p&gt;讨论概率问题必须先明确概率空间（样本空间、事件族与概率测度），否则“概率”无从谈起。&lt;/p&gt;
+&lt;h2 id=&#34;probability-space&#34;&gt;Probability Space&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;一个概率空间由三元组 $ (\Omega, \mathcal{F}, \mathbb{P}) $ 构成：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$ \Omega $：样本空间（一次随机试验所有可能结果）。&lt;/li&gt;
+&lt;li&gt;$ \mathcal{F} \subseteq 2^{\Omega} $：事件族（允许讨论与运算的集合）。&lt;/li&gt;
+&lt;li&gt;$ \mathbb{P} : \mathcal{F} \to [0,1] $：概率测度（赋予事件概率）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;记号说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$ \Omega $：样本空间。&lt;/li&gt;
+&lt;li&gt;$ 2^{\Omega} $：$ \Omega $ 的幂集（所有子集的集合）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为什么 $ \mathbb{P} $ 要定义在 $ \mathcal{F} $ 上而非直接在 $ \Omega $ 上？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;离散可数时，取 $ \mathcal{F} = 2^{\Omega} $ 可行，且对单点赋值即可确定所有事件的概率。&lt;/li&gt;
+&lt;li&gt;连续时不同：单点的概率通常为 $ 0 $，但不可数并可有正概率；且 $ 2^{\Omega} $ 中存在不可测集合，无法一致赋值（见下文 Vitali set 与 Axiom of Choice）。因此需选择一个&lt;strong&gt;足够大又可控&lt;/strong&gt;的 $ \sigma $- 代数作为事件族。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;sigma-algebra&#34;&gt;Sigma-Algebra&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;要求 $ \mathcal{F} $ 构成一个 $ \sigma $- 代数（域）：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Lect1-Introduction</title>
+      <link>https://diefish1024.github.io/posts/math2701-probability-theory/lect1-introduction/</link>
       <pubDate>Mon, 15 Sep 2025 10:47:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/posts/math2701-%E6%A6%82%E7%8E%87%E8%AE%BA/lect1-%E8%AF%BE%E7%A8%8B%E7%AE%80%E4%BB%8B/</guid>
+      <guid>https://diefish1024.github.io/posts/math2701-probability-theory/lect1-introduction/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://chihaozhang.com/teaching/Prob2025/lectures/lec1/lec1.html&#34;&gt;课程讲义&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在这门课里，我们会专注于所谓的 &lt;a href=&#34;https://en.wikipedia.org/wiki/Probability_axioms&#34;&gt;科尔莫哥洛夫（Kolmogorov）的公理体系&lt;/a&gt;，它使得我们能够使用数学分析的工具来研究概率。&lt;/p&gt;&lt;/blockquote&gt;
