@@ -279,6 +279,8 @@ performance of -l: 44
 total score: 100.00 /100
 ```
 
+250918 upd: 稍微优化一下 middle 循环中的除法和取模操作，可以再提高一些性能。
+
 ## Details
 
 最终的满分代码完全围绕 `bithack_memcpy` 函数构建。其工作原理的关键在于**分块处理**和对底层硬件原理的理解。
