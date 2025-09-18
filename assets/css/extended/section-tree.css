@@ -1,0 +1,82 @@
+/* 基础交互与布局 */
+.section-tree { margin: .6rem 0; }
+.section-tree > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  padding: .15rem 0;
+  display: flex;
+  align-items: baseline;
+  gap: .5rem;
+}
+.section-tree > summary::-webkit-details-marker { display: none; }
+.section-tree > summary::marker { content: ""; }
+
+/* 标题：继承 PaperMod 字族并加粗 */
+.section-tree .folder-title {
+  font-family: var(--font);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: baseline;
+  gap: .35rem;
+}
+.section-tree .folder-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 层级字号：逐级略减（接近 PaperMod 的 h2/h3/h4/h5 视觉） */
+.section-tree.level-1 .folder-title { font-size: 2rem; }   /* 顶层 ≈ h2 */
+.section-tree.level-2 .folder-title { font-size: 1.6rem; } /* 次级 ≈ h3 */
+.section-tree.level-3 .folder-title { font-size: 1.35rem; }/* 再次级 ≈ h4 */
+.section-tree.level-4 .folder-title,
+.section-tree.level-5 .folder-title { font-size: 1.2rem; } /* 更深层保持适度 */
+
+/* 计数：与标题一起放大，稍小一点以弱化 */
+.section-tree .folder-title .count {
+  font-size: .9em;
+  color: var(--secondary);
+}
+
+/* 缩进 */
+.section-tree .section-children { margin-left: 1rem; }
+.section-tree .post-list { margin-left: 1rem; }
+
+/* 几何切换按钮（无文字），随字体等比缩放 */
+.node-toggle {
+  width: 1.15em;
+  height: 1.15em;
+  border: 1px solid var(--border);
+  background: var(--theme);
+  color: var(--primary);
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+.node-toggle::before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 0 6px 8px;                      /* 小三角 */
+  border-color: transparent transparent transparent var(--primary);
+  transition: transform .15s ease;
+}
+details.section-tree[open] > summary .node-toggle::before {
+  transform: rotate(90deg);
+}
+
+/* 返回父级入口 */
+.back-nav .back-link {
+  text-decoration: none;
+  color: var(--secondary);
+  font-size: .95rem;
+}
+.back-nav .back-link:hover { color: var(--primary); }

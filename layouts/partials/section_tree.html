@@ -1,0 +1,61 @@
+{{/* layouts/partials/section_tree.html */}}
+{{- $ctx := .ctx | default . -}}
+{{- $level := .level | default 1 -}}
+
+{{- $site := $ctx.Site -}}
+{{- $paramsTree := index $site.Params "tree" | default dict -}}
+{{- $expandDepth := index $paramsTree "expandDepth" | default 0 -}} {{/* 默认全部收起 */}}
+{{- $showCounts := index $paramsTree "showCounts" | default true -}}
+
+{{/* 子目录排序：先 weight，再 Title */}}
+{{- $children := $ctx.Sections -}}
+{{- $weighted := slice -}}
+{{- $unweighted := slice -}}
+{{- range $children -}}
+  {{- if isset .Params "weight" -}}
+    {{- $weighted = $weighted | append . -}}
+  {{- else -}}
+    {{- $unweighted = $unweighted | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- $sortedChildren := slice -}}
+{{- if gt (len $weighted) 0 -}}
+  {{- $sortedChildren = $sortedChildren | append (sort $weighted "Weight" "asc") -}}
+{{- end -}}
+{{- if gt (len $unweighted) 0 -}}
+  {{- $sortedChildren = $sortedChildren | append (sort $unweighted "Title" "asc") -}}
+{{- end -}}
+
+<details class="section-tree level-{{ $level }}" {{ if and (gt $expandDepth 0) (le $level $expandDepth) }}open{{ end }}>
+  <summary class="tree-summary">
+    <span class="folder-title">
+      <a href="{{ $ctx.RelPermalink }}">{{ $ctx.Title }}</a>
+      {{- if $showCounts -}}
+        {{- $postCount := len ($ctx.RegularPages) -}}
+        {{- if gt $postCount 0 -}}
+          <span class="count">({{ $postCount }})</span>
+        {{- end -}}
+      {{- end -}}
+    </span>
+    <button class="node-toggle" type="button" aria-label="Toggle"></button>
+  </summary>
+
+  {{/* 子目录（递归） */}}
+  {{- if gt (len $sortedChildren) 0 -}}
+    <div class="section-children">
+      {{- range $sortedChildren -}}
+        {{- partial "section_tree.html" (dict "ctx" . "level" (add $level 1)) -}}
+      {{- end -}}
+    </div>
+  {{- end -}}
+
+  {{/* 本目录内的文章 */}}
+  {{- $pages := sort $ctx.RegularPages "Date" "desc" -}}
+  {{- if gt (len $pages) 0 -}}
+    <div class="post-list">
+      {{- range $pages -}}
+        {{- partial "post_entry.html" . -}}
+      {{- end -}}
+    </div>
+  {{- end -}}
+</details>

@@ -71,6 +71,11 @@ params:
         url: "tags"
       - name: "Search"
         url: "search"
+
+  tree:
+    expandDepth: 0
+    showCounts: true
+    rootLabel: "Root posts"
         
   cover:
     hidden: true

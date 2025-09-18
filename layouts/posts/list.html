@@ -1,49 +1,104 @@
 {{- define "main" }}
 
+{{- $parent := .Parent -}}
+{{- if and $parent $parent.IsSection }}
+<nav class="back-nav" style="margin-bottom:.5rem;">
+  <a class="back-link" href="{{ $parent.RelPermalink }}">◀ {{ $parent.Title }}</a>
+</nav>
+{{- end }}
+
 {{- if not .IsHome | and .Title }}
 <header class="page-header">
-    <h1>{{ .Title }}</h1>
-    {{- if .Description }}
-    <div class="post-description">
-        {{ .Description | markdownify }}
-    </div>
-    {{- end }}
+  <h1>{{ .Title }}</h1>
+  {{- if .Description }}
+  <div class="post-description">
+    {{ .Description | markdownify }}
+  </div>
+  {{- end }}
 </header>
 {{- end }}
 
 {{- if .Content }}
 <div class="post-content">
-    {{- .Content -}}
+  {{- .Content -}}
 </div>
 {{- end }}
-{{- if .Sections }}
 
-    {{- /* 步骤 1: 获取所有子分区 (hpc, ai-infra 等)，并按标题进行字母/拼音升序排列 */}}
-    {{- $sortedSections := sort .Sections "Title" "asc" -}}
+{{- $hasSections := gt (len .Sections) 0 -}}
+{{- $hasRootPages := gt (len .RegularPages) 0 -}}
 
-    {{- /* 步骤 2: 遍历每一个排好序的子分区 */}}
-    {{- range $section := $sortedSections }}
-    <div class="post-group">
-        {{- /* 步骤 3: 显示分组标题。这个标题来自子目录中 _index.md 的 title */}}
-        <h2 class="post-group-title">{{ .Title }}</h2>
+{{- $paramsTree := index .Site.Params "tree" | default dict -}}
+{{- $rootLabel := index $paramsTree "rootLabel" | default "Posts" -}} {{/* 简洁英文标签 */}}
 
-        {{- /* 步骤 4: 在每个分组内部，获取该分区下的所有常规文章，并按日期降序排列 */}}
-        {{- $pagesInSection := sort .RegularPages "Date" "desc" -}}
-        
-        {{- /* 步骤 5: 遍历并显示组内的文章，并用一个带边距的 div 包裹起来 */}}
-        <div style="margin-top: 1rem;">
-        {{- range $pagesInSection }}
-            {{- partial "post_entry.html" . -}}
-        {{- end }}
-        </div>
-    </div>
+{{- if or $hasSections $hasRootPages }}
+
+  {{/* 1) 子目录：先 weight，再 Title（默认收起） */}}
+  {{- if $hasSections }}
+    {{- $children := .Sections -}}
+    {{- $weighted := slice -}}
+    {{- $unweighted := slice -}}
+    {{- range $children -}}
+      {{- if isset .Params "weight" -}}
+        {{- $weighted = $weighted | append . -}}
+      {{- else -}}
+        {{- $unweighted = $unweighted | append . -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $sortedSections := slice -}}
+    {{- if gt (len $weighted) 0 -}}
+      {{- $sortedSections = $sortedSections | append (sort $weighted "Weight" "asc") -}}
+    {{- end -}}
+    {{- if gt (len $unweighted) 0 -}}
+      {{- $sortedSections = $sortedSections | append (sort $unweighted "Title" "asc") -}}
+    {{- end -}}
+
+    {{- range $sortedSections }}
+      {{- partial "section_tree.html" (dict "ctx" . "level" 1) -}}
     {{- end }}
+  {{- end }}
+
+  {{/* 2) 根目录文章：放在目录之后，且默认展开 */}}
+  {{- if $hasRootPages }}
+  <details class="section-tree level-1" open>
+    <summary class="tree-summary">
+      <span class="folder-title">
+        <a href="{{ .RelPermalink }}">{{ $rootLabel }}</a>
+        <span class="count">({{ len .RegularPages }})</span>
+      </span>
+      <button class="node-toggle" type="button" aria-label="Toggle"></button>
+    </summary>
+    <div class="post-list">
+      {{- range (sort .RegularPages "Date" "desc") -}}
+        {{- partial "post_entry.html" . -}}
+      {{- end -}}
+    </div>
+  </details>
+  {{- end }}
 
 {{- else }}
-    {{- $pages := .RegularPages.ByDate.Reverse }}
-    {{- range $pages }}
-        {{- partial "post_entry.html" . -}}
+  <div class="post-list">
+    {{- range .RegularPages.ByDate.Reverse }}
+      {{- partial "post_entry.html" . -}}
     {{- end }}
+  </div>
 {{- end }}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // 防止点击目录链接触发展开/收起
+  document.querySelectorAll('.section-tree summary .folder-title a').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.stopPropagation(); });
+  });
+  // 每节点独立的几何切换按钮
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('button.node-toggle');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const details = btn.closest('details.section-tree');
+    if (details) details.open = !details.open;
+  });
+});
+</script>
 
 {{- end }}{{/* end define main */}}
