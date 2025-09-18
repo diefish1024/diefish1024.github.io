@@ -15,9 +15,9 @@
     <atom:link href="https://diefish1024.github.io/tags/math/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lect2-Probability Space</title>
-      <link>https://diefish1024.github.io/posts/math2701-probability-theory/lect2-probability-space/</link>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect2-probability-space/</link>
       <pubDate>Wed, 17 Sep 2025 09:53:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/posts/math2701-probability-theory/lect2-probability-space/</guid>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect2-probability-space/</guid>
       <description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
 &lt;p&gt;例题：在圆上“随机”选一段弧，问弧长大于圆周的 $ \frac{1}{3} $ 的概率？（&lt;a href=&#34;https://en.wikipedia.org/wiki/Bertrand_paradox_(probability)&#34;&gt;Bertrand paradox&lt;/a&gt;）&lt;/p&gt;
 &lt;p&gt;至少三种自然的“均匀化”模型会给出不同答案：&lt;/p&gt;
@@ -60,9 +60,9 @@
     </item>
     <item>
       <title>Lect1-Introduction</title>
-      <link>https://diefish1024.github.io/posts/math2701-probability-theory/lect1-introduction/</link>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect1-introduction/</link>
       <pubDate>Mon, 15 Sep 2025 10:47:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/posts/math2701-probability-theory/lect1-introduction/</guid>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect1-introduction/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://chihaozhang.com/teaching/Prob2025/lectures/lec1/lec1.html&#34;&gt;课程讲义&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在这门课里，我们会专注于所谓的 &lt;a href=&#34;https://en.wikipedia.org/wiki/Probability_axioms&#34;&gt;科尔莫哥洛夫（Kolmogorov）的公理体系&lt;/a&gt;，它使得我们能够使用数学分析的工具来研究概率。&lt;/p&gt;&lt;/blockquote&gt;
