@@ -17,8 +17,8 @@ HUGO_STATIC_IMAGES_PATH = os.path.join(HUGO_SITE_PATH, "static", "images")
 # --- Publishing Rules & Content Strategy ---
 # 1. All notes are published to the 'posts' section for a unified blog feed.
 PUBLISH_SOURCE_MAP = {
-    "01-Math": "posts",
-    "02-CS": "posts",
+    "01-Math": "posts/Class Notes",
+    "02-CS": "posts/Class Notes",
     "06-Knowledge Base": "posts",
     "03-Research": "posts",
     "04-Projects": "posts",
@@ -39,16 +39,75 @@ PUBLISH_KEY = "publish"
 MARKDOWN_EXTENSIONS = (".md", ".markdown")
 
 # --- Git Automation ---
-ENABLE_GIT_AUTO_COMMIT = True
+ENABLE_GIT_AUTO_COMMIT = False
 
 # --- Logging Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 def slugify(text):
     text = text.lower().strip()
     text = re.sub(r'[\s\.]+', '-', text)
     text = re.sub(r'[^\w-]', '', text)
     return text
+
+
+def pretty_title_from_dirname(name: str) -> str:
+    """
+    把目录名简单美化为标题：
+    - 把 '-'、'_' 转为空格；
+    - 若处理后没有大写字母，则 Title Case；
+    - 否则保留原大小写（便于保留如 'CS2951'、'Class Notes' 等）。
+    """
+    base = name.replace('-', ' ').replace('_', ' ').strip()
+    if not base:
+        return name
+    if any(c.isupper() for c in base):
+        return base
+    return base.title()
+
+
+def ensure_section_index_chain(dest_dir: str, root_content_dir: str):
+    """
+    从 dest_dir 向上逐级直到 root_content_dir（不含 root_content_dir）为止，
+    如果某层目录下不存在 _index.md，则创建一个，title 为该目录名的美化形式。
+    例如：
+      content/posts/Class Notes/CS2951  -> 创建：
+        content/posts/_index.md
+        content/posts/Class Notes/_index.md
+        content/posts/Class Notes/CS2951/_index.md
+    """
+    abs_root = os.path.abspath(root_content_dir)
+    current = os.path.abspath(dest_dir)
+
+    # 保护：确保 current 在 content 根目录之下
+    try:
+        common = os.path.commonpath([current, abs_root])
+    except ValueError:
+        return
+    if common != abs_root:
+        return
+
+    while True:
+        if os.path.normcase(current) == os.path.normcase(abs_root):
+            # 到达 content 根，停止（不在 content 根写 _index.md）
+            break
+
+        index_path = os.path.join(current, "_index.md")
+        if not os.path.exists(index_path):
+            dirname = os.path.basename(current)
+            title = pretty_title_from_dirname(dirname)
+            fm = {"title": title}
+            os.makedirs(current, exist_ok=True)
+            with open(index_path, "w", encoding="utf-8") as f:
+                f.write(f"---\n{yaml.dump(fm, allow_unicode=True, sort_keys=False)}---\n")
+            logging.info(f"Created section index: {os.path.relpath(index_path, HUGO_SITE_PATH)}")
+
+        parent = os.path.dirname(current)
+        if parent == current:
+            break
+        current = parent
+
 
 def process_content(main_content, note_slug):
     """Processes content to convert LaTeX to shortcodes and update image links."""
@@ -88,6 +147,7 @@ def process_content(main_content, note_slug):
     final_content = image_pattern.sub(replace_image_links, content_after_latex)
     return final_content
 
+
 def process_and_copy_note(source_path, dest_path):
     """Reads, processes, and writes a single markdown note."""
     try:
@@ -105,29 +165,23 @@ def process_and_copy_note(source_path, dest_path):
 
         # Converts 'created' field to 'date' and formats it to ISO 8601 for Hugo.
         if 'created' in frontmatter_dict:
-            created_val = frontmatter_dict.pop('created') # Use .pop() to get the value and remove the key
+            created_val = frontmatter_dict.pop('created')
             try:
-                # Handle if PyYAML already converted it to a datetime object
                 if isinstance(created_val, datetime):
                     dt_obj = created_val
                 else:
-                    # Handle the string format 'YYYY-MM-DD HH:MM'
                     dt_obj = datetime.strptime(str(created_val).strip(), '%Y-%m-%d %H:%M')
-                
-                # Format to the required ISO 8601 standard with a timezone
                 frontmatter_dict['date'] = dt_obj.strftime('%Y-%m-%dT%H:%M:%S+08:00')
             except (ValueError, TypeError) as e:
-                # If parsing fails, log a warning and put the original value back under the new 'date' key
                 logging.warning(f"Could not parse 'created' date '{created_val}' in {os.path.basename(source_path)}. Error: {e}. Using original value.")
                 frontmatter_dict['date'] = created_val
 
         # --- Automatic Title, Category, and Tag logic ---
-        # Title is always the filename
         title = os.path.splitext(os.path.basename(source_path))[0]
         frontmatter_dict['title'] = title
         note_slug = slugify(title)
         relative_source_path = os.path.relpath(source_path, OBSIDIAN_VAULT_PATH)
-        
+
         # Set category automatically
         if 'type' in frontmatter_dict and frontmatter_dict['type']:
             type_value = frontmatter_dict['type']
@@ -142,21 +196,24 @@ def process_and_copy_note(source_path, dest_path):
             if source_root_folder in CATEGORY_MAP:
                 frontmatter_dict['categories'] = [CATEGORY_MAP[source_root_folder]]
 
-        # Set tags for specific subfolders
         if 'tags' not in frontmatter_dict:
             frontmatter_dict['tags'] = []
-        
+
         # Process content for LaTeX and images
         processed_content = process_content(main_content, note_slug)
+
+        # Ensure destination directory and its section _index.md chain
+        dest_dir = os.path.dirname(dest_path)
+        os.makedirs(dest_dir, exist_ok=True)
+        ensure_section_index_chain(dest_dir, HUGO_CONTENT_PATH)
 
         # Rebuild and write file
         new_fm_str = yaml.dump(frontmatter_dict, allow_unicode=True, sort_keys=False)
         final_output = f"---\n{new_fm_str}---\n{processed_content}"
-        
-        os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+
         with open(dest_path, 'w', encoding='utf-8') as f:
             f.write(final_output)
-            
+
         logging.info(f"Processed: {relative_source_path} -> {os.path.relpath(dest_path, HUGO_SITE_PATH)}")
         return True
 
@@ -181,12 +238,14 @@ def get_publish_status(file_path):
         return False
     return False
 
+
 def should_ignore(path, root_vault_path):
     relative_path = os.path.relpath(path, root_vault_path)
     for pattern in IGNORE_PATTERNS:
         if pattern in relative_path.split(os.sep):
             return True
     return False
+
 
 def map_obsidian_path_to_hugo(obsidian_file_path, vault_path, publish_map):
     relative_path_in_vault = os.path.relpath(obsidian_file_path, vault_path)
@@ -201,6 +260,7 @@ def map_obsidian_path_to_hugo(obsidian_file_path, vault_path, publish_map):
             return os.path.join(hugo_target_dir, sub_dir, slugified_filename)
     return None
 
+
 def sync_obsidian_to_hugo():
     logging.info("Starting Obsidian to Hugo synchronization...")
     expected_hugo_files = set()
@@ -214,7 +274,7 @@ def sync_obsidian_to_hugo():
             if file_name.endswith(MARKDOWN_EXTENSIONS):
                 obsidian_file_path = os.path.join(root, file_name)
                 hugo_target_path = map_obsidian_path_to_hugo(obsidian_file_path, OBSIDIAN_VAULT_PATH, PUBLISH_SOURCE_MAP)
-                
+
                 if hugo_target_path:
                     if get_publish_status(obsidian_file_path):
                         if process_and_copy_note(obsidian_file_path, hugo_target_path):
@@ -223,7 +283,7 @@ def sync_obsidian_to_hugo():
                         if os.path.exists(hugo_target_path):
                             os.remove(hugo_target_path)
                             logging.info(f"Removed (publish not true): {os.path.relpath(hugo_target_path, HUGO_SITE_PATH)}")
-    
+
     logging.info("Synchronization and processing finished.")
     run_hugo_build_and_git()
 
@@ -244,6 +304,7 @@ def run_hugo_build_and_git():
     if hugo_build_success and ENABLE_GIT_AUTO_COMMIT:
         run_git_commands()
 
+
 def run_git_commands():
     logging.info("Starting Git auto-commit...")
     if os.getcwd() != HUGO_SITE_PATH:
@@ -252,7 +313,7 @@ def run_git_commands():
     try:
         logging.info("Running 'git add .'")
         subprocess.run(["git", "add", "."], check=True)
-        
+
         status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
         if not status_result.stdout:
             logging.info("No changes to commit. Skipping commit and push.")
@@ -265,6 +326,7 @@ def run_git_commands():
         logging.info("Git commands executed successfully!")
     except Exception as e:
         logging.error(f"A Git command failed: {e}")
+
 
 if __name__ == "__main__":
     if not os.path.isdir(OBSIDIAN_VAULT_PATH):
