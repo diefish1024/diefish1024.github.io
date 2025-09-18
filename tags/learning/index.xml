@@ -59,6 +59,76 @@
 &lt;p&gt;要求 $ \mathcal{F} $ 构成一个 $ \sigma $- 代数（域）：&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Lect1-Counting</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect1-counting/</link>
+      <pubDate>Tue, 16 Sep 2025 13:22:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect1-counting/</guid>
+      <description>&lt;h2 id=&#34;product-and-sum-principles&#34;&gt;Product and Sum Principles&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;加法原理（分类计数）&lt;/strong&gt;
+若一个任务可分解为若干个互斥的子类，第 $ i $ 类有 $ a_i $ 种方案，则总数为 $ \sum_i a_i $。
+解释：互斥保证不重不漏，求和即“或”的计数。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;乘法原理（分步计数）&lt;/strong&gt;
+若一个任务分为若干个有序步骤，步骤 $ i $ 有 $ b_i $ 种选择且相互独立，则总数为 $ \prod_i b_i $。
+解释：有序步骤逐个做决定，“且”的计数对应乘法。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;constructing-maps&#34;&gt;Constructing Maps&lt;/h2&gt;
+&lt;p&gt;有些组合证明可以依赖于构造映射：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;单射&lt;/strong&gt;：不同原像映到不同像，用于证明下界或“可嵌入性”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;满射&lt;/strong&gt;：像覆盖全体，用于证明上界可达或构造覆盖。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;双射&lt;/strong&gt;：建立集合 $ A $ 与 $ B $ 的一一对应，从而数 $ |A|=|B| $；这是“数某一个量 ⇒ 构造双射”的核心思想。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;twelvefoldway&#34;&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Twelvefold_way&#34;&gt;Twelvefoldway&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;将 $ n $ 个球放入 $ m $ 个盒子，球与盒子可“可区分/不可区分”，以及盒子容量约束“任意/至多 1/至少 1”。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;$ n $&lt;/th&gt;
+          &lt;th&gt;$ m $&lt;/th&gt;
+          &lt;th&gt;任意&lt;/th&gt;
+          &lt;th&gt;$ \leq 1 $&lt;/th&gt;
+          &lt;th&gt;$ \geq 1 $&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;不同&lt;/td&gt;
+          &lt;td&gt;不同&lt;/td&gt;
+          &lt;td&gt;$ m^{n} $&lt;/td&gt;
+          &lt;td&gt;$ m^{\underline{n}} $&lt;/td&gt;
+          &lt;td&gt;$ m!\left\{ {n \atop m} \right\} $&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;同&lt;/td&gt;
+          &lt;td&gt;不同&lt;/td&gt;
+          &lt;td&gt;$ \binom{ n+m-1 }{ m-1 } $&lt;/td&gt;
+          &lt;td&gt;$ \binom{ m }{ n } $&lt;/td&gt;
+          &lt;td&gt;$ \binom{ n-1 }{ m-1 } $&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;不同&lt;/td&gt;
+          &lt;td&gt;同&lt;/td&gt;
+          &lt;td&gt;$ \sum_{k=0}^{\min(n,m)} \left\{ {n \atop k} \right\} $&lt;/td&gt;
+          &lt;td&gt;$ [n \leq m] $&lt;/td&gt;
+          &lt;td&gt;$ \left\{ {n \atop m} \right\} $&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;同&lt;/td&gt;
+          &lt;td&gt;同&lt;/td&gt;
+          &lt;td&gt;$ p_{\leq m}(n) $&lt;/td&gt;
+          &lt;td&gt;$ [n \leq m] $&lt;/td&gt;
+          &lt;td&gt;$ p(n,m) $&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;“把 $ n $ 个不同球分成 $ k $ 个非空无序盒”对应第二类斯特林数 $ \left\{ {n \atop k} \right\} $。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Lect1-Introduction</title>
       <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect1-introduction/</link>
       <pubDate>Mon, 15 Sep 2025 10:47:00 +0800</pubDate>
