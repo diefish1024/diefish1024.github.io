@@ -39,7 +39,7 @@ PUBLISH_KEY = "publish"
 MARKDOWN_EXTENSIONS = (".md", ".markdown")
 
 # --- Git Automation ---
-ENABLE_GIT_AUTO_COMMIT = False
+ENABLE_GIT_AUTO_COMMIT = True
 
 # --- Logging Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
