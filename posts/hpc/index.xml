@@ -321,7 +321,7 @@ C_{i,j} = \sum_{k=0}^{K-1} A_{i,k}\times B_{k,j}
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;并行区域（Parallel Region）&lt;/strong&gt;：是 OpenMP 编程的核心概念。它是由编译器指令 &lt;code&gt;#pragma omp parallel&lt;/code&gt; 指定的一段代码，告诉 OpenMP 在这段代码中创建多个线程并行执行。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Fork-Join 执行模型&lt;/strong&gt;：从单线程开始执行，进入并行区域开始并行执行，在并行区域结尾进行同步和结束线程。&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/openmp-%E5%85%A5%E9%97%A8/pasted-image-20250827105206-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/openmp-%E5%85%A5%E9%97%A8/pasted-image-20250827105206.png&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;3-core-directives-and-constructs&#34;&gt;3. Core Directives and Constructs&lt;/h2&gt;
 &lt;p&gt;OpenMP 的功能主要是通过编译指令（Directives）和相关的子句（Clauses）来实现的。&lt;/p&gt;
 &lt;ul&gt;

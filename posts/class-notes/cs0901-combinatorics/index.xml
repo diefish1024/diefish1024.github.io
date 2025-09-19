@@ -29,11 +29,11 @@ $$
 &lt;p&gt;&lt;strong&gt;解&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;$$ 
 
-\begin{align}
+\begin{align*}
  &amp; \sum_{k=0}^{n} (-1)^{k}\binom{ n }{ k } = 0 \\
 \implies &amp; \sum_{k=0}^{2n} (-1)^{k}\binom{ 2n }{ k } =0 \\
 \implies &amp; \sum_{k=0}^{2n} \binom{ 2n }{ 2k } = \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } 
-\end{align}
+\end{align*}
 
  $$
 同时由于

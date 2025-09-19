@@ -31,7 +31,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;TTA 的局限性&lt;/strong&gt;：TTA 允许一个预训练好的模型在不访问原始训练数据的情况下，利用无标签的测试数据进行自适应调整 。目前 TTA 在计算机视觉领域处理图像损坏、风格变化等属性偏移问题上很成功 。然而为图像处理设计的 TTA 方法直接应用到图上时，其在处理图结构偏移时的性能提升非常有限，几乎失效。&lt;/p&gt;
-&lt;p&gt;&lt;img alt=&#34;400&#34; loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/matcha/pasted-image-20250828111414-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;400&#34; loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/matcha/pasted-image-20250828111414.png&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;analysis&#34;&gt;Analysis&lt;/h2&gt;
 &lt;p&gt;两种偏移方式对 GNN 的影响存在本质不同。&lt;/p&gt;
 &lt;h3 id=&#34;perliminaries&#34;&gt;Perliminaries&lt;/h3&gt;

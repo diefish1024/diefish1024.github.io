@@ -74,11 +74,11 @@ $$
 &lt;p&gt;&lt;strong&gt;解&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;$$ 
 
-\begin{align}
+\begin{align*}
  &amp; \sum_{k=0}^{n} (-1)^{k}\binom{ n }{ k } = 0 \\
 \implies &amp; \sum_{k=0}^{2n} (-1)^{k}\binom{ 2n }{ k } =0 \\
 \implies &amp; \sum_{k=0}^{2n} \binom{ 2n }{ 2k } = \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } 
-\end{align}
+\end{align*}
 
  $$
 同时由于
@@ -506,7 +506,7 @@ C_{i,j} = \sum_{k=0}^{K-1} A_{i,k}\times B_{k,j}
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;TTA 的局限性&lt;/strong&gt;：TTA 允许一个预训练好的模型在不访问原始训练数据的情况下，利用无标签的测试数据进行自适应调整 。目前 TTA 在计算机视觉领域处理图像损坏、风格变化等属性偏移问题上很成功 。然而为图像处理设计的 TTA 方法直接应用到图上时，其在处理图结构偏移时的性能提升非常有限，几乎失效。&lt;/p&gt;
-&lt;p&gt;&lt;img alt=&#34;400&#34; loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/matcha/pasted-image-20250828111414-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;400&#34; loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/matcha/pasted-image-20250828111414.png&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;analysis&#34;&gt;Analysis&lt;/h2&gt;
 &lt;p&gt;两种偏移方式对 GNN 的影响存在本质不同。&lt;/p&gt;
 &lt;h3 id=&#34;perliminaries&#34;&gt;Perliminaries&lt;/h3&gt;
@@ -656,7 +656,7 @@ C_{i,j} = \sum_{k=0}^{K-1} A_{i,k}\times B_{k,j}
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;并行区域（Parallel Region）&lt;/strong&gt;：是 OpenMP 编程的核心概念。它是由编译器指令 &lt;code&gt;#pragma omp parallel&lt;/code&gt; 指定的一段代码，告诉 OpenMP 在这段代码中创建多个线程并行执行。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Fork-Join 执行模型&lt;/strong&gt;：从单线程开始执行，进入并行区域开始并行执行，在并行区域结尾进行同步和结束线程。&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/openmp-%E5%85%A5%E9%97%A8/pasted-image-20250827105206-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/openmp-%E5%85%A5%E9%97%A8/pasted-image-20250827105206.png&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;3-core-directives-and-constructs&#34;&gt;3. Core Directives and Constructs&lt;/h2&gt;
 &lt;p&gt;OpenMP 的功能主要是通过编译指令（Directives）和相关的子句（Clauses）来实现的。&lt;/p&gt;
 &lt;ul&gt;
@@ -780,9 +780,9 @@ C_{i,j} = \sum_{k=0}^{K-1} A_{i,k}\times B_{k,j}
 &lt;p&gt;为了提高存储密度，可以把这样的带子给卷起来，于是就得到了磁带&lt;/p&gt;
 &lt;p&gt;这样的存储方式主要缺点是&lt;strong&gt;几乎不能随机读写&lt;/strong&gt;（比如磁带收音机需要倒带），一般用于冷数据的存档和备份&lt;/p&gt;
 &lt;p&gt;为了解决这个缺点，可以想到用旋转的二维平面来替代卷起来的带子，这样读写延迟就不会超过旋转的周期，这就得到了&lt;strong&gt;磁鼓&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012735-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012735.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;再在磁鼓的基础上进一步内卷，把用圆盘代替柱面，从而可以堆叠起来，进一步提高了存储密度，这就得到了&lt;strong&gt;磁盘&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012958-png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805012958.png&#34;&gt;&lt;/p&gt;
 &lt;p&gt;磁盘作为存储设备的随机读写性能虽然相比磁带有了很大的改善，但是还是需要等待定位到正确的位置，性能仍然不够优秀，为了读写定位到一个扇区通常需要花费几个毫秒的时间，这一点可以通过缓存和调度算法来缓解，让数据尽可能连续存储&lt;/p&gt;
 &lt;p&gt;当我们在磁盘的基础上把读写头和盘片本体分开，我们就实现了数据的移动，这也就得到了&lt;strong&gt;软盘&lt;/strong&gt;，这是上个数据数据发行的主要方式，虽然性能和可靠性都比较低，但是胜在了便捷、可移动&lt;/p&gt;
 &lt;h2 id=&#34;1-bit-的存储挖坑&#34;&gt;1-Bit 的存储：挖坑&lt;/h2&gt;
@@ -806,7 +806,7 @@ C_{i,j} = \sum_{k=0}^{K-1} A_{i,k}\times B_{k,j}
 &lt;li&gt;从坑里放跑电子&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;而这就得到了&lt;strong&gt;闪存 (Flash Memory)&lt;/strong&gt; ：
-&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805112704-png&#34;&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/21-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/pasted-image-20250805112704.png&#34;&gt;
 其作为存储设备，价格低，容量和可靠性高，而且读写性能极高（由于电路天然并行，所以容量越大，速度越快）&lt;/p&gt;
 &lt;p&gt;然而，闪存的物理原理也带来了其固有的缺陷，即&lt;strong&gt;会磨损 (wear out)&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;

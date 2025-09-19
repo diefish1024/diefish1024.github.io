@@ -27,7 +27,7 @@ $$
 这里的 $ d $ 表示向量的第 $ d $ 个元素。之所以使用双向的 KL 散度，是为了经验上获得更好的结果</p></li><li><p><strong>一维高斯 KL 散度公式</strong>：
 $$
 D_{KL} (N(\mu_1, \sigma_1^2)||N(\mu_2, \sigma_2^2)) = \dfrac{\left[ \log(\sigma_2^2/\sigma_1^2) + \dfrac{(\mu_1 - \mu_2)^2 + \sigma_1^2}{\sigma_2^2} - 1 \right]}{2} \quad \text{(3)}
-$$</p></li><li><p><strong>朴素对齐的问题</strong>：</p><ul><li>回归模型特征倾向于分布在一个小型的子空间中，许多特征维度方差为零或接近零</li><li>公式 (3) 中涉及到方差在分母上，使得这种朴素对齐在面对零方差维度时变得不稳定</li><li>对所有维度“一视同仁”地对齐不适用于回归任务的特性，因为许多维度对最终输出影响很小</li></ul></li></ul><h2 id=significant-subspace-alignment>Significant-subspace Alignment<a hidden class=anchor aria-hidden=true href=#significant-subspace-alignment>#</a></h2><p><img loading=lazy src=/images/ssa/pasted-image-20250706233003-png></p><p>SSA 的三个步骤：</p><ol><li><p><strong>子空间检测 (Subspace detection)</strong>：</p><ul><li>在源数据集 $ S $ 上进行训练后，检测源特征分布所在的子空间。不计算每个维度的方差，而是计算<strong>协方差矩阵</strong>：
+$$</p></li><li><p><strong>朴素对齐的问题</strong>：</p><ul><li>回归模型特征倾向于分布在一个小型的子空间中，许多特征维度方差为零或接近零</li><li>公式 (3) 中涉及到方差在分母上，使得这种朴素对齐在面对零方差维度时变得不稳定</li><li>对所有维度“一视同仁”地对齐不适用于回归任务的特性，因为许多维度对最终输出影响很小</li></ul></li></ul><h2 id=significant-subspace-alignment>Significant-subspace Alignment<a hidden class=anchor aria-hidden=true href=#significant-subspace-alignment>#</a></h2><p><img loading=lazy src=/images/ssa/pasted-image-20250706233003.png></p><p>SSA 的三个步骤：</p><ol><li><p><strong>子空间检测 (Subspace detection)</strong>：</p><ul><li>在源数据集 $ S $ 上进行训练后，检测源特征分布所在的子空间。不计算每个维度的方差，而是计算<strong>协方差矩阵</strong>：
 $$
 \Sigma^s = \frac{1}{N_s} \sum_{i=1}^{N_s} (z_i^s - \mu^s) (z_i^s - \mu^s)^T \quad \text{(4)}
 $$
