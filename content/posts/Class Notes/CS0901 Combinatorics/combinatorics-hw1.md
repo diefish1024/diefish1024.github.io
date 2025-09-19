@@ -1,7 +1,8 @@
 ---
 tags:
-- learning
 - math
+- combinatorics
+- homework
 discipline: mathematics
 publish: true
 date: '2025-09-17T09:45:00+08:00'

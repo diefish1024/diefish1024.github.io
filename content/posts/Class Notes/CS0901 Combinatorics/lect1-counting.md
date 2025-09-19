@@ -72,7 +72,7 @@ categories:
 - 代数证明：用二项式定理展开 {{< imath >}}(1+x)^{r+s} = (1+x)^r (1+x)^s{{< /imath >}}，比对 {{< imath >}}x^n{{< /imath >}} 的系数即得。
 
 
-## Binomial Coefficients: Basic Identities and Proofs
+## Binomial Coefficients
 
 - 对称性： {{< imath >}}\binom{ n }{ k } = \binom{ n }{ n-k }{{< /imath >}}
   组合：选 {{< imath >}}k{{< /imath >}} 个等价于弃 {{< imath >}}n-k{{< /imath >}} 个。
