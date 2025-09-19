@@ -1,0 +1,226 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Combinatorics HW1 | diefish's blog</title><meta name=keywords content="learning,math"><meta name=description content="Problem 1
+(1)
+求
+$$ 
+
+\sum_{k=0}^{n} \binom{ 2n }{ 2k } 
+
+ $$
+解
+$$ 
+
+\begin{align}
+ & \sum_{k=0}^{n} (-1)^{k}\binom{ n }{ k } = 0 \\
+\implies & \sum_{k=0}^{2n} (-1)^{k}\binom{ 2n }{ k } =0 \\
+\implies & \sum_{k=0}^{2n} \binom{ 2n }{ 2k } = \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } 
+\end{align}
+
+ $$
+同时由于
+$$ 
+
+\sum_{k=0}^{2n} \binom{ 2n }{ 2k } + \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } = \sum_{k=0}^{2n} \binom{ 2n }{ k } = 2^{2n}
+
+ $$
+得到
+$$ 
+
+\sum_{k=0}^{2n} \binom{ 2n }{ 2k } = 2^{2n-1}
+
+ $$"><meta name=author content="diefish"><link rel=canonical href=https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/><link crossorigin=anonymous href=/assets/css/stylesheet.7e33168b13c822c8560dd6cce14b81ffdf7b6c118596a21d43f319d693f61534.css integrity="sha256-fjMWixPIIshWDdbM4UuB/997bBGFlqIdQ/MZ1pP2FTQ=" rel="preload stylesheet" as=style><link rel=icon href=https://diefish1024.github.io/images/avatar.jpg><link rel=icon type=image/png sizes=16x16 href=https://diefish1024.github.io/images/avatar.jpg><link rel=icon type=image/png sizes=32x32 href=https://diefish1024.github.io/images/avatar.jpg><link rel=apple-touch-icon href=https://diefish1024.github.io/images/avatar.jpg><link rel=mask-icon href=https://diefish1024.github.io/images/avatar.jpg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css integrity=sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js integrity=sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script><meta property="og:url" content="https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/"><meta property="og:site_name" content="diefish's blog"><meta property="og:title" content="Combinatorics HW1"><meta property="og:description" content="Problem 1 (1)
+求 $$ \sum_{k=0}^{n} \binom{ 2n }{ 2k } $$
+解
+$$ \begin{align} & \sum_{k=0}^{n} (-1)^{k}\binom{ n }{ k } = 0 \\ \implies & \sum_{k=0}^{2n} (-1)^{k}\binom{ 2n }{ k } =0 \\ \implies & \sum_{k=0}^{2n} \binom{ 2n }{ 2k } = \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } \end{align} $$ 同时由于 $$ \sum_{k=0}^{2n} \binom{ 2n }{ 2k } + \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } = \sum_{k=0}^{2n} \binom{ 2n }{ k } = 2^{2n} $$ 得到 $$ \sum_{k=0}^{2n} \binom{ 2n }{ 2k } = 2^{2n-1} $$"><meta property="og:locale" content="zh-cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-09-17T09:45:00+08:00"><meta property="article:modified_time" content="2025-09-17T09:45:00+08:00"><meta property="article:tag" content="Learning"><meta property="article:tag" content="Math"><meta property="og:image" content="https://diefish1024.github.io/images/avatar.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://diefish1024.github.io/images/avatar.jpg"><meta name=twitter:title content="Combinatorics HW1"><meta name=twitter:description content="Problem 1
+(1)
+求
+$$ 
+
+\sum_{k=0}^{n} \binom{ 2n }{ 2k } 
+
+ $$
+解
+$$ 
+
+\begin{align}
+ & \sum_{k=0}^{n} (-1)^{k}\binom{ n }{ k } = 0 \\
+\implies & \sum_{k=0}^{2n} (-1)^{k}\binom{ 2n }{ k } =0 \\
+\implies & \sum_{k=0}^{2n} \binom{ 2n }{ 2k } = \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } 
+\end{align}
+
+ $$
+同时由于
+$$ 
+
+\sum_{k=0}^{2n} \binom{ 2n }{ 2k } + \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } = \sum_{k=0}^{2n} \binom{ 2n }{ k } = 2^{2n}
+
+ $$
+得到
+$$ 
+
+\sum_{k=0}^{2n} \binom{ 2n }{ 2k } = 2^{2n-1}
+
+ $$"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://diefish1024.github.io/posts/"},{"@type":"ListItem","position":2,"name":"Class Notes","item":"https://diefish1024.github.io/posts/class-notes/"},{"@type":"ListItem","position":3,"name":"CS0901 Combinatorics","item":"https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/"},{"@type":"ListItem","position":4,"name":"Combinatorics HW1","item":"https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Combinatorics HW1","name":"Combinatorics HW1","description":"Problem 1 (1)\n求 $$ \\sum_{k=0}^{n} \\binom{ 2n }{ 2k } $$\n解\n$$ \\begin{align} \u0026 \\sum_{k=0}^{n} (-1)^{k}\\binom{ n }{ k } = 0 \\\\ \\implies \u0026 \\sum_{k=0}^{2n} (-1)^{k}\\binom{ 2n }{ k } =0 \\\\ \\implies \u0026 \\sum_{k=0}^{2n} \\binom{ 2n }{ 2k } = \\sum_{k=1}^{2n} \\binom{ 2n }{ 2k - 1 } \\end{align} $$ 同时由于 $$ \\sum_{k=0}^{2n} \\binom{ 2n }{ 2k } + \\sum_{k=1}^{2n} \\binom{ 2n }{ 2k - 1 } = \\sum_{k=0}^{2n} \\binom{ 2n }{ k } = 2^{2n} $$ 得到 $$ \\sum_{k=0}^{2n} \\binom{ 2n }{ 2k } = 2^{2n-1} $$\n","keywords":["learning","math"],"articleBody":"Problem 1 (1)\n求 $$ \\sum_{k=0}^{n} \\binom{ 2n }{ 2k } $$\n解\n$$ \\begin{align} \u0026 \\sum_{k=0}^{n} (-1)^{k}\\binom{ n }{ k } = 0 \\\\ \\implies \u0026 \\sum_{k=0}^{2n} (-1)^{k}\\binom{ 2n }{ k } =0 \\\\ \\implies \u0026 \\sum_{k=0}^{2n} \\binom{ 2n }{ 2k } = \\sum_{k=1}^{2n} \\binom{ 2n }{ 2k - 1 } \\end{align} $$ 同时由于 $$ \\sum_{k=0}^{2n} \\binom{ 2n }{ 2k } + \\sum_{k=1}^{2n} \\binom{ 2n }{ 2k - 1 } = \\sum_{k=0}^{2n} \\binom{ 2n }{ k } = 2^{2n} $$ 得到 $$ \\sum_{k=0}^{2n} \\binom{ 2n }{ 2k } = 2^{2n-1} $$\n(2)\n求 $$ \\sum_{k=0}^{3n} \\binom{ 3n }{ 3k } $$\n解\n同理 (1) 的解法，设 $ z $ 为一个三次单位根，那么根据二项式定理有 $$ \\sum_{k=0}^{n} z^{k}\\binom{ n }{ k } = (1 + z)^{n} $$ 那么设 $ \\sum_{k=0}^{3n}\\binom{ 3n }{ 3k }=A,\\,\\sum_{k=0}^{3n-1}\\binom{ 3n }{ 3k+1 }=B,\\,\\sum_{k=0}^{3n-1}\\binom{ 3n }{ 3k+2 }=C $，就能得到 $$ A + z\\cdot B + z^{2}\\cdot C = (1 + z)^{3n} $$\n设 $ \\omega=e^{ \\frac{2\\pi i}{3} } $ ，则有 $ 1+\\omega+\\omega^{2}=0,\\omega^{3}=1 $. 分别令 $ z \\in \\{ 1,\\omega,\\omega^{2} \\} $ 带入上式，得到 $$ \\begin{cases} A + B + C \u0026 = (1+1)^{3n} \\\\ A + \\omega B + \\omega^{2}C \u0026 = (1+\\omega)^{3n} \\\\ A + \\omega^{2}B + \\omega C \u0026 = (1 + \\omega^{2})^{3n} \\end{cases} $$ 将三式相加并利用 $ 1+\\omega+\\omega^{2}=0 $ 的性质，移项即可得到 $$ A = \\dfrac{2^{3n} + (1+\\omega)^{3n} + (1+\\omega^{2})^{3n}}{3} $$ 带入 $ \\omega=-\\dfrac{1}{2}+\\dfrac{\\sqrt{ 3 }}{2}\\cdot i $ 得到 $ 1+\\omega=e^{ \\frac{\\pi i}{3} },1+\\omega^{2}=e^{ - \\frac{\\pi i}{3} } $ ，带入上式并化简可得 $$ \\sum_{k=0}^{n} \\binom{ 3n }{ 3k } = \\dfrac{2^{3n} + 2(-1)^{n}}{3} $$\nProblem 2 (1) $$ \\binom{ n }{ m } \\binom{ m }{ k } = \\binom{ n }{ k } \\binom{ n-k }{ m-k } $$ 证 1\n考虑左右两边组合意义：\n$ \\binom{ n }{ m }\\binom{ m }{ k } $ 可以表示在 $ n $ 个人中先选出 $ m $ 个人，再在这 $ m $ 个人中选出 $ k $ 个人的概率，本质上是把 $ n $ 个人分成了 $ 3 $ 类，每类分别有 $ n-m,\\,m-k,\\,k $ 个人。\n$ \\binom{ n }{ k }\\binom{ n-k }{ m-k } $ 可以看成在 $ n $ 个人里面选出 $ k $ 个人，再在剩下 $ n-k $ 个人中选出 $ m-k $ 个人，同样也可以看成是分成了分别有 $ n-m,\\,m-k,\\,k $ 个人的三类。\n因此左右表示同一个组合意义，值必然相同。\n证 2 $$ \\binom{ n }{ m } \\binom{ m }{ k } = \\dfrac{n^{\\underline{m}}}{m!}\\cdot \\dfrac{m^{\\underline{k}}}{k!} = \\dfrac{n^{\\underline{k}}}{k!}\\cdot \\dfrac{n^{\\underline{m}}}{n^{\\underline{k}}}\\cdot \\dfrac{m^{\\underline{k}}}{m!} = \\dfrac{n^{\\underline{k}}}{k!}\\cdot \\dfrac{(n-k)^{\\underline{m-k}}}{(m-k)!} = \\binom{ n }{ k } \\binom{ n-k }{ m-k } $$\n(2) $$ \\sum_{k=0}^{r} \\binom{ n+k }{ k } = \\binom{ n+r+1 }{ r } $$ 证 1\n考虑组合意义。\n右式变形为 $ \\binom{ n+r+1 }{ n+1 } $ 可以表示为在 $ n+r+1 $ 个人中选出 $ n+1 $ 个人的方案数。\n左侧变形为 $ \\sum \\binom{ n+k }{ n } $ 可以看成枚举要选的最后一个人是第 $ n+k+1 $ 个人，在前 $ n+k $ 个人中选择 $ n $ 个人，所有情况的和恰好也是在 $ n+r+1 $ 个人中选出 $ n+1 $ 个人的方案数。\n因此左右两次可以表达同一个组合意义，值相同。\n证 2\n考虑等式 $$ \\binom{ n+k }{ k } + \\binom{ n+k }{ k-1 } = \\binom{ n+k+1 }{ k } $$ 移项得到 $$ \\binom{ n+k }{ k } = \\binom{ n+k+1 }{ k } - \\binom{ n+k }{ k-1 } $$ 在求和可得 $$ \\sum_{k=0}^{r} \\binom{ n+k }{ k } = \\sum_{k=0}^{r} \\left[ \\binom{ n+k+1 }{ k } - \\binom{ n+k }{ k-1 } \\right] = \\binom{ n+r+1 }{ r } - \\binom{ n }{ -1 } $$ 认为 $ \\binom{ n }{ k } $ 在 $ k\u003en $ 或者 $ k\u003c0 $ 时 $ \\binom{ n }{ k }=0 $ ，则可得到 $$ \\sum_{k=0}^{r} \\binom{ n+k }{ k } = \\binom{ n+r+1 }{ r } $$\n(3) $$ \\sum_{k=0}^{n} \\binom{ n }{ k } ^{2}k = n\\binom{ 2n-1 }{ n-1 } $$ 证 1\n考虑组合意义，同样以在班级中选人举例。\n由于 $ 2\\binom{ 2n-1 }{ n-1 }=\\binom{ 2n }{ n } $，右侧变形为 $ \\frac{n}{2}\\binom{ 2n }{ n } $ ，可以表示在 $ 2n $ 个人（男女各一半）的班级中选出 $ n $ 个人当班委，再在这 $ n $ 个人中选出一个男生当班长的方案数。\n左侧变成 $ \\sum_{k=0}^{n}\\binom{ n }{ k }\\binom{ n }{ n-k }k $ ，对于每个 $ k $ 表示 $ n $ 个男生 $ n $ 个女生的班级中，男生选出 $ k $ 个人，女生选出 $ n-k $ 个人，共 $ n $ 个人当班委，再从 $ k $ 个男生班委中选出一个人当班长的方案数。把所有 $ k $ 的情况合起来，同样可以得到在男女各半的 $ 2n $ 个人中选出 $ n $ 个班委和一个男生班长的方案数。\n因此左右两式可以表达同一个组合意义，值相同。\n证 2\n将恒等式 $$ k\\binom{ n }{ k } = n\\binom{ n-1 }{ k-1 } = n\\binom{ n-1 }{ n-k } $$ 带入左式，左右两侧消去 $ n $ 后，只需证 $$ \\sum_{k=0}^{n} \\binom{ n }{ k } \\binom{ n-1 }{ n-k } = \\binom{ 2n-1 }{ n-1 } $$ 根据 Vandermonde 卷积 $$ \\sum_{k=0}^{n} \\binom{ n }{ k } \\binom{ n-1 }{ n-k } = \\binom{ n + n - 1 }{ n } = \\binom{ 2n-1 }{ n } $$ 因此原式得证！\n(4) $$ \\sum_{i=0}^{a} \\binom{ a }{ i } \\binom{ b+i }{ a } = \\sum_{i=0}^{a} \\binom{ a }{ i } \\binom{ b }{ i } 2^{i} $$ 证 1\n从组合意义证明，同样以班级选班委举例。考虑一个班级有 $ a $ 个班委和 $ b $ 个非班委，现进行班委换届。\n左式对于每个 $ i $ ，$ \\binom{ a }{ i }\\binom{ b+i }{ a } $ 表示 $ a $ 个班委中有 $ i $ 个人有意愿再参与下一届的班委选举，在 $ b+i $ 个人中选举产生新的 $ a $ 个班委。每种情况加起来，表示 $ a $ 个原班委自由选择是否参加选举的前提下班委换届的所有方案数。\n右式对于每个 $ i $ ，将 $ \\binom{ a }{ i } $ 变换为 $ \\binom{ a }{ a-i } $ ，$ \\binom{ a }{ a-i }\\binom{ b }{ i } $ 表示新一届班委中有 $ i $ 个来自原先 $ b $ 个非班委的方案数，$ 2^{i} $ 表示剩下没选上、未知竞选意愿的 $ i $ 个原班委所有竞选意愿的可能。将每种情况加起来，也同样可以得到 $ a $ 个原班委自由选择是否参选的前提下班委换届的方案数。\n因此左右两式可以表示相同的组合意义，值相同。\n证 2\n根据 Vandermonde 卷积 $$ \\binom{ b+i }{ a } = \\sum_{j=0}^{i} \\binom{ i }{ j } \\binom{ b }{ a-j } $$ 带入左式得到 $$ \\begin{align} \\sum_{i=0}^{a} \\binom{ a }{ i } \\binom{ b+i }{ a } \u0026 = \\sum_{i=0}^{a} \\sum_{j=0}^{i} \\binom{ b }{ a-j } \\binom{ a }{ i } \\binom{ i }{ j } \\\\ \u0026 = \\sum_{i=0}^{a} \\sum_{j=0}^{i} \\binom{ b }{ a-j } \\binom{ a }{ j } \\binom{ a-j }{ i-j } \\\\ \u0026 = \\sum_{j=0}^{a} \\binom{ b }{ a-j } \\binom{ a }{ j } \\sum_{i=j}^{a} \\binom{ a-j }{ i-j } \\\\ \u0026 = \\sum_{j=0}^{a} \\binom{ b }{ a-j } \\binom{ a }{ a-j } 2^{a-j} \\\\ \u0026 \\xlongequal{i=a-j} \\sum_{i=0}^{a} \\binom{ b }{ i } \\binom{ a }{ i } 2^{i} \\end{align} $$\nProblem 3 给定集合 $ A=\\{1,2,\\ldots,n\\} $ 与正整数 $ k $，从 $ A $ 中选出一组按三角阵排列的 $ \\binom{k+1}{2} $ 个子集 $$ \\begin{matrix} S_{1,1} \\\\ S_{2,1} \u0026 S_{2,2} \\\\ \\vdots \u0026 \\vdots \u0026 \\ddots \\\\ S_{k,1} \u0026 S_{k,2} \u0026 \\dots \u0026 S_{k,k} \\end{matrix} $$ 满足每个集合是它左边和上方的集合（如果存在）的子集。需要求出满足这个要求的选择方案数。\n解\n由于每个元素相互独立，具体方案和元素无关，因此可以考虑一个元素的合法出现方式（在哪些集合会包含这个元素）的总数，设为 $ f(k) $ ，那么最后答案即为 $ [f(k)]^{n} $ 。\n现在考虑 $ x\\in A $ ，根据包含关系，不难看出如果 $ x\\in S $ ，那么 $ S $ 左侧和上方（如果存在）必有一个集合包含 $ x $。因此出现 $ x $ 的集合在 $ k $ 阶三角形中可以形成一个从 $ (1,1) $ 出发，每次可以向右或者下方通行的有向图。\n考虑某个合法方案，设元素最后一次出现在对角线（$ S_{1,1},\\dots,S_{k,k} $）的位置为 $ S_{r,r} $ ，那么根据包含关系，此时显然 $ x $ 包含于上方的 $ r $ 阶小三角阵中的每一个元素，并且不会出现在下方的 $ k-r $ 阶小三角方阵中（否则必然会再次出现在对角线中）。因此只需要考虑 $ x $ 在余下部分，也就是四个顶点分别为为 $ (r+1,1),(r+1,r),(k,1),(k,r) $ 的长方形区域中的合法方案数即可。\n对于这样的长方形区域，我们可以按行考虑，显然根据包含的规则， $ x $ 在每一行出现的形式必定是从最左侧开始连续的一段，并且上到下每一行 $ x $ 出现的次数是不降的。因此我们可以把这个问题转化为求一个长度为 $ k-r $ ，每个数范围为 $ 0\\sim r $ 的单调不降序列的方案数。设第 $ i $ 个数的值为 $ t_{i} $ ，那么方案数为 $$ \\begin{align} \\sum_{t_{1}=0}^{r} \\sum_{t_{2}=0}^{t_{1}} \\dots \\sum_{t_{k-r}=0}^{t_{k-r-1}} 1 \u0026 = \\sum_{t_{1}=0}^{r} \\dots \\sum_{t_{k-r-1}=0}^{t_{k-r-2}} (t_{k-r-1} + 1) \\\\ \u0026 = \\sum_{t_{1}=0}^{r} \\dots \\sum_{t_{k-r-1}=0}^{t_{k-r-2}} \\binom{ t_{k-r-1} + 1 }{ 1 } \\\\ \u0026 = \\sum_{t_{1}=0}^{r} \\dots \\sum_{t_{k-r-2}=1}^{t_{k-r-3}} \\binom{ t_{k-r-2}+2 }{ 2 } \\\\ \u0026 \\dots \\\\ \u0026 = \\sum_{t_{1}=0}^{r} \\binom{ t_{1} + k-r-1 }{ k-r-1 } = \\binom{ k }{ k-r } \\end{align} $$ 因此 $$ f(k) = \\sum_{r=0}^{k} \\binom{ k }{ k-r } = \\sum_{r=0}^{k} \\binom{ k }{ r } = 2^{k} $$ 所以方案数为 $$ [f(k)]^{n} = 2^{nk} $$\nProblem 4 给定一个长度为 $ mn+1 $ 的序列 $ a_{0},a_{1},\\ldots,a_{mn} $，其中每一项只可能取 $ 1 $ 或 $ 1-m $，并且满足总和 $$ \\sum_{i=0}^{mn} a_i = 1 . $$ 在此条件下：\n(1)\n证明：在该序列里，取值为 $ 1 $ 的项共有 $ mn-n+1 $ 个，而取值为 $ 1-m $ 的项共有 $ n $ 个。\n证\n设 $ 1 $ 有 $ a $ 个，$ 1-m $ 有 $ b $ 个，那么得到方程 $$ \\begin{cases} a + b = mn+1 \\\\ a + (1-m)b = 1 \\end{cases} $$ 直接可以解得 $$ \\begin{cases} a = mn-n+1 \\\\ b=n \\end{cases} $$\n(2)\n把序列首尾相接排成一个圆环。考虑所有可能的“起点”选择（即对序列做循环移位）。\n证明：恰好存在唯一一个起点 $ k $，使得从该位置开始依次相加得到的所有部分和都为正，即 $$ a_k,\\ a_k+a_{k+1},\\ \\ldots,\\ a_k+a_{k+1}+\\cdots+a_{k-1} $$ 全部大于 $ 0 $（下标按模 $ mn+1 $ 计算）。\n证\n考虑序列前缀和 $ S_{t} = \\sum_{i=0}^{t}a_{i} $ ，并且 $ S_{-1}=0 $。在序列 $ \\{ S_{-1},S_{0},\\dots,S_{mn} \\} $ 中存在最小值，不妨设为 $ S_{k} $。\n先证明最小值 $ S_{k} $ 唯一，假设序列中还存在 $ S_{k'}=S_{k} $ ，不妨设 $ k'\u003ek $ ，那么 $ k\\sim k'-1 $ 的子段和为零，由于这一段的元素非零，因此必然存在从 $ k $ 开始或者在 $ k' $ 结束的一段数的和小于零（否则可以证明这一段数之和必然为正），假设 $ \\sum_{k\\leq i\\leq t}a_{i}\u003c0 $ ，于是 $ S_{t}","wordCount":"1390","inLanguage":"en","image":"https://diefish1024.github.io/images/avatar.jpg","datePublished":"2025-09-17T09:45:00+08:00","dateModified":"2025-09-17T09:45:00+08:00","author":{"@type":"Person","name":"diefish"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/"},"publisher":{"@type":"Organization","name":"diefish's blog","logo":{"@type":"ImageObject","url":"https://diefish1024.github.io/images/avatar.jpg"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://diefish1024.github.io/ accesskey=h title="Home (Alt + H)"><img src=https://diefish1024.github.io/images/avatar.jpg alt aria-label=logo height=35>Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://diefish1024.github.io/posts/ title=Posts><span>Posts</span></a></li><li><a href=https://diefish1024.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://diefish1024.github.io/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://diefish1024.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=https://diefish1024.github.io/archives/ title=Archives><span>Archives</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://diefish1024.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://diefish1024.github.io/posts/>Posts</a>&nbsp;»&nbsp;<a href=https://diefish1024.github.io/posts/class-notes/>Class Notes</a>&nbsp;»&nbsp;<a href=https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/>CS0901 Combinatorics</a></div><h1 class="post-title entry-hint-parent">Combinatorics HW1</h1><div class=post-meta><span title='2025-09-17 09:45:00 +0800 +0800'>September 17, 2025</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;diefish&nbsp;|&nbsp;<a href=https://github.com/diefish1024/diefish1024.github.io/blob/main/content/posts/Class%20Notes/CS0901%20Combinatorics/combinatorics-hw1.md rel="noopener noreferrer edit" target=_blank>Suggest Changes</a></div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#problem-1 aria-label="Problem 1">Problem 1</a></li><li><a href=#problem-2 aria-label="Problem 2">Problem 2</a></li><li><a href=#problem-3 aria-label="Problem 3">Problem 3</a></li><li><a href=#problem-4 aria-label="Problem 4">Problem 4</a></li></ul></div></details></div><div class=post-content><h2 id=problem-1>Problem 1<a hidden class=anchor aria-hidden=true href=#problem-1>#</a></h2><p><strong>(1)</strong></p><p>求
+$$
+\sum_{k=0}^{n} \binom{ 2n }{ 2k }
+$$</p><p><strong>解</strong></p><p>$$
+\begin{align}
+& \sum_{k=0}^{n} (-1)^{k}\binom{ n }{ k } = 0 \\
+\implies & \sum_{k=0}^{2n} (-1)^{k}\binom{ 2n }{ k } =0 \\
+\implies & \sum_{k=0}^{2n} \binom{ 2n }{ 2k } = \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 }
+\end{align}
+$$
+同时由于
+$$
+\sum_{k=0}^{2n} \binom{ 2n }{ 2k } + \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } = \sum_{k=0}^{2n} \binom{ 2n }{ k } = 2^{2n}
+$$
+得到
+$$
+\sum_{k=0}^{2n} \binom{ 2n }{ 2k } = 2^{2n-1}
+$$</p><p><strong>(2)</strong></p><p>求
+$$
+\sum_{k=0}^{3n} \binom{ 3n }{ 3k }
+$$</p><p><strong>解</strong></p><p>同理 (1) 的解法，设 $ z $ 为一个三次单位根，那么根据二项式定理有
+$$
+\sum_{k=0}^{n} z^{k}\binom{ n }{ k } = (1 + z)^{n}
+$$
+那么设 $ \sum_{k=0}^{3n}\binom{ 3n }{ 3k }=A,\,\sum_{k=0}^{3n-1}\binom{ 3n }{ 3k+1 }=B,\,\sum_{k=0}^{3n-1}\binom{ 3n }{ 3k+2 }=C $，就能得到
+$$
+A + z\cdot B + z^{2}\cdot C = (1 + z)^{3n}
+$$</p><p>设 $ \omega=e^{ \frac{2\pi i}{3} } $ ，则有 $ 1+\omega+\omega^{2}=0,\omega^{3}=1 $. 分别令 $ z \in \{ 1,\omega,\omega^{2} \} $ 带入上式，得到
+$$
+\begin{cases}
+A + B + C & = (1+1)^{3n} \\
+A + \omega B + \omega^{2}C & = (1+\omega)^{3n} \\
+A + \omega^{2}B + \omega C & = (1 + \omega^{2})^{3n}
+\end{cases}
+$$
+将三式相加并利用 $ 1+\omega+\omega^{2}=0 $ 的性质，移项即可得到
+$$
+A = \dfrac{2^{3n} + (1+\omega)^{3n} + (1+\omega^{2})^{3n}}{3}
+$$
+带入 $ \omega=-\dfrac{1}{2}+\dfrac{\sqrt{ 3 }}{2}\cdot i $ 得到 $ 1+\omega=e^{ \frac{\pi i}{3} },1+\omega^{2}=e^{ - \frac{\pi i}{3} } $ ，带入上式并化简可得
+$$
+\sum_{k=0}^{n} \binom{ 3n }{ 3k } = \dfrac{2^{3n} + 2(-1)^{n}}{3}
+$$</p><h2 id=problem-2>Problem 2<a hidden class=anchor aria-hidden=true href=#problem-2>#</a></h2><p><strong>(1)</strong>
+$$
+\binom{ n }{ m } \binom{ m }{ k } = \binom{ n }{ k } \binom{ n-k }{ m-k }
+$$
+<strong>证 1</strong></p><p>考虑左右两边组合意义：</p><p>$ \binom{ n }{ m }\binom{ m }{ k } $ 可以表示在 $ n $ 个人中先选出 $ m $ 个人，再在这 $ m $ 个人中选出 $ k $ 个人的概率，本质上是把 $ n $ 个人分成了 $ 3 $ 类，每类分别有 $ n-m,\,m-k,\,k $ 个人。</p><p>$ \binom{ n }{ k }\binom{ n-k }{ m-k } $ 可以看成在 $ n $ 个人里面选出 $ k $ 个人，再在剩下 $ n-k $ 个人中选出 $ m-k $ 个人，同样也可以看成是分成了分别有 $ n-m,\,m-k,\,k $ 个人的三类。</p><p>因此左右表示同一个组合意义，值必然相同。</p><p><strong>证 2</strong>
+$$
+\binom{ n }{ m } \binom{ m }{ k } = \dfrac{n^{\underline{m}}}{m!}\cdot \dfrac{m^{\underline{k}}}{k!} = \dfrac{n^{\underline{k}}}{k!}\cdot \dfrac{n^{\underline{m}}}{n^{\underline{k}}}\cdot \dfrac{m^{\underline{k}}}{m!} = \dfrac{n^{\underline{k}}}{k!}\cdot \dfrac{(n-k)^{\underline{m-k}}}{(m-k)!} = \binom{ n }{ k } \binom{ n-k }{ m-k }
+$$</p><p><strong>(2)</strong>
+$$
+\sum_{k=0}^{r} \binom{ n+k }{ k } = \binom{ n+r+1 }{ r }
+$$
+<strong>证 1</strong></p><p>考虑组合意义。</p><p>右式变形为 $ \binom{ n+r+1 }{ n+1 } $ 可以表示为在 $ n+r+1 $ 个人中选出 $ n+1 $ 个人的方案数。</p><p>左侧变形为 $ \sum \binom{ n+k }{ n } $ 可以看成枚举要选的最后一个人是第 $ n+k+1 $ 个人，在前 $ n+k $ 个人中选择 $ n $ 个人，所有情况的和恰好也是在 $ n+r+1 $ 个人中选出 $ n+1 $ 个人的方案数。</p><p>因此左右两次可以表达同一个组合意义，值相同。</p><p><strong>证 2</strong></p><p>考虑等式
+$$
+\binom{ n+k }{ k } + \binom{ n+k }{ k-1 } = \binom{ n+k+1 }{ k }
+$$
+移项得到
+$$
+\binom{ n+k }{ k } = \binom{ n+k+1 }{ k } - \binom{ n+k }{ k-1 }
+$$
+在求和可得
+$$
+\sum_{k=0}^{r} \binom{ n+k }{ k } = \sum_{k=0}^{r} \left[ \binom{ n+k+1 }{ k } - \binom{ n+k }{ k-1 } \right] = \binom{ n+r+1 }{ r } - \binom{ n }{ -1 }
+$$
+认为 $ \binom{ n }{ k } $ 在 $ k>n $ 或者 $ k<0 $ 时 $ \binom{ n }{ k }=0 $ ，则可得到
+$$
+\sum_{k=0}^{r} \binom{ n+k }{ k } = \binom{ n+r+1 }{ r }
+$$</p><p><strong>(3)</strong>
+$$
+\sum_{k=0}^{n} \binom{ n }{ k } ^{2}k = n\binom{ 2n-1 }{ n-1 }
+$$
+<strong>证 1</strong></p><p>考虑组合意义，同样以在班级中选人举例。</p><p>由于 $ 2\binom{ 2n-1 }{ n-1 }=\binom{ 2n }{ n } $，右侧变形为 $ \frac{n}{2}\binom{ 2n }{ n } $ ，可以表示在 $ 2n $ 个人（男女各一半）的班级中选出 $ n $ 个人当班委，再在这 $ n $ 个人中选出一个男生当班长的方案数。</p><p>左侧变成 $ \sum_{k=0}^{n}\binom{ n }{ k }\binom{ n }{ n-k }k $ ，对于每个 $ k $ 表示 $ n $ 个男生 $ n $ 个女生的班级中，男生选出 $ k $ 个人，女生选出 $ n-k $ 个人，共 $ n $ 个人当班委，再从 $ k $ 个男生班委中选出一个人当班长的方案数。把所有 $ k $ 的情况合起来，同样可以得到在男女各半的 $ 2n $ 个人中选出 $ n $ 个班委和一个男生班长的方案数。</p><p>因此左右两式可以表达同一个组合意义，值相同。</p><p><strong>证 2</strong></p><p>将恒等式
+$$
+k\binom{ n }{ k } = n\binom{ n-1 }{ k-1 } = n\binom{ n-1 }{ n-k }
+$$
+带入左式，左右两侧消去 $ n $ 后，只需证
+$$
+\sum_{k=0}^{n} \binom{ n }{ k } \binom{ n-1 }{ n-k } = \binom{ 2n-1 }{ n-1 }
+$$
+根据 Vandermonde 卷积
+$$
+\sum_{k=0}^{n} \binom{ n }{ k } \binom{ n-1 }{ n-k } = \binom{ n + n - 1 }{ n } = \binom{ 2n-1 }{ n }
+$$
+因此原式得证！</p><p><strong>(4)</strong>
+$$
+\sum_{i=0}^{a} \binom{ a }{ i } \binom{ b+i }{ a } = \sum_{i=0}^{a} \binom{ a }{ i } \binom{ b }{ i } 2^{i}
+$$
+<strong>证 1</strong></p><p>从组合意义证明，同样以班级选班委举例。考虑一个班级有 $ a $ 个班委和 $ b $ 个非班委，现进行班委换届。</p><p>左式对于每个 $ i $ ，$ \binom{ a }{ i }\binom{ b+i }{ a } $ 表示 $ a $ 个班委中有 $ i $ 个人有意愿再参与下一届的班委选举，在 $ b+i $ 个人中选举产生新的 $ a $ 个班委。每种情况加起来，表示 $ a $ 个原班委自由选择是否参加选举的前提下班委换届的所有方案数。</p><p>右式对于每个 $ i $ ，将 $ \binom{ a }{ i } $ 变换为 $ \binom{ a }{ a-i } $ ，$ \binom{ a }{ a-i }\binom{ b }{ i } $ 表示新一届班委中有 $ i $ 个来自原先 $ b $ 个非班委的方案数，$ 2^{i} $ 表示剩下没选上、未知竞选意愿的 $ i $ 个原班委所有竞选意愿的可能。将每种情况加起来，也同样可以得到 $ a $ 个原班委自由选择是否参选的前提下班委换届的方案数。</p><p>因此左右两式可以表示相同的组合意义，值相同。</p><p><strong>证 2</strong></p><p>根据 Vandermonde 卷积
+$$
+\binom{ b+i }{ a } = \sum_{j=0}^{i} \binom{ i }{ j } \binom{ b }{ a-j }
+$$
+带入左式得到
+$$
+\begin{align}
+\sum_{i=0}^{a} \binom{ a }{ i } \binom{ b+i }{ a } & = \sum_{i=0}^{a} \sum_{j=0}^{i} \binom{ b }{ a-j } \binom{ a }{ i } \binom{ i }{ j } \\
+& = \sum_{i=0}^{a} \sum_{j=0}^{i} \binom{ b }{ a-j } \binom{ a }{ j } \binom{ a-j }{ i-j } \\
+& = \sum_{j=0}^{a} \binom{ b }{ a-j } \binom{ a }{ j } \sum_{i=j}^{a} \binom{ a-j }{ i-j } \\
+& = \sum_{j=0}^{a} \binom{ b }{ a-j } \binom{ a }{ a-j } 2^{a-j} \\
+& \xlongequal{i=a-j} \sum_{i=0}^{a} \binom{ b }{ i } \binom{ a }{ i } 2^{i}
+\end{align}
+$$</p><h2 id=problem-3>Problem 3<a hidden class=anchor aria-hidden=true href=#problem-3>#</a></h2><p>给定集合 $ A=\{1,2,\ldots,n\} $ 与正整数 $ k $，从 $ A $ 中选出一组按三角阵排列的 $ \binom{k+1}{2} $ 个子集
+$$
+\begin{matrix}
+S_{1,1} \\
+S_{2,1} & S_{2,2} \\
+\vdots & \vdots & \ddots \\
+S_{k,1} & S_{k,2} & \dots & S_{k,k}
+\end{matrix}
+$$
+满足每个集合是它左边和上方的集合（如果存在）的子集。需要求出满足这个要求的选择方案数。</p><p><strong>解</strong></p><p>由于每个元素相互独立，具体方案和元素无关，因此可以考虑一个元素的合法出现方式（在哪些集合会包含这个元素）的总数，设为 $ f(k) $ ，那么最后答案即为 $ [f(k)]^{n} $ 。</p><p>现在考虑 $ x\in A $ ，根据包含关系，不难看出如果 $ x\in S $ ，那么 $ S $ 左侧和上方（如果存在）必有一个集合包含 $ x $。因此出现 $ x $ 的集合在 $ k $ 阶三角形中可以形成一个从 $ (1,1) $ 出发，每次可以向右或者下方通行的有向图。</p><p>考虑某个合法方案，设元素最后一次出现在对角线（$ S_{1,1},\dots,S_{k,k} $）的位置为 $ S_{r,r} $ ，那么根据包含关系，此时显然 $ x $ 包含于上方的 $ r $ 阶小三角阵中的每一个元素，并且不会出现在下方的 $ k-r $ 阶小三角方阵中（否则必然会再次出现在对角线中）。因此只需要考虑 $ x $ 在余下部分，也就是四个顶点分别为为 $ (r+1,1),(r+1,r),(k,1),(k,r) $ 的长方形区域中的合法方案数即可。</p><p>对于这样的长方形区域，我们可以按行考虑，显然根据包含的规则， $ x $ 在每一行出现的形式必定是从最左侧开始连续的一段，并且上到下每一行 $ x $ 出现的次数是不降的。因此我们可以把这个问题转化为求一个长度为 $ k-r $ ，每个数范围为 $ 0\sim r $ 的单调不降序列的方案数。设第 $ i $ 个数的值为 $ t_{i} $ ，那么方案数为
+$$
+\begin{align}
+\sum_{t_{1}=0}^{r} \sum_{t_{2}=0}^{t_{1}} \dots \sum_{t_{k-r}=0}^{t_{k-r-1}} 1 & = \sum_{t_{1}=0}^{r} \dots \sum_{t_{k-r-1}=0}^{t_{k-r-2}} (t_{k-r-1} + 1) \\
+& = \sum_{t_{1}=0}^{r} \dots \sum_{t_{k-r-1}=0}^{t_{k-r-2}} \binom{ t_{k-r-1} + 1 }{ 1 } \\
+& = \sum_{t_{1}=0}^{r} \dots \sum_{t_{k-r-2}=1}^{t_{k-r-3}} \binom{ t_{k-r-2}+2 }{ 2 } \\
+& \dots \\
+& = \sum_{t_{1}=0}^{r} \binom{ t_{1} + k-r-1 }{ k-r-1 } = \binom{ k }{ k-r }
+\end{align}
+$$
+因此
+$$
+f(k) = \sum_{r=0}^{k} \binom{ k }{ k-r } = \sum_{r=0}^{k} \binom{ k }{ r } = 2^{k}
+$$
+所以方案数为
+$$
+[f(k)]^{n} = 2^{nk}
+$$</p><h2 id=problem-4>Problem 4<a hidden class=anchor aria-hidden=true href=#problem-4>#</a></h2><p>给定一个长度为 $ mn+1 $ 的序列 $ a_{0},a_{1},\ldots,a_{mn} $，其中每一项只可能取 $ 1 $ 或 $ 1-m $，并且满足总和
+$$
+\sum_{i=0}^{mn} a_i = 1 .
+$$
+在此条件下：</p><p><strong>(1)</strong></p><p>证明：在该序列里，取值为 $ 1 $ 的项共有 $ mn-n+1 $ 个，而取值为 $ 1-m $ 的项共有 $ n $ 个。</p><p><strong>证</strong></p><p>设 $ 1 $ 有 $ a $ 个，$ 1-m $ 有 $ b $ 个，那么得到方程
+$$
+\begin{cases}
+a + b = mn+1 \\
+a + (1-m)b = 1
+\end{cases}
+$$
+直接可以解得
+$$
+\begin{cases}
+a = mn-n+1 \\
+b=n
+\end{cases}
+$$</p><p><strong>(2)</strong></p><p>把序列首尾相接排成一个圆环。考虑所有可能的“起点”选择（即对序列做循环移位）。</p><p>证明：恰好存在唯一一个起点 $ k $，使得从该位置开始依次相加得到的所有部分和都为正，即
+$$
+a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
+$$
+全部大于 $ 0 $（下标按模 $ mn+1 $ 计算）。</p><p><strong>证</strong></p><p>考虑序列前缀和 $ S_{t} = \sum_{i=0}^{t}a_{i} $ ，并且 $ S_{-1}=0 $。在序列 $ \{ S_{-1},S_{0},\dots,S_{mn} \} $ 中存在最小值，不妨设为 $ S_{k} $。</p><p>先证明最小值 $ S_{k} $ 唯一，假设序列中还存在 $ S_{k'}=S_{k} $ ，不妨设 $ k'>k $ ，那么 $ k\sim k'-1 $ 的子段和为零，由于这一段的元素非零，因此必然存在从 $ k $ 开始或者在 $ k' $ 结束的一段数的和小于零（否则可以证明这一段数之和必然为正），假设 $ \sum_{k\leq i\leq t}a_{i}<0 $ ，于是 $ S_{t}<s_{k} $ ，与 $ s_{k} $ 为最小值矛盾，因此最小值唯一！</p><p>于是 $ \forall r\in \{ k+1,\dots,mn \} $ ，有 $ S_{r}>S_{k} $ ，因此从 $ k+1 $ 到 $ r $ 的子段和为 $ \sum_{i=k+1}^{r}a_{i}=S_{r}-S_{k}>0 $</p><p>并且 $ \forall l\in \{ 0,\dots,k \}: S_{l-1}<s_{k} $ ，因此从 $ k+1 $ 开始的一段循环序列中的和为（考虑在原序列中这一段的补集）： $$ \sum_{i="k+1}^{mn+1+l}a_{i}=\sum_{i=0}^{mn}a_{i}" - \sum_{i="l}^{k}a_{i}=1-(S_{k}-S_{l-1})" =1+S_{l-1}-S_{k}>0
+$$</p><p>综上，我们找出了唯一满足从该位置开始左右的部分和都为正的一个位置，证毕。</p><p><strong>(3)</strong></p><p>求满足“所有前缀部分和都为正”的序列 $ a_{0},a_{1},\ldots,a_{mn} $ 的总数。</p><p><strong>证</strong></p><p>首先必然有 $ a_{0}=1 $ ，否则 $ a_{0}=1-m<0 $ 已经不满足条件。因此可以在原序列去掉 $ a_{0} $，问题的约束转化为 $ \sum_{i=1}^{mn}a_{i}=0 $ ，保证从 $ a_{1} $ 开始的前缀和非负即可。</p><p>将问题转化为在一个二维网格上路径计数的模型：从起点 $ S:(0,0) $ 出发，每一步会向上走 $ 1 $ 格或者向右走 $ 1 $ 格，目标走到 $ D:(n,n(m-1)) $，其中前缀和非负的约束转化为不能越过直线 $ l:y=(m-1)x $ 。</p><p>对于一个不合法的路径，考虑其第一次越过 $ l $ 时的交点 $ (t,(m-1)t) $ ，之后必然向右走经过 $ P:(t+1,(m-1)t) $ ，因此一条路径不合法，当且仅当它碰到了直线 $ l':y=(m-1)(x-1) $。同理 Catalan 数的证明方法，我们考虑一个广义的“反射”方式来构造出一个 $ PD $ 段到无约束路径的双射。</p><p>将向上走记为 $ U $ 操作，向右走记为 $ R $ 操作，显然最终每个 $ R $ 操作都会对应 $ m-1 $ 个 $ U $ 操作。从 $ P $ 到 $ D $ 还需要经过 $ (n-t-1) $ 个 $ R $ 操作和 $ (m-1)(n-t) $ 个 $ U $ 操作，我们将 $ (m-1) $ 个 $ U $ 操作替换为一个 $ R $ 操作，将一个 $ R $ 操作替换为 $ (m-1) $ 个 $ U $ 操作，即可将 $ \vec{PD}=(n-t-1,(m-1)(n-t)) $ 替换为 $ \vec{PR'}=(n-t,(m-1)(n-t-1)) $ ，得到一个新的目标 $ D':(n+1,(m-1)(n-1)) $。此时可以发现，每一条从 $ S $ 到 $ D $ 的非法路径，都变成了一条从 $ S $ 到 $ D' $ 的路径。</p><p>由于从 $ S $ 到 $ D' $ 必然要穿过直线 $ l' $ ，因此每一条这样的路径都对应一条 $ S $ 到 $ D $ 的非法路径。这样我们就构造了一个非法路径的双射。因此合法的路径总数，也就是合法序列总数为
+$$
+\binom{ mn }{ n } - \binom{ mn-m+2 }{ n+1 }
+$$
+带入 $ m=2 $ ，发现答案为
+$$
+\binom{ 2n }{ n } -\binom{ 2n }{ n+1 } =C_{n}
+$$
+确实为卡特兰数。</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://diefish1024.github.io/tags/learning/>Learning</a></li><li><a href=https://diefish1024.github.io/tags/math/>Math</a></li></ul><nav class=paginav><a class=prev href=https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect2-probability-space/><span class=title>« Prev</span><br><span>Lect2-Probability Space</span>
+</a><a class=next href=https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect1-counting/><span class=title>Next »</span><br><span>Lect1-Counting</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share Combinatorics HW1 on x" href="https://x.com/intent/tweet/?text=Combinatorics%20HW1&amp;url=https%3a%2f%2fdiefish1024.github.io%2fposts%2fclass-notes%2fcs0901-combinatorics%2fcombinatorics-hw1%2f&amp;hashtags=learning%2cmath"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Combinatorics HW1 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fdiefish1024.github.io%2fposts%2fclass-notes%2fcs0901-combinatorics%2fcombinatorics-hw1%2f&amp;title=Combinatorics%20HW1&amp;summary=Combinatorics%20HW1&amp;source=https%3a%2f%2fdiefish1024.github.io%2fposts%2fclass-notes%2fcs0901-combinatorics%2fcombinatorics-hw1%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Combinatorics HW1 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fdiefish1024.github.io%2fposts%2fclass-notes%2fcs0901-combinatorics%2fcombinatorics-hw1%2f&title=Combinatorics%20HW1"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Combinatorics HW1 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fdiefish1024.github.io%2fposts%2fclass-notes%2fcs0901-combinatorics%2fcombinatorics-hw1%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Combinatorics HW1 on whatsapp" href="https://api.whatsapp.com/send?text=Combinatorics%20HW1%20-%20https%3a%2f%2fdiefish1024.github.io%2fposts%2fclass-notes%2fcs0901-combinatorics%2fcombinatorics-hw1%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Combinatorics HW1 on telegram" href="https://telegram.me/share/url?text=Combinatorics%20HW1&amp;url=https%3a%2f%2fdiefish1024.github.io%2fposts%2fclass-notes%2fcs0901-combinatorics%2fcombinatorics-hw1%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentColor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Combinatorics HW1 on ycombinator" href="https://news.ycombinator.com/submitlink?t=Combinatorics%20HW1&u=https%3a%2f%2fdiefish1024.github.io%2fposts%2fclass-notes%2fcs0901-combinatorics%2fcombinatorics-hw1%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://diefish1024.github.io/>diefish's blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
