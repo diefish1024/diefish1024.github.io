@@ -73,7 +73,7 @@ q_{k} = \dfrac{p_{k}}{c+z_{k}},\quad q'_{k} = \dfrac{q_{k}}{\sum q}
 
 ### Complete T-TIME Algorithm
 
-![500](/images/t-time/pasted-image-20250630164657-png)
+![500](/images/t-time/pasted-image-20250630164657.png)
 
 先预测，后台并行地更新模型
 

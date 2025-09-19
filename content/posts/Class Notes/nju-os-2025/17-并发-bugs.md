@@ -143,20 +143,20 @@ lock(&lk);
 
 代码被别的线程“强行插入”，即使分别上锁消除了数据竞争，还是会导致 AV
 
-比如图中的例子：![](/images/17-并发-bugs/pasted-image-20250731162444-png)
+比如图中的例子：![](/images/17-并发-bugs/pasted-image-20250731162444.png)
 
 如果在 Thread 1 结束判断进入 `if` 之后 Thread 2 再执行，就导致了错误
 
 并且注意到操作系统的状态也是共享状态，利用一样的原理还可能产生更难发现的 bug
 
-![](/images/17-并发-bugs/pasted-image-20250731162941-png)
+![](/images/17-并发-bugs/pasted-image-20250731162941.png)
 
 攻击者在 check 之后马上替换文件为符号链接，就可以造成权限问题等严重安全漏洞
 
 #### Order Violation
 
 事件没有按照预定的顺序发生，就会导致 OV ，比如
-![](/images/17-并发-bugs/pasted-image-20250731163704-png)
+![](/images/17-并发-bugs/pasted-image-20250731163704.png)
 
 如果 Thread 2 中的 S4 发生在了条件变量的初始化之前，那么相当于全局的广播被吞掉了，就可能会导致 Thread 1 可能无法被唤醒
 

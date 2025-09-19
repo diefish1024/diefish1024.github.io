@@ -29,7 +29,7 @@ OpenMP (Open Multi-Processing) 是一种用于**共享内存**多处理器系统
 
 **Fork-Join 执行模型**：从单线程开始执行，进入并行区域开始并行执行，在并行区域结尾进行同步和结束线程。
 
-![](/images/openmp-入门/pasted-image-20250827105206-png)
+![](/images/openmp-入门/pasted-image-20250827105206.png)
 
 ## 3. Core Directives and Constructs
 
@@ -118,7 +118,7 @@ for (int i = 0; i < n; i++) {
 
 - **`schedule(runtime)`**：由环境变量 `OMP_SCHEDULE` 决定使用哪种调度策略，增加了灵活性。
 
-![](/images/openmp-入门/pasted-image-20250824155508-png)
+![](/images/openmp-入门/pasted-image-20250824155508.png)
 
 ## 6. Synchronization Control
 

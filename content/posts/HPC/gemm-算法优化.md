@@ -73,7 +73,7 @@ void gemm_naive(int M, int N, int K, const float* A, const float* B, float* C) {
 
 与其一次计算 {{< imath >}}C_{i,j}{{< /imath >}} 一个元素，不如一次性计算 {{< imath >}}C_{i, j\sim j+3}{{< /imath >}} 四个连续元素，这很好地利用了 {{< imath >}}C{{< /imath >}} 矩阵行内的空间局部性。把这四个元素加载到寄存器，可以大大减少对主存的访问次数。
 
-![](/images/gemm-算法优化/pasted-image-20250914111750-png)
+![](/images/gemm-算法优化/pasted-image-20250914111750.png)
 
 > 下文我们将最内层的循环称为**微内核（micro kernel）**，比如 `AddDot1x4` 就是一个微内核。
 
@@ -182,7 +182,7 @@ inline void AddDot1x4_unroll4(int K, const float* Ai, const float* Bj, float* Ci
 
 不难意识到，用一样的逻辑可以把上面的寄存器分块从 {{< imath >}}1 \times 4{{< /imath >}} 扩展到 {{< imath >}}4 \times 4{{< /imath >}}。这样可以进一步减少内存操作，提高效率。
 
-![](/images/gemm-算法优化/pasted-image-20250914113809-png)
+![](/images/gemm-算法优化/pasted-image-20250914113809.png)
 
 ```cpp
 // AddDot4x4: 计算 C 的一个 4x4 块（行主序，传入 C 的起始为 C[i][j]）

@@ -25,11 +25,11 @@ categories:
 
 {{< math >}}
 
-\begin{align}
+\begin{align*}
  & \sum_{k=0}^{n} (-1)^{k}\binom{ n }{ k } = 0 \\
 \implies & \sum_{k=0}^{2n} (-1)^{k}\binom{ 2n }{ k } =0 \\
 \implies & \sum_{k=0}^{2n} \binom{ 2n }{ 2k } = \sum_{k=1}^{2n} \binom{ 2n }{ 2k - 1 } 
-\end{align}
+\end{align*}
 
 {{< /math >}}
 同时由于
@@ -153,7 +153,7 @@ A = \dfrac{2^{3n} + (1+\omega)^{3n} + (1+\omega^{2})^{3n}}{3}
 \sum_{k=0}^{r} \binom{ n+k }{ k } = \sum_{k=0}^{r} \left[ \binom{ n+k+1 }{ k } - \binom{ n+k }{ k-1 }  \right] = \binom{ n+r+1 }{ r } - \binom{ n }{ -1 } 
 
 {{< /math >}}
-认为 {{< imath >}}\binom{ n }{ k }{{< /imath >}} 在 {{< imath >}}k>n{{< /imath >}} 或者 {{< imath >}}k<0{{< /imath >}} 时 {{< imath >}}\binom{ n }{ k }=0{{< /imath >}} ，则可得到
+认为 {{< imath >}}\binom{ n }{ k }{{< /imath >}} 在 {{< imath >}}k>n{{< /imath >}} 或者 {{< imath >}}k< 0{{< /imath >}} 时 {{< imath >}}\binom{ n }{ k }=0{{< /imath >}} ，则可得到
 {{< math >}}
 
 \sum_{k=0}^{r} \binom{ n+k }{ k } = \binom{ n+r+1 }{ r } 
@@ -225,13 +225,13 @@ k\binom{ n }{ k } = n\binom{ n-1 }{ k-1 } = n\binom{ n-1 }{ n-k }
 带入左式得到
 {{< math >}}
 
-\begin{align}
+\begin{align*}
 \sum_{i=0}^{a} \binom{ a }{ i } \binom{ b+i }{ a } & = \sum_{i=0}^{a} \sum_{j=0}^{i} \binom{ b }{ a-j } \binom{ a }{ i } \binom{ i }{ j } \\
  & = \sum_{i=0}^{a} \sum_{j=0}^{i} \binom{ b }{ a-j } \binom{ a }{ j } \binom{ a-j }{ i-j }  \\
  & = \sum_{j=0}^{a} \binom{ b }{ a-j } \binom{ a }{ j } \sum_{i=j}^{a} \binom{ a-j }{ i-j }  \\
  & = \sum_{j=0}^{a} \binom{ b }{ a-j } \binom{ a }{ a-j } 2^{a-j} \\
  & \xlongequal{i=a-j} \sum_{i=0}^{a} \binom{ b }{ i } \binom{ a }{ i } 2^{i}
-\end{align}
+\end{align*}
 
 {{< /math >}}
 
@@ -261,13 +261,13 @@ S_{k,1} & S_{k,2} & \dots & S_{k,k}
 对于这样的长方形区域，我们可以按行考虑，显然根据包含的规则， {{< imath >}}x{{< /imath >}} 在每一行出现的形式必定是从最左侧开始连续的一段，并且上到下每一行 {{< imath >}}x{{< /imath >}} 出现的次数是不降的。因此我们可以把这个问题转化为求一个长度为 {{< imath >}}k-r{{< /imath >}} ，每个数范围为 {{< imath >}}0\sim r{{< /imath >}} 的单调不降序列的方案数。设第 {{< imath >}}i{{< /imath >}} 个数的值为 {{< imath >}}t_{i}{{< /imath >}} ，那么方案数为
 {{< math >}}
 
-\begin{align}
+\begin{align*}
 \sum_{t_{1}=0}^{r} \sum_{t_{2}=0}^{t_{1}} \dots \sum_{t_{k-r}=0}^{t_{k-r-1}} 1 & = \sum_{t_{1}=0}^{r} \dots \sum_{t_{k-r-1}=0}^{t_{k-r-2}} (t_{k-r-1} + 1) \\
  & = \sum_{t_{1}=0}^{r} \dots \sum_{t_{k-r-1}=0}^{t_{k-r-2}} \binom{ t_{k-r-1} + 1 }{ 1 } \\
  & = \sum_{t_{1}=0}^{r} \dots \sum_{t_{k-r-2}=1}^{t_{k-r-3}} \binom{ t_{k-r-2}+2 }{ 2 }  \\
  & \dots \\
  & = \sum_{t_{1}=0}^{r} \binom{ t_{1} + k-r-1 }{ k-r-1 } = \binom{ k }{ k-r } 
- \end{align}
+ \end{align*}
 
 {{< /math >}}
 因此
@@ -334,11 +334,11 @@ a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
 
 考虑序列前缀和 {{< imath >}}S_{t} = \sum_{i=0}^{t}a_{i}{{< /imath >}} ，并且 {{< imath >}}S_{-1}=0{{< /imath >}}。在序列 {{< imath >}}\{ S_{-1},S_{0},\dots,S_{mn} \}{{< /imath >}} 中存在最小值，不妨设为 {{< imath >}}S_{k}{{< /imath >}}。
 
-先证明最小值 {{< imath >}}S_{k}{{< /imath >}} 唯一，假设序列中还存在 {{< imath >}}S_{k'}=S_{k}{{< /imath >}} ，不妨设 {{< imath >}}k'>k{{< /imath >}} ，那么 {{< imath >}}k\sim k'-1{{< /imath >}} 的子段和为零，由于这一段的元素非零，因此必然存在从 {{< imath >}}k{{< /imath >}} 开始或者在 {{< imath >}}k'{{< /imath >}} 结束的一段数的和小于零（否则可以证明这一段数之和必然为正），假设 {{< imath >}}\sum_{k\leq i\leq t}a_{i}<0{{< /imath >}} ，于是 {{< imath >}}S_{t}<S_{k}{{< /imath >}} ，与 {{< imath >}}S_{k}{{< /imath >}} 为最小值矛盾，因此最小值唯一！
+先证明最小值 {{< imath >}}S_{k}{{< /imath >}} 唯一，假设序列中还存在 {{< imath >}}S_{k'}=S_{k}{{< /imath >}} ，不妨设 {{< imath >}}k'>k{{< /imath >}} ，那么 {{< imath >}}k\sim k'-1{{< /imath >}} 的子段和为零，由于这一段的元素非零，因此必然存在从 {{< imath >}}k{{< /imath >}} 开始或者在 {{< imath >}}k'{{< /imath >}} 结束的一段数的和小于零（否则可以证明这一段数之和必然为正），假设 {{< imath >}}\sum_{k\leq i\leq t}a_{i}< 0{{< /imath >}} ，于是 {{< imath >}}S_{t}< S_{k}{{< /imath >}} ，与 {{< imath >}}S_{k}{{< /imath >}} 为最小值矛盾，因此最小值唯一！
 
 于是 {{< imath >}}\forall r\in \{ k+1,\dots,mn \}{{< /imath >}} ，有 {{< imath >}}S_{r}>S_{k}{{< /imath >}} ，因此从 {{< imath >}}k+1{{< /imath >}} 到 {{< imath >}}r{{< /imath >}} 的子段和为 {{< imath >}}\sum_{i=k+1}^{r}a_{i}=S_{r}-S_{k}>0{{< /imath >}}
 
-并且 {{< imath >}}\forall l\in \{ 0,\dots,k \}: S_{l-1}<S_{k}{{< /imath >}} ，因此从 {{< imath >}}k+1{{< /imath >}} 开始的一段循环序列中的和为（考虑在原序列中这一段的补集）：
+并且 {{< imath >}}\forall l\in \{ 0,\dots,k \}: S_{l-1}< S_{k}{{< /imath >}} ，因此从 {{< imath >}}k+1{{< /imath >}} 开始的一段循环序列中的和为（考虑在原序列中这一段的补集）：
 {{< math >}}
 
 \sum_{i=k+1}^{mn+1+l}a_{i}=\sum_{i=0}^{mn}a_{i} - \sum_{i=l}^{k}a_{i}=1-(S_{k}-S_{l-1}) = 1+S_{l-1}-S_{k}>0
@@ -353,7 +353,7 @@ a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
 
 **证**
 
-首先必然有 {{< imath >}}a_{0}=1{{< /imath >}} ，否则 {{< imath >}}a_{0}=1-m<0{{< /imath >}} 已经不满足条件。因此可以在原序列去掉 {{< imath >}}a_{0}{{< /imath >}}，问题的约束转化为 {{< imath >}}\sum_{i=1}^{mn}a_{i}=0{{< /imath >}} ，保证从 {{< imath >}}a_{1}{{< /imath >}} 开始的前缀和非负即可。
+首先必然有 {{< imath >}}a_{0}=1{{< /imath >}} ，否则 {{< imath >}}a_{0}=1-m< 0{{< /imath >}} 已经不满足条件。因此可以在原序列去掉 {{< imath >}}a_{0}{{< /imath >}}，问题的约束转化为 {{< imath >}}\sum_{i=1}^{mn}a_{i}=0{{< /imath >}} ，保证从 {{< imath >}}a_{1}{{< /imath >}} 开始的前缀和非负即可。
 
 将问题转化为在一个二维网格上路径计数的模型：从起点 {{< imath >}}S:(0,0){{< /imath >}} 出发，每一步会向上走 {{< imath >}}1{{< /imath >}} 格或者向右走 {{< imath >}}1{{< /imath >}} 格，目标走到 {{< imath >}}D:(n,n(m-1)){{< /imath >}}，其中前缀和非负的约束转化为不能越过直线 {{< imath >}}l:y=(m-1)x{{< /imath >}} 。
 

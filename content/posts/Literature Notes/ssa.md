@@ -56,7 +56,7 @@ TTA 在回归任务上的局限：为分类任务设计，一般基于熵最小�
 
 ## Significant-subspace Alignment
 
-![](/images/ssa/pasted-image-20250706233003-png)
+![](/images/ssa/pasted-image-20250706233003.png)
 
 SSA 的三个步骤：
 

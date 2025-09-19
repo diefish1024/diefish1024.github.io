@@ -60,7 +60,7 @@ EmT 是一个端到端的框架，包含四大模块：
 `raw EEG` -> **TGC** -> `时序图` -> **RMPG** -> `Tokens` -> **TCT** -> `深层特征` -> **TSO** -> `Result`
 
 
-![](/images/emt/pasted-image-20250730164135-png)
+![](/images/emt/pasted-image-20250730164135.png)
 
 ### EEG-Temporal-Graph Representations (TGC)
 
@@ -70,7 +70,7 @@ EmT 是一个端到端的框架，包含四大模块：
 - **时序序列**：序列是通过滑动窗口技术截取的一段较长的 EEG 数据里面切分成许多重叠的短的子片段，每个子片段生成的图所形成的序列
 
 
-![](/images/emt/pasted-image-20250731233612-png)
+![](/images/emt/pasted-image-20250731233612.png)
 
 - **双层滑动窗口分段**：为了捕捉不同时间尺度上的信息，TGC 采用了一种双层分段策略
 	- 首先将一次完整实验的 (trail) 的 EEG 数据，表示为 {{< imath >}}X \in \mathbb{R}^{c \times L}{{< /imath >}} （其中 {{< imath >}}c{{< /imath >}} 为通道数，{{< imath >}}L{{< /imath >}} 为总采样点数），通过一个较长的滑动窗口（长度为 {{< imath >}}l{{< /imath >}} ，步长为 {{< imath >}}s{{< /imath >}} ）分割成多个重叠的**长片段** {{< imath >}}\overline{X} \in \mathbb{R}^{c \times l}{{< /imath >}} 
@@ -240,13 +240,13 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 ### Implementation Details
 
 模型的三种变体：
-![](/images/emt/pasted-image-20250802162952-png)
+![](/images/emt/pasted-image-20250802162952.png)
 
 ## Analyses
 
 ### Classification
 
-![](/images/emt/pasted-image-20250802163455-png)
+![](/images/emt/pasted-image-20250802163455.png)
 
 - **SEED**：
 	- EmT-D 表现最佳，EmT-B 和 EmT-S 表现也良好，RGNN 表现第二佳
@@ -261,7 +261,7 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
     - **THU-EP 和 FACED (32 channels，more subjects)** ：EmT-B (4 层) 表现更好，通道数少且被试间变异性大时，更深的模型（EmT-D）容易过拟合
 ### Regression
 
-![](/images/emt/pasted-image-20250802164137-png)
+![](/images/emt/pasted-image-20250802164137.png)
 
 
 - 在 MAHNOB-HCI 数据集上，EmT-Regr (LP+LSTM) 取得了最低的 RMSE，而 EmT-Regr (LP+GRU) 取得了最佳的 PCC 和 CCC 
@@ -270,22 +270,22 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 
 ### Ablation Study
 
-![](/images/emt/pasted-image-20250802164718-png)
+![](/images/emt/pasted-image-20250802164718.png)
 
 ### Effect of EEG Features
 
-![](/images/emt/pasted-image-20250802165136-png)
+![](/images/emt/pasted-image-20250802165136.png)
 
 ### Effect of The Depth and Width of GCNs in RMPG
 
-![](/images/emt/pasted-image-20250802165509-png)
+![](/images/emt/pasted-image-20250802165509.png)
 
 - **Depth**：增加 GCN 层的数量会导致性能显著下降，这与更深 GCN 中存在的**过平滑**问题一致
 - **Width**：宽度从 8 增加到 32 时，性能呈正相关；当宽度进一步增加时，性能下降，这可能是由更大的模型尺寸导致的过拟合
 
 ### Effect of The Number of TCT Blocks
 
-![](/images/emt/pasted-image-20250802170025-png)
+![](/images/emt/pasted-image-20250802170025.png)
 
 - **Classfication (SEED)** ：TCT 块的数量从 2 增加到 8 时，ACC 和 F1 分数均显著提高，这表明增加 TCT 块数能增强模型捕捉时序上下文信息的能力，从而提升分类性能
 - **Regression (MAHNOB-HCI)** ：TCT 块的数量对性能指标几乎没有影响
@@ -295,7 +295,7 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 #### Learned Connections
 
 在 SEED 数据集上学习到的两种不同连接模式的可视化证据
-![](/images/emt/pasted-image-20250801002808-png)
+![](/images/emt/pasted-image-20250801002808.png)
 
 在 SEED 数据集上，两个可学习的邻接矩阵揭示了情绪认知过程中不同的连接模式：
 - (a) 中主要关注额叶、顶叶和颞叶区域之间的连接，这些区域与心理注意力密切相关
@@ -304,10 +304,10 @@ Z^{m+1} = \text{MLP}(\text{Norm}(Z^{m'})) + Z^{m'}
 #### Learned Temporal Contextual Information
 
 **Classfication (FACED)**
-![](/images/emt/pasted-image-20250802171153-png)
+![](/images/emt/pasted-image-20250802171153.png)
 
 **Regression**
-![](/images/emt/pasted-image-20250802171249-png)
+![](/images/emt/pasted-image-20250802171249.png)
 
 - 分类任务在 TCT 块之前，特征随时间变化，TCT 块之后，激活变得更加一致；这可能是因为自注意力机制关注与整体情绪状态高度相关的部分，而 STA 层通过聚合邻近的时序信息来平滑波动
 - 回归任务：特征空间也显示出时序变化；与分类不同，回归特征并非简单平滑，形成了更复杂的表示

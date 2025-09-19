@@ -23,7 +23,7 @@ categories:
 
 **TTA 的局限性**：TTA 允许一个预训练好的模型在不访问原始训练数据的情况下，利用无标签的测试数据进行自适应调整 。目前 TTA 在计算机视觉领域处理图像损坏、风格变化等属性偏移问题上很成功 。然而为图像处理设计的 TTA 方法直接应用到图上时，其在处理图结构偏移时的性能提升非常有限，几乎失效。
 
-![400](/images/matcha/pasted-image-20250828111414-png)
+![400](/images/matcha/pasted-image-20250828111414.png)
 
 ## Analysis
 
@@ -119,7 +119,7 @@ z_{i} \sim \mathcal{N}\left( (1 + \gamma h_{i})\mu_{+} + \gamma(1-h_{i})\mu_{-},
 
 论文进一步证明**调整跳数聚合参数 {{< imath >}}\gamma{{< /imath >}}** 是一个有效的方法。命题指出，最优的 {{< imath >}}\gamma{{< /imath >}} 依赖于图的度和同质性（即 {{< imath >}}\gamma_{T}^{*} = d_{T}(2h_{T} - 1){{< /imath >}} ），当图从源图变为目标图时，最优的 {{< imath >}}\gamma{{< /imath >}} 也会改变。因此在测试时把 {{< imath >}}\gamma{{< /imath >}} 调整到目标图的最优值就可以显著缓解表示退化，提升模型准确率。
 
-![](/images/matcha/pasted-image-20250831201529-png)
+![](/images/matcha/pasted-image-20250831201529.png)
 
 ## Proposed Framework
 
@@ -170,7 +170,7 @@ Matcha 框架可以和任何现有的 TTA 方法（论文中称为 `BaseTTA`）�
 
 除了性能提升，论文还通过 t-SNE 可视化方法，验证了 Matcha 是否成功恢复了节点表示的质量。
 
-![](/images/matcha/pasted-image-20250901220420-png)
+![](/images/matcha/pasted-image-20250901220420.png)
 
 在结构偏移下（b），原始模型的节点表示变得混乱不堪。在使用其他损失函数（c, d, e）后，表示质量虽有改善但仍不理想。而使用 Matcha 的 PIC 损失后（f），节点表示重新形成了非常清晰的聚类结构，证明其成功恢复了表示质量。
 

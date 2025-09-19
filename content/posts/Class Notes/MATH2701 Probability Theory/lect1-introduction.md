@@ -32,7 +32,7 @@ categories:
 
 对二维随机游走问题的一个简化的建模是在 {{< imath >}}\mathbb{Z}^{2}{{< /imath >}} 的网格上随机游走，从原点 {{< imath >}}(0,0){{< /imath >}} 出发，每次以 {{< imath >}}\dfrac{1}{4}{{< /imath >}} 的概率往上下左右四个方向移动。我们现在询问，这个随机游走的路径是否会无数次回到原点？用 {{< imath >}}T{{< /imath >}} 来表示第一次回到原点的时间，那么可以证明无数次回到原点等价于 {{< imath >}}\mathbb{P}[T < \infty] = 1{{< /imath >}} ，也就是 {{< imath >}}T{{< /imath >}} 以 {{< imath >}}1{{< /imath >}} 的概率是有限的，当然目前只能从直觉上去理解，这个写法需要在后续的课程中去严格定义。
 
-关于这个问题的答案，波利亚证明了当考虑 {{< imath >}}n{{< /imath >}} 维格点 {{< imath >}}\mathbb{Z}^{n}{{< /imath >}} 的随机游走时，对于 {{< imath >}}n<2{{< /imath >}} ，{{< imath >}}\mathbb{P}[T < \infty] = 1{{< /imath >}} ，对于 {{< imath >}}n\geq 2{{< /imath >}} ，{{< imath >}}\mathbb{P}[T < \infty] < 1{{< /imath >}}。
+关于这个问题的答案，波利亚证明了当考虑 {{< imath >}}n{{< /imath >}} 维格点 {{< imath >}}\mathbb{Z}^{n}{{< /imath >}} 的随机游走时，对于 {{< imath >}}n< 2{{< /imath >}} ，{{< imath >}}\mathbb{P}[T < \infty] = 1{{< /imath >}} ，对于 {{< imath >}}n\geq 2{{< /imath >}} ，{{< imath >}}\mathbb{P}[T < \infty] < 1{{< /imath >}}。
 
 ## 投资策略问题
 
