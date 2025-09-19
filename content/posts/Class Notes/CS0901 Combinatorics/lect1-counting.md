@@ -45,7 +45,7 @@ categories:
 - 定义：{{< imath >}}\left\{ {n \atop k} \right\}{{< /imath >}} 表示“将 {{< imath >}}n{{< /imath >}} 个不同元素分成 {{< imath >}}k{{< /imath >}} 个非空无序块”的方案数。
 - 基本递推：{{< math >}}
  \left\{ {n \atop k} \right\} = \left\{ {n-1 \atop k-1} \right\} + k \left\{ {n-1 \atop k} \right\}, \quad \left\{ {0 \atop 0} \right\}=1 
-{{< /math >}}从组合意义上理解，元素 {{< imath >}}n{{< /imath >}} 要么独自成新块（{{< imath >}}\left\{ {n-1 \atop k-1} \right\}{{< /imath >}}），要么加入已有 {{< imath >}}k{{< /imath >}} 个块之一（{{< imath >}}k \left\{ {n-1 \atop k} \right\}{{< /imath >}}）。
+{{< /math >}} 从组合意义上理解，元素 {{< imath >}}n{{< /imath >}} 要么独自成新块（{{< imath >}}\left\{ {n-1 \atop k-1} \right\}{{< /imath >}}），要么加入已有 {{< imath >}}k{{< /imath >}} 个块之一（{{< imath >}}k \left\{ {n-1 \atop k} \right\}{{< /imath >}}）。
 
 - 与降阶阶乘的分层展开：{{< math >}}
  m^{n} = \sum_{k=1}^{n} \left\{ {n \atop k} \right\} m^{\underline{k}} 
@@ -100,7 +100,7 @@ categories:
 {{< /math >}}
 	- 计算比值 {{< math >}}
  \frac{ \binom{ n }{ k } }{ \binom{ n }{ k-1 } } = \frac{ n-k+1 }{ k }, \quad \frac{ \binom{ n }{ k+1 } }{ \binom{ n }{ k } } = \frac{ n-k }{ k+1 } 
-{{< /math >}}由此得 {{< math >}}
+{{< /math >}} 由此得 {{< math >}}
  \frac{ \binom{ n }{ k }^{2} }{ \binom{ n }{ k-1 } \binom{ n }{ k+1 } } = \frac{ k (k+1) }{ (n-k+1)(n-k) } \cdot \frac{ (n-k+1)(n-k) }{ k (k+1) } = 1 
 {{< /math >}}
 
