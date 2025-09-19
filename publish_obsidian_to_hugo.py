@@ -54,10 +54,10 @@ def slugify(text):
 
 def pretty_title_from_dirname(name: str) -> str:
     """
-    把目录名简单美化为标题：
-    - 把 '-'、'_' 转为空格；
-    - 若处理后没有大写字母，则 Title Case；
-    - 否则保留原大小写（便于保留如 'CS2951'、'Class Notes' 等）。
+    Beautify directory name for title:
+    - Replace '-' and '_' with spaces.
+    - If no uppercase letters remain, Title Case it.
+    - Otherwise keep original casing.
     """
     base = name.replace('-', ' ').replace('_', ' ').strip()
     if not base:
@@ -69,18 +69,13 @@ def pretty_title_from_dirname(name: str) -> str:
 
 def ensure_section_index_chain(dest_dir: str, root_content_dir: str):
     """
-    从 dest_dir 向上逐级直到 root_content_dir（不含 root_content_dir）为止，
-    如果某层目录下不存在 _index.md，则创建一个，title 为该目录名的美化形式。
-    例如：
-      content/posts/Class Notes/CS2951  -> 创建：
-        content/posts/_index.md
-        content/posts/Class Notes/_index.md
-        content/posts/Class Notes/CS2951/_index.md
+    From dest_dir up to (but excluding) root_content_dir, create missing _index.md.
+    The 'title' is the beautified directory name.
     """
     abs_root = os.path.abspath(root_content_dir)
     current = os.path.abspath(dest_dir)
 
-    # 保护：确保 current 在 content 根目录之下
+    # Ensure current is under the content root
     try:
         common = os.path.commonpath([current, abs_root])
     except ValueError:
@@ -90,7 +85,7 @@ def ensure_section_index_chain(dest_dir: str, root_content_dir: str):
 
     while True:
         if os.path.normcase(current) == os.path.normcase(abs_root):
-            # 到达 content 根，停止（不在 content 根写 _index.md）
+            # Stop at content root (do not create at content root)
             break
 
         index_path = os.path.join(current, "_index.md")
@@ -112,39 +107,68 @@ def ensure_section_index_chain(dest_dir: str, root_content_dir: str):
 def process_content(main_content, note_slug):
     """Processes content to convert LaTeX to shortcodes and update image links."""
     processed_content = main_content
-
     # --- 1. Convert LaTeX to Shortcodes ---
     display_math_pattern = re.compile(r'\$\$(.*?)\$\$', re.DOTALL)
     content_after_display = display_math_pattern.sub(r'{{< math >}}\n\1\n{{< /math >}}', processed_content)
     inline_math_pattern = re.compile(r'\$([^\$]+?)\$')
     content_after_latex = inline_math_pattern.sub(r'{{< imath >}}\1{{< /imath >}}', content_after_display)
-
-    # --- 2. Process Image Links ---
+    # --- 2. Split into code fences / inline code vs normal text (do not touch code) ---
+    fence_re = re.compile(
+        r'(?P<fence>(^|\n)(```|~~~)[^\n]*\n.*?\n\3[ \t]*\n?)'  # fenced code block ``` or ~~~
+        r'|(?P<inline>`[^`\n]+`)',                             # inline code `...`
+        re.DOTALL
+    )
+    # Pattern for math-like '<' fix: add a space after '<' if preceded by letter/digit/underscore/closing bracket
+    safe_left_chars = r'A-Za-z0-9_\)\]\}'
+    lt_fix = re.compile(r'(?<=[' + safe_left_chars + r'\u00C0-\u024F\u0370-\u03FF\u0400-\u04FF])<')
+    # Robust image pattern (outside code only):
+    #   ![alt](url "optional title")
+    image_pattern = re.compile(
+        r'!\[(?P<alt>[^\]]*)\]\('
+        r'(?P<src>[^)\s]+)'                 # url without spaces; handles %20 等
+        r'(?:\s+"[^"]*")?'                  # optional title
+        r'\)'
+    )
     def replace_image_links(match):
-        alt_text = match.group(1)
-        original_path = match.group(2)
+        alt_text = match.group('alt')
+        original_path = match.group('src')
         decoded_path = unquote(original_path)
+        # Keep http/https and absolute paths unchanged
         if decoded_path.startswith(('http://', 'https://', '/')):
             return match.group(0)
-
         image_filename = os.path.basename(decoded_path)
         source_image_path = os.path.join(OBSIDIAN_ATTACHMENTS_PATH, image_filename)
         if not os.path.exists(source_image_path):
             logging.warning(f"Image not found at resolved path: {source_image_path}")
-            return f"![{alt_text}]()"
-
-        image_name = os.path.basename(source_image_path)
-        slugified_image_name = slugify(image_name)
+            return f"![{alt_text}]({original_path})"
+        # Preserve extension; slugify only the stem
+        stem, ext = os.path.splitext(os.path.basename(source_image_path))
+        slugified_image_name = slugify(stem) + ext.lower()
         note_image_dir = os.path.join(HUGO_STATIC_IMAGES_PATH, note_slug)
         os.makedirs(note_image_dir, exist_ok=True)
         dest_image_path = os.path.join(note_image_dir, slugified_image_name)
         shutil.copy2(source_image_path, dest_image_path)
-        logging.info(f"  - Copied image: {image_name} -> {os.path.relpath(dest_image_path, HUGO_SITE_PATH)}")
+        logging.info(f"  - Copied image: {os.path.basename(source_image_path)} -> {os.path.relpath(dest_image_path, HUGO_SITE_PATH)}")
         web_path = f"/images/{note_slug}/{slugified_image_name}"
         return f"![{alt_text}]({web_path})"
-
-    image_pattern = re.compile(r'!\[(.*?)\]\((.*?)\)')
-    final_content = image_pattern.sub(replace_image_links, content_after_latex)
+    # Process non-code segments: first image links, then '<' safety fix
+    parts = []
+    last = 0
+    for m in fence_re.finditer(content_after_latex):
+        normal_seg = content_after_latex[last:m.start()]
+        # images outside code
+        normal_seg = image_pattern.sub(replace_image_links, normal_seg)
+        # '<' safety outside code
+        normal_seg = lt_fix.sub('< ', normal_seg)
+        parts.append(normal_seg)
+        # keep code fence / inline code intact
+        parts.append(m.group(0))
+        last = m.end()
+    tail = content_after_latex[last:]
+    tail = image_pattern.sub(replace_image_links, tail)
+    tail = lt_fix.sub('< ', tail)
+    parts.append(tail)
+    final_content = ''.join(parts)
     return final_content
 
 
