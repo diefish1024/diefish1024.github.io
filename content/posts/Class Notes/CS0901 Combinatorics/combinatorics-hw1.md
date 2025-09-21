@@ -382,7 +382,7 @@ S'=\overline{A}rB
 
 ---
 
-// 希望通过引入某种“标记操作”，比如通过标记某个 {{< imath >}}U{{< /imath >}} 操作，来构造出一个 {{< imath >}}\text{非法序列} \leftrightarrow (\text{合法序列},u^{*}){{< /imath >}} 的双射，其中 {{< imath >}}u^{*}{{< /imath >}} 表示被标记的 {{< imath >}}U{{< /imath >}} 操作。这样说明一个合法序列对应 {{< imath >}}N{{< /imath >}} 个非法序列，于是合法序列数量为
+// 通过手动计算小样例，可以猜出一个合法序列对应 {{< imath >}}N{{< /imath >}} 个非法序列的结论。并且注意到有 {{< imath >}}N{{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作，因此希望通过引入某种“标记操作”，来标记某个 {{< imath >}}U{{< /imath >}} 操作，来构造出一个 {{< imath >}}\text{非法序列} \leftrightarrow (\text{合法序列},u^{*}){{< /imath >}} 的双射，其中 {{< imath >}}u^{*}{{< /imath >}} 表示被标记的 {{< imath >}}U{{< /imath >}} 操作。这样说明一个合法序列对应 {{< imath >}}N{{< /imath >}} 个非法序列，于是合法序列数量为
 {{< math >}}
 
 \dfrac{1}{N+1}\binom{ mn }{ n } = \dfrac{1}{n(m-1)+1}\binom{ mn }{ n } 
