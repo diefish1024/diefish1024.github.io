@@ -255,7 +255,7 @@ S_{k,1} & S_{k,2} & \dots & S_{k,k}
 
 由于每个元素相互独立，具体方案和元素无关，因此可以考虑一个元素的合法出现方式（在哪些集合会包含这个元素）的总数，设为 {{< imath >}}f(k){{< /imath >}} ，那么最后答案即为 {{< imath >}}[f(k)]^{n}{{< /imath >}} 。
 
-现在考虑 {{< imath >}}x\in A{{< /imath >}} ，根据包含关系，不难看出如果 {{< imath >}}x\in S{{< /imath >}} ，那么 {{< imath >}}S{{< /imath >}} 左侧和上方（如果存在）必有一个集合包含 {{< imath >}}x{{< /imath >}}。因此出现 {{< imath >}}x{{< /imath >}} 的集合在 {{< imath >}}k{{< /imath >}} 阶三角形中可以形成一个从 {{< imath >}}(1,1){{< /imath >}} 出发，每次可以向右或者下方通行的有向图。
+现在考虑 {{< imath >}}x\in A{{< /imath >}} ，根据包含关系，不难看出如果 {{< imath >}}x\in S{{< /imath >}} ，那么 {{< imath >}}S{{< /imath >}} 左侧和上方（如果存在）的集合都会包含 {{< imath >}}x{{< /imath >}}。因此出现 {{< imath >}}x{{< /imath >}} 的集合在 {{< imath >}}k{{< /imath >}} 阶三角形中可以形成一个从 {{< imath >}}(1,1){{< /imath >}} 出发，每次可以向右或者下方通行的有向图。
 
 考虑某个合法方案，设元素最后一次出现在对角线（{{< imath >}}S_{1,1},\dots,S_{k,k}{{< /imath >}}）的位置为 {{< imath >}}S_{r,r}{{< /imath >}} ，那么根据包含关系，此时显然 {{< imath >}}x{{< /imath >}} 包含于上方的 {{< imath >}}r{{< /imath >}} 阶小三角阵中的每一个元素，并且不会出现在下方的 {{< imath >}}k-r{{< /imath >}} 阶小三角方阵中（否则必然会再次出现在对角线中）。因此只需要考虑 {{< imath >}}x{{< /imath >}} 在余下部分，也就是四个顶点分别为为 {{< imath >}}(r+1,1),(r+1,r),(k,1),(k,r){{< /imath >}} 的长方形区域中的合法方案数即可。
 
@@ -356,22 +356,36 @@ a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
 
 首先必然有 {{< imath >}}a_{0}=1{{< /imath >}} ，否则 {{< imath >}}a_{0}=1-m< 0{{< /imath >}} 已经不满足条件。因此可以在原序列去掉 {{< imath >}}a_{0}{{< /imath >}}，问题的约束转化为 {{< imath >}}\sum_{i=1}^{mn}a_{i}=0{{< /imath >}} ，保证从 {{< imath >}}a_{1}{{< /imath >}} 开始的前缀和非负即可。
 
-将问题转化为在一个二维网格上路径计数的模型：从起点 {{< imath >}}S:(0,0){{< /imath >}} 出发，每一步会向上走 {{< imath >}}1{{< /imath >}} 格或者向右走 {{< imath >}}1{{< /imath >}} 格，目标走到 {{< imath >}}D:(n,n(m-1)){{< /imath >}}，其中前缀和非负的约束转化为不能越过直线 {{< imath >}}l:y=(m-1)x{{< /imath >}} 。
+将问题转化为在一个二维网格上路径计数的模型：从起点 {{< imath >}}O(0,0){{< /imath >}} 出发，每一步会向上走 {{< imath >}}1{{< /imath >}} 格或者向右走 {{< imath >}}1{{< /imath >}} 格，目标走到 {{< imath >}}D(n,n(m-1)){{< /imath >}}，其中前缀和非负的约束转化为不能越过直线 {{< imath >}}l:y=(m-1)x{{< /imath >}} 。
 
-对于一个不合法的路径，考虑其第一次越过 {{< imath >}}l{{< /imath >}} 时的交点 {{< imath >}}(t,(m-1)t){{< /imath >}} ，之后必然向右走经过 {{< imath >}}P:(t+1,(m-1)t){{< /imath >}} ，因此一条路径不合法，当且仅当它碰到了直线 {{< imath >}}l':y=(m-1)(x-1){{< /imath >}}。同理 Catalan 数的证明方法，我们考虑一个广义的“反射”方式来构造出一个 {{< imath >}}PD{{< /imath >}} 段到无约束路径的双射。
+我们将向上走的操作记为 {{< imath >}}U{{< /imath >}}，向右走的操作记为 {{< imath >}}R{{< /imath >}}，显然最终一个 {{< imath >}}R{{< /imath >}} 可以对应 {{< imath >}}(m-1){{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作。由于一个 {{< imath >}}R{{< /imath >}} 操作的跨度过大，使我们难以操作“路径中第一个不合法的点”，因此我们考虑将 {{< imath >}}R{{< /imath >}} 拆解成粒度更小 {{< imath >}}(m-1){{< /imath >}} 个连续的 {{< imath >}}r{{< /imath >}} 操作，可以看成向右移动 {{< imath >}}\dfrac{1}{m-1}{{< /imath >}} 格的距离。此时一条路径中含有 {{< imath >}}N=n(m-1){{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作和 {{< imath >}}r{{< /imath >}} 操作。
 
-将向上走记为 {{< imath >}}U{{< /imath >}} 操作，向右走记为 {{< imath >}}R{{< /imath >}} 操作，显然最终每个 {{< imath >}}R{{< /imath >}} 操作都会对应 {{< imath >}}m-1{{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作。从 {{< imath >}}P{{< /imath >}} 到 {{< imath >}}D{{< /imath >}} 还需要经过 {{< imath >}}(n-t-1){{< /imath >}} 个 {{< imath >}}R{{< /imath >}} 操作和 {{< imath >}}(m-1)(n-t){{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作，我们将 {{< imath >}}(m-1){{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作替换为一个 {{< imath >}}R{{< /imath >}} 操作，将一个 {{< imath >}}R{{< /imath >}} 操作替换为 {{< imath >}}(m-1){{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作，即可将 {{< imath >}}\vec{PD}=(n-t-1,(m-1)(n-t)){{< /imath >}} 替换为 {{< imath >}}\vec{PR'}=(n-t,(m-1)(n-t-1)){{< /imath >}} ，得到一个新的目标 {{< imath >}}D':(n+1,(m-1)(n-1)){{< /imath >}}。此时可以发现，每一条从 {{< imath >}}S{{< /imath >}} 到 {{< imath >}}D{{< /imath >}} 的非法路径，都变成了一条从 {{< imath >}}S{{< /imath >}} 到 {{< imath >}}D'{{< /imath >}} 的路径。
-
-由于从 {{< imath >}}S{{< /imath >}} 到 {{< imath >}}D'{{< /imath >}} 必然要穿过直线 {{< imath >}}l'{{< /imath >}} ，因此每一条这样的路径都对应一条 {{< imath >}}S{{< /imath >}} 到 {{< imath >}}D{{< /imath >}} 的非法路径。这样我们就构造了一个非法路径的双射。因此合法的路径总数，也就是合法序列总数为
+考虑一条不合法的路径，可以看成一个不合法的操作序列 {{< imath >}}S{{< /imath >}}，单独找出第一次越过 {{< imath >}}l{{< /imath >}} 的 {{< imath >}}r{{< /imath >}} 操作，可以将 {{< imath >}}S{{< /imath >}} 分解成
 {{< math >}}
 
-\binom{ mn }{ n } - \binom{ mn-m+2 }{ n+1 } 
+S = ArB
 
 {{< /math >}}
-带入 {{< imath >}}m=2{{< /imath >}} ，发现答案为
+其中 {{< imath >}}A{{< /imath >}} 的末尾刚好在 {{< imath >}}l{{< /imath >}} 上，满足 {{< imath >}}r=U{{< /imath >}} （表示数量，下意义相同），{{< imath >}}B{{< /imath >}} 为剩余序列。
+
+由于 {{< imath >}}A{{< /imath >}} 的性质更好，所以参考 Catalan 数的证明，我们考虑将 {{< imath >}}A{{< /imath >}} “反射”，将其中的所有 {{< imath >}}r{{< /imath >}} 和 {{< imath >}}U{{< /imath >}} 操作互换，得到 {{< imath >}}\overline{A}{{< /imath >}}，从而构造出
 {{< math >}}
 
-\binom{ 2n }{ n } -\binom{ 2n }{ n+1 } =C_{n}
+S'=\overline{A}rB
 
 {{< /math >}}
-确实为卡特兰数。
+于是我们得到了一个不合法序列 {{< imath >}}S{{< /imath >}} 和某个 {{< imath >}}S'{{< /imath >}} 序列的双射。从 {{< imath >}}S'{{< /imath >}} 映射会 {{< imath >}}S{{< /imath >}} 同样只需要找出第一次到达 {{< imath >}}l{{< /imath >}} 的位置找出 {{< imath >}}\overline{A}{{< /imath >}}，再进行一次“反射”即可。
+
+我们再定义一个压缩操作，表示从左到右扫描一个序列，遇到 {{< imath >}}U{{< /imath >}} 直接加入新的序列，遇到累计遇到 {{< imath >}}(m-1){{< /imath >}} 个 {{< imath >}}r{{< /imath >}} 向新序列中加入一个 {{< imath >}}R{{< /imath >}}。这样对于任意一个 {{< imath >}}U{{< /imath >}} 和 {{< imath >}}r{{< /imath >}} 数量均为 {{< imath >}}N{{< /imath >}} 的序列，压缩后都会得到一个无约束的 {{< imath >}}U-R{{< /imath >}} 序列。我们将这个操作记为 {{< imath >}}C(S){{< /imath >}}，{{< imath >}}S{{< /imath >}} 表示操作的 {{< imath >}}U-r{{< /imath >}} 序列。
+
+于是现在我们对于一条不合法的路径，将其细化为 {{< imath >}}U-r{{< /imath >}} 序列 {{< imath >}}S{{< /imath >}} 后再反射为 {{< imath >}}S'{{< /imath >}}，压缩后得到 {{< imath >}}P=C(S'){{< /imath >}}，这是一个无约束的 {{< imath >}}U-R{{< /imath >}} 序列，含有 {{< imath >}}n{{< /imath >}} 个 {{< imath >}}R{{< /imath >}}。
+
+---
+
+// 希望通过引入某种“标记操作”，比如通过标记某个 {{< imath >}}U{{< /imath >}} 操作，来构造出一个 {{< imath >}}\text{非法序列} \leftrightarrow (\text{合法序列},u^{*}){{< /imath >}} 的双射，其中 {{< imath >}}u^{*}{{< /imath >}} 表示被标记的 {{< imath >}}U{{< /imath >}} 操作。这样说明一个合法序列对应 {{< imath >}}N{{< /imath >}} 个非法序列，于是合法序列数量为
+{{< math >}}
+
+\dfrac{1}{N+1}\binom{ mn }{ n } = \dfrac{1}{n(m-1)+1}\binom{ mn }{ n } 
+
+{{< /math >}}
+
