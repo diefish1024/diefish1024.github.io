@@ -333,7 +333,7 @@ a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
 
 **证**
 
-考虑序列前缀和 {{< imath >}}S_{t} = \sum_{i=0}^{t}a_{i}{{< /imath >}} ，并且 {{< imath >}}S_{-1}=0{{< /imath >}}。在序列 {{< imath >}}\{ S_{-1},S_{0},\dots,S_{mn} \}{{< /imath >}} 中存在最小值  {{< imath >}}S_{k}{{< /imath >}}，如果有多个，取其中下标最大的为 {{< imath >}}S_{k}{{< /imath >}}，显然 {{< imath >}}S_{k}{{< /imath >}} 唯一。
+考虑序列前缀和 {{< imath >}}S_{t} = \sum_{i=0}^{t}a_{i}{{< /imath >}} ，并且 {{< imath >}}S_{-1}=0{{< /imath >}}。在序列 {{< imath >}}\{ S_{-1},S_{0},\dots,S_{mn} \}{{< /imath >}} 中存在最小值 {{< imath >}}S_{k}{{< /imath >}}，如果有多个，取其中下标最大的为 {{< imath >}}S_{k}{{< /imath >}}，显然 {{< imath >}}S_{k}{{< /imath >}} 唯一。
 
 于是 {{< imath >}}\forall r\in \{ k+1,\dots,mn \}{{< /imath >}} ，有 {{< imath >}}S_{r}>S_{k}{{< /imath >}} ，因此从 {{< imath >}}k+1{{< /imath >}} 到 {{< imath >}}r{{< /imath >}} 的子段和为 {{< imath >}}\sum_{i=k+1}^{r}a_{i}=S_{r}-S_{k}>0{{< /imath >}}
 
@@ -363,7 +363,7 @@ a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
 
 {{< /math >}}
 
-**证 2**
+**证 2**（没证出来😭）
 
 首先必然有 {{< imath >}}a_{0}=1{{< /imath >}} ，否则 {{< imath >}}a_{0}=1-m< 0{{< /imath >}} 已经不满足条件。因此可以在原序列去掉 {{< imath >}}a_{0}{{< /imath >}}，问题的约束转化为 {{< imath >}}\sum_{i=1}^{mn}a_{i}=0{{< /imath >}} ，保证从 {{< imath >}}a_{1}{{< /imath >}} 开始的前缀和非负即可。
 
