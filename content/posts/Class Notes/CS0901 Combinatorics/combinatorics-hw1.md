@@ -333,16 +333,14 @@ a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
 
 **证**
 
-考虑序列前缀和 {{< imath >}}S_{t} = \sum_{i=0}^{t}a_{i}{{< /imath >}} ，并且 {{< imath >}}S_{-1}=0{{< /imath >}}。在序列 {{< imath >}}\{ S_{-1},S_{0},\dots,S_{mn} \}{{< /imath >}} 中存在最小值，不妨设为 {{< imath >}}S_{k}{{< /imath >}}。
-
-先证明最小值 {{< imath >}}S_{k}{{< /imath >}} 唯一，假设序列中还存在 {{< imath >}}S_{k'}=S_{k}{{< /imath >}} ，不妨设 {{< imath >}}k'>k{{< /imath >}} ，那么 {{< imath >}}k\sim k'-1{{< /imath >}} 的子段和为零，由于这一段的元素非零，因此必然存在从 {{< imath >}}k{{< /imath >}} 开始或者在 {{< imath >}}k'{{< /imath >}} 结束的一段数的和小于零（否则可以证明这一段数之和必然为正），假设 {{< imath >}}\sum_{k\leq i\leq t}a_{i}< 0{{< /imath >}} ，于是 {{< imath >}}S_{t}< S_{k}{{< /imath >}} ，与 {{< imath >}}S_{k}{{< /imath >}} 为最小值矛盾，因此最小值唯一！
+考虑序列前缀和 {{< imath >}}S_{t} = \sum_{i=0}^{t}a_{i}{{< /imath >}} ，并且 {{< imath >}}S_{-1}=0{{< /imath >}}。在序列 {{< imath >}}\{ S_{-1},S_{0},\dots,S_{mn} \}{{< /imath >}} 中存在最小值  {{< imath >}}S_{k}{{< /imath >}}，如果有多个，取其中下标最大的为 {{< imath >}}S_{k}{{< /imath >}}，显然 {{< imath >}}S_{k}{{< /imath >}} 唯一。
 
 于是 {{< imath >}}\forall r\in \{ k+1,\dots,mn \}{{< /imath >}} ，有 {{< imath >}}S_{r}>S_{k}{{< /imath >}} ，因此从 {{< imath >}}k+1{{< /imath >}} 到 {{< imath >}}r{{< /imath >}} 的子段和为 {{< imath >}}\sum_{i=k+1}^{r}a_{i}=S_{r}-S_{k}>0{{< /imath >}}
 
-并且 {{< imath >}}\forall l\in \{ 0,\dots,k \}: S_{l-1}< S_{k}{{< /imath >}} ，因此从 {{< imath >}}k+1{{< /imath >}} 开始的一段循环序列中的和为（考虑在原序列中这一段的补集）：
+并且 {{< imath >}}\forall l\in \{ 0,\dots,k \}: S_{l-1}\leq S_{k}{{< /imath >}} ，因此从 {{< imath >}}k+1{{< /imath >}} 开始的一段循环序列中的和为（考虑在原序列中这一段的补集）：
 {{< math >}}
 
-\sum_{i=k+1}^{mn+1+l}a_{i}=\sum_{i=0}^{mn}a_{i} - \sum_{i=l}^{k}a_{i}=1-(S_{k}-S_{l-1}) = 1+S_{l-1}-S_{k}>0
+\sum_{i=k+1}^{mn+1+l}a_{i\bmod (mn+1)}=\sum_{i=0}^{mn}a_{i} - \sum_{i=l}^{k}a_{i}=1-(S_{k}-S_{l-1}) = 1+S_{l-1}-S_{k}\geq 1 > 0
 
 {{< /math >}}
 
@@ -352,7 +350,20 @@ a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
 
 求满足“所有前缀部分和都为正”的序列 {{< imath >}}a_{0},a_{1},\ldots,a_{mn}{{< /imath >}} 的总数。
 
-**证**
+**证 1**
+
+不考虑任意前缀和为正的限制，所有的序列总数为 {{< imath >}}\binom{ mn+1 }{ n }{{< /imath >}}（总共 {{< imath >}}mn+1{{< /imath >}} 个数，选择 {{< imath >}}n{{< /imath >}} 个数为 {{< imath >}}1-m{{< /imath >}}）。
+
+对于任意一个序列，根据 {{< imath >}}(2){{< /imath >}} 的结论，存在唯一的 {{< imath >}}k{{< /imath >}} 使得从 {{< imath >}}k{{< /imath >}} 开始的所有前缀和为正，因此我们将改序列的下标向左平移 {{< imath >}}k{{< /imath >}} 即可得到一个合法的序列。
+
+这说明每种圆排列都对应唯一一个合法的序列，所以答案为
+{{< math >}}
+
+\dfrac{1}{mn+1}\binom{ mn+1 }{ n } 
+
+{{< /math >}}
+
+**证 2**
 
 首先必然有 {{< imath >}}a_{0}=1{{< /imath >}} ，否则 {{< imath >}}a_{0}=1-m< 0{{< /imath >}} 已经不满足条件。因此可以在原序列去掉 {{< imath >}}a_{0}{{< /imath >}}，问题的约束转化为 {{< imath >}}\sum_{i=1}^{mn}a_{i}=0{{< /imath >}} ，保证从 {{< imath >}}a_{1}{{< /imath >}} 开始的前缀和非负即可。
 
@@ -366,7 +377,7 @@ a_k,\ a_k+a_{k+1},\ \ldots,\ a_k+a_{k+1}+\cdots+a_{k-1}
 S = ArB
 
 {{< /math >}}
-其中 {{< imath >}}A{{< /imath >}} 的末尾刚好在 {{< imath >}}l{{< /imath >}} 上，满足 {{< imath >}}r=U{{< /imath >}} （表示数量，下意义相同），{{< imath >}}B{{< /imath >}} 为剩余序列。
+其中 {{< imath >}}A{{< /imath >}} 的末尾刚好在 {{< imath >}}l{{< /imath >}} 上，满足 {{< imath >}}r=U{{< /imath >}} （数量），{{< imath >}}B{{< /imath >}} 为剩余序列。
 
 由于 {{< imath >}}A{{< /imath >}} 的性质更好，所以参考 Catalan 数的证明，我们考虑将 {{< imath >}}A{{< /imath >}} “反射”，将其中的所有 {{< imath >}}r{{< /imath >}} 和 {{< imath >}}U{{< /imath >}} 操作互换，得到 {{< imath >}}\overline{A}{{< /imath >}}，从而构造出
 {{< math >}}
@@ -382,10 +393,10 @@ S'=\overline{A}rB
 
 ---
 
-// 通过手动计算小样例，可以猜出一个合法序列对应 {{< imath >}}N{{< /imath >}} 个非法序列的结论。并且注意到有 {{< imath >}}N{{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作，因此希望通过引入某种“标记操作”，来标记某个 {{< imath >}}U{{< /imath >}} 操作，来构造出一个 {{< imath >}}\text{非法序列} \leftrightarrow (\text{合法序列},u^{*}){{< /imath >}} 的双射，其中 {{< imath >}}u^{*}{{< /imath >}} 表示被标记的 {{< imath >}}U{{< /imath >}} 操作。这样说明一个合法序列对应 {{< imath >}}N{{< /imath >}} 个非法序列，于是合法序列数量为
+// 通过手动计算小数据，可以猜出一个合法序列对应 {{< imath >}}n(m-1){{< /imath >}} 个非法序列的结论。并且注意到有 {{< imath >}}N{{< /imath >}} 个 {{< imath >}}U{{< /imath >}} 操作，因此希望通过引入某种“标记操作”，来标记某个 {{< imath >}}U{{< /imath >}} 操作，来构造出一个 {{< imath >}}\text{非法序列} \leftrightarrow (\text{合法序列},u^{*}){{< /imath >}} 的双射，其中 {{< imath >}}u^{*}{{< /imath >}} 表示被标记的 {{< imath >}}U{{< /imath >}} 操作。这样说明一个合法序列对应 {{< imath >}}N{{< /imath >}} 个非法序列，于是合法序列数量为
 {{< math >}}
 
-\dfrac{1}{N+1}\binom{ mn }{ n } = \dfrac{1}{n(m-1)+1}\binom{ mn }{ n } 
+\dfrac{1}{N+1}\binom{ mn }{ n } = \dfrac{1}{n(m-1)+1}\binom{ mn }{ n } = \dfrac{1}{mn+1}\binom{ mn+1 }{ n } 
 
 {{< /math >}}
 
