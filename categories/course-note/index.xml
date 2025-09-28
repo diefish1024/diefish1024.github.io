@@ -9,10 +9,61 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.150.0</generator>
+    <generator>Hugo -- 0.150.1</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 24 Sep 2025 12:55:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 24 Sep 2025 20:50:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/course-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Combinatorics HW2</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw2/</link>
+      <pubDate>Wed, 24 Sep 2025 20:50:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw2/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;用生成函数求解递推式
+$$ 
+
+a_{n} = 4a_{n-1} - 5a_{n-2} + 2a_{n-3}
+
+ $$
+初始值为 $ a_{0}=0,a_{1}=3,a_{2}=7 $。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;设数列 $ \{ a_{n} \} $ 的生成函数为 $ F(x) $，那么根据递推式和初值 $ a_{0}=0,a_{1}=3,a_{2}=7 $ 得到
+$$ 
+
+F(x) = 4xF(x) - 5x^{2}F(x) + 2x^{3}F(x) + 3x - 5x^{2}
+
+ $$
+得到
+$$ 
+
+F(x) = \dfrac{5x^{2}-3x}{2x^{3}-5x^{2}+4x-1} = \dfrac{3x-5x^{2}}{(1-x)^{2}(1-2x)}
+
+ $$
+我们希望分解成
+$$ 
+
+\dfrac{A}{1-x} + \dfrac{B}{(1-x)^{2}} + \dfrac{C}{1-2x}
+
+ $$
+待定系数可以解得
+$$ 
+
+F(x) = \dfrac{-3}{1-x} + \dfrac{2}{(1-x)^{2}} + \dfrac{1}{1-2x}
+
+ $$
+展开得到
+$$ 
+
+F(x) = \sum_{n=0}^{\infty} (-3+2(n+1)+2^{n})x^{n}
+
+ $$
+因此
+$$ 
+
+a_{n} = -3+2(n+1)+2^{n} = 2^{n} + 2n - 1
+
+ $$&lt;/p&gt;</description>
+    </item>
     <item>
       <title>LA HW1</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw1/</link>
