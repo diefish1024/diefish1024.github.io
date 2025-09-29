@@ -243,3 +243,40 @@ f(n,k) = \binom{ n+k-1 }{ 2k-1 }
 
 **证**：
 
+同理 {{< imath >}}(1){{< /imath >}} ，由于此时需要的是计数，每个值的贡献都是 {{< imath >}}1{{< /imath >}}，因此对于 {{< imath >}}x_{i}{{< /imath >}} 的生成函数为 {{< imath >}}\sum_{x_{i}=c}^{\infty}z^{x_{i}} = \dfrac{z^{c}}{1-z}{{< /imath >}}
+因此 {{< imath >}}k{{< /imath >}} 个变量叠加表示为
+{{< math >}}
+
+\left( \sum_{x_{1}=c}^{\infty} z^{x_{1}} \right)\left( \sum_{x_{2}=c}^{\infty} z^{x_{2}} \right)\dots\left( \sum_{x_{k}=c}^{\infty} z^{x_{k}} \right) = \dfrac{z^{ck}}{(1-z)^{k}}
+
+{{< /math >}}
+同时展开可以得到
+{{< math >}}
+
+H_{c,k}(z) = \sum_{n=ck}^{\infty} f(n,c,k)z^{n} = \dfrac{z^{ck}}{(1-z)^{k}}
+
+{{< /math >}}
+这就得到了 {{< imath >}}f(n,c,k){{< /imath >}} 的生成函数。
+
+下面求出数列通项。根据广义二项式定理
+{{< math >}}
+
+\dfrac{1}{(1-z)^{k}} = \sum_{n=0}^{\infty} \binom{ n+k-1 }{ k-1 } z^{n}
+
+{{< /math >}}
+于是
+{{< math >}}
+
+\begin{align*}
+H_{c,k}(z) & = \sum_{n=0}^{\infty} \binom{ n+k-1 }{ k-1 } z^{n+ck} \\
+ & \xlongequal{m = n+ck} \sum_{m=ck}^{\infty} \binom{ m-ck+k-1 }{ k-1 } z^{m}
+\end{align*}
+
+{{< /math >}}
+得到
+{{< math >}}
+
+f(n,c,k) = \dbinom{ n-ck+k-1 }{ k-1 }
+
+{{< /math >}}
+
