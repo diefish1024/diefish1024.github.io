@@ -51,9 +51,10 @@ Then we need to compute {{< imath >}}A^2{{< /imath >}}, {{< imath >}}B^2{{< /ima
 
 {{< math >}}
 
-A^2 = \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix}  =  \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix}, B^2 = \begin{pmatrix} 1 & 0 \\ 3 & 0 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 3 & 0 \end{pmatrix} =  = \begin{pmatrix} 1 & 0 \\ 3 & 0 \end{pmatrix}
+A^2 = \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix}  =  \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix}, B^2 = \begin{pmatrix} 1 & 0 \\ 3 & 0 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 3 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 3 & 0 \end{pmatrix}
 
-{{< /math >}}{{< math >}}
+{{< /math >}}
+{{< math >}}
 
 AB = \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 3 & 0 \end{pmatrix} = \begin{pmatrix} 7 & 0 \\ 0 & 0 \end{pmatrix}
 
@@ -64,9 +65,7 @@ Thus, we can calculate the result
 A^2 + 2AB + B^2 = \begin{pmatrix} 1 & 2 \\ 0 & 0 \end{pmatrix} + \begin{pmatrix} 14 & 0 \\ 0 & 0 \end{pmatrix} + \begin{pmatrix} 1 & 0 \\ 3 & 0 \end{pmatrix} = \begin{pmatrix} 16 & 2 \\ 3 & 0 \end{pmatrix}
 
 {{< /math >}}
-We found:
-* {{< imath >}}(A+B)^2 = \begin{pmatrix} 10 & 4 \\ 6 & 6 \end{pmatrix}{{< /imath >}}
-* {{< imath >}}A^2 + 2AB + B^2 = \begin{pmatrix} 16 & 2 \\ 3 & 0 \end{pmatrix}{{< /imath >}}
+We found: {{< imath >}}(A+B)^2 = \begin{pmatrix} 10 & 4 \\ 6 & 6 \end{pmatrix} ,A^2 + 2AB + B^2 = \begin{pmatrix} 16 & 2 \\ 3 & 0 \end{pmatrix}{{< /imath >}}.
 
 Since {{< imath >}}\begin{pmatrix} 10 & 4 \\ 6 & 6 \end{pmatrix} \neq \begin{pmatrix} 16 & 2 \\ 3 & 0 \end{pmatrix}{{< /imath >}}, we have shown that {{< imath >}}(A + B)^2{{< /imath >}} is different from {{< imath >}}A^2 + 2AB + B^2{{< /imath >}} for the given matrices. This difference arises because matrix multiplication is generally not commutative ({{< imath >}}AB \neq BA{{< /imath >}}).
 
@@ -109,8 +108,8 @@ Therefore, there is no {{< imath >}}2 \times 3{{< /imath >}} matrix {{< imath >}
 
 **Proof:**
 
-We are given {{< imath >}}Ax = Bx{{< /imath >}} for all {{< imath >}}x \in \mathbb{R}^n{{< /imath >}}. This can be rewritten as {{< imath >}}(A-B)x = 0{{< /imath >}} for all {{< imath >}}x \in \mathbb{R}^n{{< /imath >}}. Let . Then the condition becomes  for all .
+We are given {{< imath >}}Ax = Bx{{< /imath >}} for all {{< imath >}}x \in \mathbb{R}^n{{< /imath >}}. This can be rewritten as {{< imath >}}(A-B)x = 0{{< /imath >}} for all {{< imath >}}x \in \mathbb{R}^n{{< /imath >}}. Let . Then the condition becomes for all .
 
-Consider the standard basis vectors {{< imath >}}e_1, e_2, \ldots, e_n{{< /imath >}} in {{< imath >}}\mathbb{R}^n{{< /imath >}}. Since {{< imath >}}Cx=0{{< /imath >}} for all {{< imath >}}x{{< /imath >}}, it must hold for each {{< imath >}}e_j{{< /imath >}}. Therefore,  implies that every column of  is the zero vector.
+Consider the standard basis vectors {{< imath >}}e_1, e_2, \ldots, e_n{{< /imath >}} in {{< imath >}}\mathbb{R}^n{{< /imath >}}. Since {{< imath >}}Cx=0{{< /imath >}} for all {{< imath >}}x{{< /imath >}}, it must hold for each {{< imath >}}e_j{{< /imath >}}. Therefore, implies that every column of is the zero vector.
 
 If all columns of matrix {{< imath >}}C{{< /imath >}} are the zero vector, then {{< imath >}}C{{< /imath >}} must be the zero matrix. Since {{< imath >}}C=A-B{{< /imath >}}, we have {{< imath >}}A-B=0{{< /imath >}}, which implies {{< imath >}}A=B{{< /imath >}}.
