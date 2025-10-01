@@ -85,7 +85,7 @@ C_{il} = \sum_{j \in [t]} A_{ij} B_{jl}
 
 For distinct columns {{< imath >}}p_i{{< /imath >}} and {{< imath >}}p_j{{< /imath >}} (where {{< imath >}}i \neq j{{< /imath >}}), each vector has a single '1' at different positions. 
 
-When computing their dot product {{< imath >}}p_i^T p_j = \sum_k (p_i)_k (p_j)_k{{< /imath >}}, for any given {{< imath >}}k{{< /imath >}}, at least one of {{< imath >}}(p_i)_k{{< /imath >}} or {{< imath >}}(p_j)_k{{< /imath >}} must be '0' because their '1's are in different rows.Thus, {{< imath >}}(p_i)_k (p_j)_k = 0{{< /imath >}} for all {{< imath >}}k{{< /imath >}}, which implies {{< imath >}}p_i^T p_j = 0{{< /imath >}}. Therefore, {{< imath >}}p_{i}{{< /imath >}} and {{< imath >}}p_j{{< /imath >}} are perpendicular for {{< imath >}}i \neq j{{< /imath >}}.
+When computing their dot product {{< imath >}}p_i^T p_j = \sum_k (p_i)_k (p_j)_k{{< /imath >}}, for any given {{< imath >}}k{{< /imath >}}, at least one of {{< imath >}}(p_i)_k{{< /imath >}} or {{< imath >}}(p_j)_k{{< /imath >}} must be '0' because their '1's are in different rows. Thus, {{< imath >}}(p_i)_k (p_j)_k = 0{{< /imath >}} for all {{< imath >}}k{{< /imath >}}, which implies {{< imath >}}p_i^T p_j = 0{{< /imath >}}. Therefore, {{< imath >}}p_{i}{{< /imath >}} and {{< imath >}}p_j{{< /imath >}} are perpendicular for {{< imath >}}i \neq j{{< /imath >}}.
 
 **(ii)**
 
