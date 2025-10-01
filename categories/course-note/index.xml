@@ -11,8 +11,49 @@
     </image>
     <generator>Hugo -- 0.150.1</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 29 Sep 2025 22:39:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 30 Sep 2025 16:12:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/course-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LA HW3</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw3/</link>
+      <pubDate>Tue, 30 Sep 2025 16:12:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw3/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;(Multiplication of block matrices). Consider two block matrices
+$$ 
+
+ A = \begin{pmatrix}
+ A_{11} &amp; \cdots &amp; A_{1t} \\
+ \vdots &amp; \ddots &amp; \vdots \\
+ A_{p1} &amp; \cdots &amp; A_{pt}
+ \end{pmatrix}
+ \quad \text{and} \quad
+ B = \begin{pmatrix}
+ B_{11} &amp; \cdots &amp; B_{1q} \\
+ \vdots &amp; \ddots &amp; \vdots \\
+ B_{t1} &amp; \cdots &amp; B_{tq}
+ \end{pmatrix}
+ 
+ $$
+Moreover, for every $ i \in [p] $, $ j \in [t] $, and $ l \in [q] $ the number of columns of $ A_{ij} $ is equal to the number of rows of $ B_{jl} $. In particular, $ A_{ij} \cdot B_{jl} $ is defined. Prove that
+$$ 
+
+ A \cdot B = \begin{pmatrix}
+ C_{11} &amp; \cdots &amp; C_{1q} \\
+ \vdots &amp; \ddots &amp; \vdots \\
+ C_{p1} &amp; \cdots &amp; C_{pq}
+ \end{pmatrix}
+ 
+ $$
+with
+$$ 
+
+ C_{il} = \sum_{j \in [t]} A_{ij} B_{jl}
+ 
+ $$
+for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>LA HW2</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw2/</link>
