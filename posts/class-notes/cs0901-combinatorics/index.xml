@@ -65,6 +65,40 @@ a_{n} = -3+2(n+1)+2^{n} = 2^{n} + 2n - 1
  $$&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Lect2-Generating Functions</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect2-generating-functions/</link>
+      <pubDate>Tue, 23 Sep 2025 13:02:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect2-generating-functions/</guid>
+      <description>&lt;p&gt;考虑上一节引入的二项式定理
+$$ 
+
+(1+x)^{n} = \sum_{k=0}^{n} \binom{ n }{ k } x^{k}
+
+ $$
+这可以理解成我们把二项系数转换成了一个函数，这使得我们能更有效地操作和分析序列，这个工具被成为&lt;strong&gt;生成函数&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;ordinary-generating-functions&#34;&gt;Ordinary Generating Functions&lt;/h2&gt;
+&lt;p&gt;给定序列 $ \{ a_{n} \}_{n\geq 0} $，由 $ \{ a_{n} \} $ 定义的&lt;strong&gt;普通生成函数 (OGF)&lt;/strong&gt; 为：
+$$ 
+
+G(x) = \sum_{n\geq  0} a_{n}x^{n}
+
+ $$
+虽然看起来 OGF 并没有被很好的定义，对于和某些数列，这个形式不会收敛，但是实际上生成函数并不能被看成一个真正的函数，它是一个&lt;strong&gt;形式幂级数&lt;/strong&gt;，并且不被要求收敛。&lt;/p&gt;
+&lt;p&gt;以下是一些生成函数的基础例子：
+$$ 
+
+G(x) = 1+x+x^{2}+x^{3} +\dots = \dfrac{1}{1-x}
+
+ $$
+$$ 
+
+G(x) = 1+ax+a^{2}x^{2} + a^{3}x^{3} + \dots = \dfrac{1}{1-ax}
+
+ $$&lt;/p&gt;
+&lt;p&gt;给定一个序列，写出他的生成函数是很容易的。尽管找到他的闭合形式不容易，但是我们一般不需要这样做。相反，我们需要考虑给定一个闭合形式，需要如何知道其对应的序列。&lt;/p&gt;
+&lt;p&gt;我们约定 $ [x^{n}]G(x) $ 表示生成函数中 $ x^{n} $ 的系数。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Combinatorics HW1</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/</link>
       <pubDate>Wed, 17 Sep 2025 09:45:00 +0800</pubDate>
