@@ -196,7 +196,7 @@ H(x) & = \dfrac{1}{1-x}\sum_{k=0}^{\infty} \dfrac{x^{2k}}{(1-x)^{k}} \\
 
 对于任意正整数 {{< imath >}}n{{< /imath >}} 和 {{< imath >}}k{{< /imath >}}，定义 {{< imath >}}f(n, k){{< /imath >}} 如下：对于将 {{< imath >}}n{{< /imath >}} 写成**有序**的 {{< imath >}}k{{< /imath >}} 个非负整数之和的每一种方式，设 {{< imath >}}S{{< /imath >}} 为这 {{< imath >}}k{{< /imath >}} 个整数的乘积。那么 {{< imath >}}f(n, k){{< /imath >}} 是通过这种方式获得的所有 {{< imath >}}S{{< /imath >}} 的总和。请找到 {{< imath >}}f(n, k){{< /imath >}} 的合适生成函数，并求出这些数本身。
 
-**证**
+**证 1**
 
 设 {{< imath >}}x_{1}+x_{2}+\dots+x_{k}=n{{< /imath >}}，我们需要 {{< imath >}}\prod_{i=1}^{k}x_{i}{{< /imath >}}。
 
@@ -236,6 +236,45 @@ H_{k}(x) = \sum_{n=0}^{\infty} \binom{ n+2k }{ 2k-1 } x^{n+k} \xlongequal{m=n+k}
 f(n,k) = \binom{ n+k }{ 2k-1 } 
 
 {{< /math >}}
+
+**证 2**
+
+考虑递推关系
+{{< math >}}
+
+f(n,k) = \begin{cases}
+0 & ,k\geq n+1 \\
+n & ,k = 1 \\
+\sum_{r=0}^{n} rf(n-r,k-1) & ,\text{others}
+\end{cases}
+
+{{< /math >}}
+于是设对应的生成函数为 {{< imath >}}H_{k}(x){{< /imath >}}。
+
+首先
+{{< math >}}
+
+H_{1}(x) = \sum_{n=0}^{\infty} nx^{n} = \dfrac{x}{(1-x)^{2}}
+
+{{< /math >}}
+之后我们需要对 {{< imath >}}H_{k}(x){{< /imath >}} 建立递推关系：
+{{< math >}}
+
+\begin{align*}
+H_{k}(x) & = \sum_{n=0}^{\infty} f(n,k)x^{n} = \sum_{n=0}^{\infty} \sum_{r=0}^{n} rf(n-r,k-1)x^{n} \\
+ & \xlongequal{i=r,j=n-r} \sum_{i=0}^{\infty} \sum_{j=0}^{\infty} if(j,k-1)x^{i+j} \\
+ & = \sum_{j=0}^{\infty} f(j,k-1)x^{j}\left( \sum_{i=0}^{\infty} ix^{i} \right) \\
+ & = H_{1}(x)\cdot H_{k-1}(x)
+\end{align*}
+
+{{< /math >}}
+于是
+{{< math >}}
+
+H_{k}(x) = \dfrac{x}{(1-x)^{2}}H_{k-1}(x) = \dfrac{x^{k}}{(1-x)^{2k}}
+
+{{< /math >}}
+后续步骤相同。
 
 **(2)**
 
