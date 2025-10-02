@@ -133,23 +133,23 @@ F_{k}(x) = \dfrac{x^{2}}{1-x}F_{k-1}(x) = \left( \dfrac{x^{2}}{1-x} \right)^{k}F
 根据广义二项式定理
 {{< math >}}
 
-\dfrac{1}{(1-x)^{k+1}} = \sum_{n=0}^{\infty} \binom{ n+k }{ k } x^{n}
+\dfrac{1}{(1-x)^{k+1}} = \sum_{n=0}^{\infty} \binom{ n+k+1 }{ k } x^{n}
 
 {{< /math >}}
 带入即可得到
 {{< math >}}
 
-F_{k} = \sum_{n=0}^{\infty} \binom{ n+k }{ k } x^{2k+n} \xlongequal{m=n+2k} \sum_{m=2k}^{\infty} \binom{ m-k }{ k } x^{m}
+F_{k} = \sum_{n=0}^{\infty} \binom{ n+k+1 }{ k } x^{2k+n} \xlongequal{m=n+2k} \sum_{m=2k}^{\infty} \binom{ m-k+1 }{ k } x^{m}
 
 {{< /math >}}
 
 于是
 {{< math >}}
 
-f(n,k)=\binom{ n-k }{ k } \quad (n\geq 2k)
+f(n,k)=\binom{ n-k+1 }{ k } \quad (n\geq 2k)
 
 {{< /math >}}
-（显然 {{< imath >}}n< 2k{{< /imath >}} 时不可能找出不含两个连续数字，大小为 {{< imath >}}k{{< /imath >}} 的子集，结果符合直觉）
+（显然 {{< imath >}}n< 2k-1{{< /imath >}} 时不可能找出不含两个连续数字，大小为 {{< imath >}}k{{< /imath >}} 的子集，结果符合直觉）
 
 
 **(3)**
@@ -221,19 +221,19 @@ H_{k}(x) = \dfrac{x^{k}}{(1-x)^{2k}}
 由于
 {{< math >}}
 
-\dfrac{1}{(1-x)^{2k}} = \sum_{n=0}^{\infty} \binom{ n+2k-1 }{ 2k-1 } x^{n}
+\dfrac{1}{(1-x)^{2k}} = \sum_{n=0}^{\infty} \binom{ n+2k }{ 2k-1 } x^{n}
 
 {{< /math >}}
 于是
 {{< math >}}
 
-H_{k}(x) = \sum_{n=0}^{\infty} \binom{ n+2k-1 }{ 2k-1 } x^{n+k} \xlongequal{m=n+k} \sum_{m=k}^{\infty} \binom{ m+k-1 }{ 2k-1 } x^{m}
+H_{k}(x) = \sum_{n=0}^{\infty} \binom{ n+2k }{ 2k-1 } x^{n+k} \xlongequal{m=n+k} \sum_{m=k}^{\infty} \binom{ m+k }{ 2k-1 } x^{m}
 
 {{< /math >}}
 于是
 {{< math >}}
 
-f(n,k) = \binom{ n+k-1 }{ 2k-1 } 
+f(n,k) = \binom{ n+k }{ 2k-1 } 
 
 {{< /math >}}
 
@@ -261,22 +261,22 @@ H_{c,k}(z) = \sum_{n=ck}^{\infty} f(n,c,k)z^{n} = \dfrac{z^{ck}}{(1-z)^{k}}
 下面求出数列通项。根据广义二项式定理
 {{< math >}}
 
-\dfrac{1}{(1-z)^{k}} = \sum_{n=0}^{\infty} \binom{ n+k-1 }{ k-1 } z^{n}
+\dfrac{1}{(1-z)^{k}} = \sum_{n=0}^{\infty} \binom{ n+k }{ k-1 } z^{n}
 
 {{< /math >}}
 于是
 {{< math >}}
 
 \begin{align*}
-H_{c,k}(z) & = \sum_{n=0}^{\infty} \binom{ n+k-1 }{ k-1 } z^{n+ck} \\
- & \xlongequal{m = n+ck} \sum_{m=ck}^{\infty} \binom{ m-ck+k-1 }{ k-1 } z^{m}
+H_{c,k}(z) & = \sum_{n=0}^{\infty} \binom{ n+k }{ k-1 } z^{n+ck} \\
+ & \xlongequal{m = n+ck} \sum_{m=ck}^{\infty} \binom{ m-ck+k }{ k-1 } z^{m}
 \end{align*}
 
 {{< /math >}}
 得到
 {{< math >}}
 
-f(n,c,k) = \dbinom{ n-ck+k-1 }{ k-1 }
+f(n,c,k) = \dbinom{ n-ck+k }{ k-1 }
 
 {{< /math >}}
 
