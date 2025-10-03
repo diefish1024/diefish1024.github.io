@@ -7,7 +7,7 @@ tags:
 discipline: mathematics
 publish: true
 date: '2025-09-30T16:12:00+08:00'
-title: LA HW3
+title: MATH1205H HW3
 categories:
 - course-note
 ---
