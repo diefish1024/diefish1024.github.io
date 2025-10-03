@@ -5,6 +5,12 @@
     <loc>https://diefish1024.github.io/posts/class-notes/</loc>
     <lastmod>2025-09-30T16:12:00+08:00</lastmod>
   </url><url>
+    <loc>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/</loc>
+    <lastmod>2025-09-24T20:50:00+08:00</lastmod>
+  </url><url>
+    <loc>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/</loc>
+    <lastmod>2025-09-22T10:09:00+08:00</lastmod>
+  </url><url>
     <loc>https://diefish1024.github.io/posts/hpc/</loc>
     <lastmod>2025-09-12T10:43:00+08:00</lastmod>
   </url><url>
@@ -16,15 +22,6 @@
   </url><url>
     <loc>https://diefish1024.github.io/posts/literature-notes/</loc>
     <lastmod>2025-08-28T10:10:00+08:00</lastmod>
-  </url><url>
-    <loc>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/</loc>
-    <lastmod>2025-09-24T20:50:00+08:00</lastmod>
-  </url><url>
-    <loc>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/</loc>
-    <lastmod>2025-09-22T10:09:00+08:00</lastmod>
-  </url><url>
-    <loc>https://diefish1024.github.io/posts/class-notes/nju-os-2025/</loc>
-    <lastmod>2025-08-31T20:34:00+08:00</lastmod>
   </url><url>
     <loc>https://diefish1024.github.io/posts/misc/</loc>
     <lastmod>2025-09-01T11:22:00+08:00</lastmod>
@@ -41,9 +38,6 @@
     <loc>https://diefish1024.github.io/tags/homework/</loc>
     <lastmod>2025-09-30T16:12:00+08:00</lastmod>
   </url><url>
-    <loc>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw3/</loc>
-    <lastmod>2025-09-30T16:12:00+08:00</lastmod>
-  </url><url>
     <loc>https://diefish1024.github.io/tags/learning/</loc>
     <lastmod>2025-09-30T16:12:00+08:00</lastmod>
   </url><url>
@@ -51,6 +45,9 @@
     <lastmod>2025-09-30T16:12:00+08:00</lastmod>
   </url><url>
     <loc>https://diefish1024.github.io/tags/math/</loc>
+    <lastmod>2025-09-30T16:12:00+08:00</lastmod>
+  </url><url>
+    <loc>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw3/</loc>
     <lastmod>2025-09-30T16:12:00+08:00</lastmod>
   </url><url>
     <loc>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/</loc>
@@ -62,16 +59,16 @@
     <loc>https://diefish1024.github.io/tags/</loc>
     <lastmod>2025-09-30T16:12:00+08:00</lastmod>
   </url><url>
-    <loc>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw2/</loc>
+    <loc>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw2/</loc>
     <lastmod>2025-09-29T22:39:00+08:00</lastmod>
   </url><url>
     <loc>https://diefish1024.github.io/tags/combinatorics/</loc>
     <lastmod>2025-09-24T20:50:00+08:00</lastmod>
   </url><url>
-    <loc>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw2/</loc>
+    <loc>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw2/</loc>
     <lastmod>2025-09-24T20:50:00+08:00</lastmod>
   </url><url>
-    <loc>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw1/</loc>
+    <loc>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw1/</loc>
     <lastmod>2025-09-24T12:55:00+08:00</lastmod>
   </url><url>
     <loc>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect2-generating-functions/</loc>
@@ -86,7 +83,7 @@
     <loc>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect2-probability-space/</loc>
     <lastmod>2025-09-17T09:53:00+08:00</lastmod>
   </url><url>
-    <loc>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/</loc>
+    <loc>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw1/</loc>
     <lastmod>2025-09-17T09:45:00+08:00</lastmod>
   </url><url>
     <loc>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect1-counting/</loc>
@@ -138,6 +135,9 @@
     <lastmod>2025-09-01T11:22:00+08:00</lastmod>
   </url><url>
     <loc>https://diefish1024.github.io/posts/class-notes/nju-os-2025/23-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/</loc>
+    <lastmod>2025-08-31T20:34:00+08:00</lastmod>
+  </url><url>
+    <loc>https://diefish1024.github.io/posts/class-notes/nju-os-2025/</loc>
     <lastmod>2025-08-31T20:34:00+08:00</lastmod>
   </url><url>
     <loc>https://diefish1024.github.io/tags/nju-os/</loc>

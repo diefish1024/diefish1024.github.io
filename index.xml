@@ -9,15 +9,15 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.150.1</generator>
+    <generator>Hugo -- 0.151.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 30 Sep 2025 16:12:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>LA HW3</title>
-      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw3/</link>
+      <title>MATH1205H HW3</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw3/</link>
       <pubDate>Tue, 30 Sep 2025 16:12:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw3/</guid>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw3/</guid>
       <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;(Multiplication of block matrices). Consider two block matrices
@@ -55,10 +55,10 @@ $$
 for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>LA HW2</title>
-      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw2/</link>
+      <title>MATH1205H HW2</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw2/</link>
       <pubDate>Mon, 29 Sep 2025 22:39:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw2/</guid>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw2/</guid>
       <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;What rows or columns or matrices do you multiply to find&lt;/p&gt;
@@ -73,10 +73,10 @@ for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;</description>
 &lt;p&gt;To find the second column of $ AB $, we multiply matrix $ A $ by the second column of matrix $ B $.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Combinatorics HW2</title>
-      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw2/</link>
+      <title>CS0901 HW2</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw2/</link>
       <pubDate>Wed, 24 Sep 2025 20:50:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw2/</guid>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw2/</guid>
       <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
 &lt;p&gt;用生成函数求解递推式
 $$ 
@@ -124,10 +124,10 @@ a_{n} = -3+2(n+1)+2^{n} = 2^{n} + 2n - 1
  $$&lt;/p&gt;</description>
     </item>
     <item>
-      <title>LA HW1</title>
-      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw1/</link>
+      <title>MATH1205H HW1</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw1/</link>
       <pubDate>Wed, 24 Sep 2025 12:55:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/la-hw1/</guid>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw1/</guid>
       <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Let $ f:\mathbb{R}\to\mathbb{R} $ be a function. Prove that the following are equivalent:
@@ -245,10 +245,10 @@ $$
 &lt;p&gt;要求 $ \mathcal{F} $ 构成一个 $ \sigma $- 代数（域）：&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Combinatorics HW1</title>
-      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/</link>
+      <title>CS0901 HW1</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw1/</link>
       <pubDate>Wed, 17 Sep 2025 09:45:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/combinatorics-hw1/</guid>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw1/</guid>
       <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;求
