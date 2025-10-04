@@ -11,8 +11,20 @@
     </image>
     <generator>Hugo -- 0.151.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 30 Sep 2025 16:12:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 02 Oct 2025 21:06:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/course-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH2701 HW1</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw1/</link>
+      <pubDate>Thu, 02 Oct 2025 21:06:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw1/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://notes.sjtu.edu.cn/s/gHhl2fhcm&#34;&gt;题目&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;problem-11&#34;&gt;Problem 1.1&lt;/h2&gt;
+&lt;p&gt;设 $ \mathcal{F} $ 是一个有限的 $ \sigma $-代数。定义其中“最小&amp;quot;的元素为其包含于 $ \mathcal{F} $ 中的子集仅为自身和空集，形式化地描述，若 $ A\in \mathcal{F} $ 为“最小”的元素，那么如果 $ B\in \mathcal{F} $ 并且 $ B\subseteq A $，那么一定有 $ B\in \{ \emptyset,A \} $。&lt;/p&gt;
+&lt;p&gt;可以证明这样的元素存在并且有限：如果不存在，那么我们每次任取一个 $ \mathcal{F} $ 中的元素，都能找到属于它的一个更小的元素，但 $ \mathcal{F} $ 是有限集，所以这样的过程不可能一直重复下去，因此“最小”元素必然存在并且有限。&lt;/p&gt;
+&lt;p&gt;我们设所有这些不同的“最小”元素为 $ S=\{ A_{1},A_{2},\dots,A_{n} \} $。我们先证明这构成了全空间的一个分划：&lt;/p&gt;
+&lt;p&gt;首先这些元素肯定两两不相交，否则不满足“最小”的定义。假设 $ A_{i}\cap A_{j}= C\neq\emptyset $，根据“最小”，非空的 $ C $ 是 $ A_{i} $ 的子集，一定有 $ C=A_{i} $，同样也有 $ C=A_{j} $，这就推出了 $ A_{i}=A_{j} $，从而矛盾。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW3</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw3/</link>
