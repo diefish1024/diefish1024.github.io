@@ -403,12 +403,52 @@ q_{k+1} > q_{k} - \dfrac{1}{4}q_{k}^{2}
 \dfrac{1}{q_{k}} < \dfrac{1}{q_{0}} + \dfrac{k}{4} = 1 + \dfrac{k}{4} \implies q_{k} > \dfrac{1}{1 + k / 4} = \Omega\left( \dfrac{1}{k} \right)
 
 {{< /math >}}
-（实际上我们并不是从 {{< imath >}}q_{0}{{< /imath >}} 开始迭代，不过这并不影响我们分析复杂度，为了计算方便，直接从 {{< imath >}}q_{0}{{< /imath >}} 开始计算，并且认为 {{< imath >}}q_{0}=1{{< /imath >}}）
+（实际上我们并不是从 {{< imath >}}q_{0}{{< /imath >}} 开始迭代，不过这并不影响我们计算下界，为了计算方便，直接从 {{< imath >}}q_{0}{{< /imath >}} 开始计算，并且认为 {{< imath >}}q_{0}=1{{< /imath >}}）
 
 回到 {{< imath >}}p(n){{< /imath >}}，我们这就推出了
 {{< math >}}
 
-p(n) = \Omega\left( \dfrac{1}{\log n} \right)
+p(n) > \dfrac{4}{r+4} \implies p(n) = \Omega\left( \dfrac{1}{\log n} \right)
 
 {{< /math >}}
-所以重复算法 {{< imath >}}\log n{{< /imath >}} 次可以以比较高的概率得到正确答案，复杂度为 {{< imath >}}O(m\log ^{3}n){{< /imath >}}。下面我们证明这个概率大于 {{< imath >}}\dfrac{2}{3}{{< /imath >}}。
+所以重复算法 {{< imath >}}O(\log n){{< /imath >}} 次可以以比较高的概率得到正确答案。下面我们证明这个概率大于 {{< imath >}}\dfrac{2}{3}{{< /imath >}}。
+
+设重复算法 {{< imath >}}\lceil \log_{2} n \rceil{{< /imath >}} 次，能得到最小割的概率为 {{< imath >}}p_{\text{success}}{{< /imath >}}，那么
+{{< math >}}
+
+p_{\text{success}} = 1 - (1 - p(n))^{\lceil \log_{2} n \rceil } > 1 - e^{ -p(n) \cdot \lceil \log_{2} n \rceil  }
+
+{{< /math >}}
+
+由于递归层数 {{< imath >}}r=\left\lfloor  2\log_{2} \dfrac{n}{n_{0}}  \right\rfloor{{< /imath >}}，对于足够大的 {{< imath >}}n{{< /imath >}}，我们可以忽略小常数 {{< imath >}}n_{0}{{< /imath >}}，因此 {{< imath >}}r\approx 2\log_{2}n{{< /imath >}}。于是
+{{< math >}}
+
+p(n) > \dfrac{4}{r+4} \approx \dfrac{2}{\log_{2}n + 2}
+
+{{< /math >}}
+带入得到
+{{< math >}}
+
+p_{\text{success}} > 1 - e^{ - \frac{2\log_{2} n}{\log_{2}n + 2} }
+
+{{< /math >}}
+
+我们要证明 {{< imath >}}p_{\text{success}}>\frac{2}{3}{{< /imath >}}，只需要证明 {{< imath >}}\exp\left( - \frac{2\log_{2}n}{\log_{2}n + 2} \right) < \frac{1}{3}{{< /imath >}}，即
+{{< math >}}
+
+\dfrac{2\log_{2}n}{\log_{2}n + 2} > \ln 3 \approx 1.1
+
+{{< /math >}}
+对于比较大的 {{< imath >}}n{{< /imath >}}，这是显然成立的。因此我们重复 {{< imath >}}\lceil \log_{2}n \rceil{{< /imath >}} 次这个算法能得到正确答案的概率大于 {{< imath >}}\dfrac{2}{3}{{< /imath >}}。
+
+接着求出这个算法的复杂度。设 {{< imath >}}T(n){{< /imath >}} 表示规模为 {{< imath >}}n{{< /imath >}} 的图需要的运算次数，那么我们可以得到递推式
+{{< math >}}
+
+T(n) = 2T\left( \dfrac{n}{\sqrt{ 2 }} \right) + O(m)
+
+{{< /math >}}
+如果 {{< imath >}}m=\Theta(n^{2}){{< /imath >}}，是稠密图，那么根据主定理，{{< imath >}}T(n)=\Theta(n^{2}\log n){{< /imath >}}。
+
+如果为稀疏图，递归项的是主导，复杂度为 {{< imath >}}T(n)=\Theta(n^{2}){{< /imath >}}。
+
+综上，算法复杂度为 {{< imath >}}O(n^{2}\log ^{2}n)=\tilde{O}(n^{2}){{< /imath >}}。优于原来的算法。
