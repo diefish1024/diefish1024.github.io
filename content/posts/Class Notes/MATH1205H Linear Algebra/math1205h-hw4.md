@@ -45,13 +45,13 @@ These vectors lie in the three-dimensional subspace of {{< imath >}}\mathbb{R}^4
 
 > Find the null space {{< imath >}}N(A){{< /imath >}} and column space {{< imath >}}C(A){{< /imath >}} for the following matrices and give a basis for {{< imath >}}N(A){{< /imath >}} and {{< imath >}}C(A){{< /imath >}} respectively.
 >
-> (i) {{< imath >}}A = \begin{pmatrix} 2 & 3 \\ 4 & 5 \\ 1 & 0 \\ 1 & 0 \\ 1 & 0 \end{pmatrix}{{< /imath >}}
+> (i) {{< imath >}}A = \begin{pmatrix} 2 & 3 & 4 & 5 & 1 \\ 0 & 1 & 0 & 1 & 0 \end{pmatrix}{{< /imath >}}
 >
 > (ii) {{< imath >}}A = \begin{pmatrix} 1 & 0 & 2 & 3 \\ 2 & 2 & 4 & 5 \\ 1 & 2 & 4 & 3 \\ 5 & 6 & 16 & 15 \\ 4 & 4 & 10 & 11 \end{pmatrix}{{< /imath >}}
 
 **(i)**
 
-The null space {{< imath >}}N(A) = \{0\}{{< /imath >}}, so it has no basis (empty set).
+The null space {{< imath >}}N(A){{< /imath >}} has dimension 3， and a basis is {{< imath >}}\left\{ \begin{pmatrix} 1 \\ 1 \\ 0 \\ -1 \\ 0\end{pmatrix}, \begin{pmatrix}-2 \\ 0 \\ 1 \\ 0 \\ 0 \end{pmatrix}, \begin{pmatrix}1 \\ 0 \\ 0 \\ 0 \\ -2\end{pmatrix} \right\}{{< /imath >}}.
 
 The column space {{< imath >}}C(A){{< /imath >}} is the span of the columns of {{< imath >}}A{{< /imath >}}, and a basis is {{< imath >}}\left\{ \begin{pmatrix} 2 \\ 4 \\ 1 \\ 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 3 \\ 5 \\ 0 \\ 0 \\ 0 \end{pmatrix} \right\}{{< /imath >}}.
 
