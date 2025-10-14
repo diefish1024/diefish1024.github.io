@@ -146,6 +146,31 @@ for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;</description>
 &lt;p&gt;To find the second column of $ AB $, we multiply matrix $ A $ by the second column of matrix $ B $.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Lect3-The Principle of Inclusion and Exclusion</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect3-the-principle-of-inclusion-and-exclusion/</link>
+      <pubDate>Sun, 28 Sep 2025 12:55:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/lect3-the-principle-of-inclusion-and-exclusion/</guid>
+      <description>&lt;h2 id=&#34;principle-of-inclusion-and-exclusion&#34;&gt;Principle of Inclusion and Exclusion&lt;/h2&gt;
+&lt;p&gt;对于任意有限集合 $ A_1, A_2, \dots, A_n $，容斥原理如下：
+$$ 
+  
+\left| \bigcup_{i=1}^{n} A_i \right| = \sum_{i=1}^{n} \left| A_i \right| - \sum_{1\leq i&lt; j\leq n} \left| A_i \cap A_j \right| + \dots + (-1)^{n} \left| \bigcap_{i=1}^{n} A_i \right|  
+
+ $$&lt;br&gt;
+可更紧凑地表示为
+$$ 
+  
+\left| \bigcup_{i=1}^{n} A_i \right| = \sum_{k=1}^{n} (-1)^{k-1} \sum_{S \subseteq [n], |S|=k} \left| \bigcap_{i \in S} A_i \right|  
+
+ $$
+或
+$$ 
+  
+\left| \bigcup_{i=1}^{n} A_i \right| = \sum_{\emptyset \neq S \subseteq [n]} (-1)^{|S|-1} \left| \bigcap_{i \in S} A_i \right|  
+
+ $$&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>CS0901 HW2</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw2/</link>
       <pubDate>Wed, 24 Sep 2025 20:50:00 +0800</pubDate>
