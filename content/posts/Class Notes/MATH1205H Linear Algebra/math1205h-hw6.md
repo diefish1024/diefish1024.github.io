@@ -221,7 +221,7 @@ Form the augmented matrix {{< imath >}}[A | I_4]{{< /imath >}} and apply row ope
 After Gauss-Jordan elimination, we obtain:
 
 {{< math >}}
-A^{-1} = \begin{pmatrix} \frac{83}{690} & - \frac{2}{15} & \frac{1}{6} & - \frac{62}{345} \\ \frac{34}{345} & \frac{11}{30} & - \frac{1}{3} & - \frac{139}{690} \\ - \frac{17}{138} & - \frac{1}{3} & \frac{1}{6} & \frac{26}{69} \\ - \frac{6}{115} & \frac{1}{10} & 0 & \frac{11}{230} \end{pmatrix}
+A^{-1} = \begin{pmatrix} \dfrac{83}{690} & - \dfrac{2}{15} & \dfrac{1}{6} & - \dfrac{62}{345} \\ \dfrac{34}{345} & \dfrac{11}{30} & - \dfrac{1}{3} & - \dfrac{139}{690} \\ - \dfrac{17}{138} & - \dfrac{1}{3} & \dfrac{1}{6} & \dfrac{26}{69} \\ - \dfrac{6}{115} & \dfrac{1}{10} & 0 & \dfrac{11}{230} \end{pmatrix}
 {{< /math >}}
 
 **(ii)** For {{< imath >}}A = \begin{pmatrix} 1 & 1 & 10 & 1 \\ 1 & 10 & 1 & 1 \\ 1 & 1 & 1 & 10 \\ 10 & 1 & 1 & 1 \end{pmatrix}{{< /imath >}}:
