@@ -1,6 +1,5 @@
 ---
 tags:
-- learning
 - math
 - probability-theory
 - homework
