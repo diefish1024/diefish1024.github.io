@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.151.0</generator>
+    <generator>Hugo -- 0.151.2</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 02 Oct 2025 21:06:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/index.xml" rel="self" type="application/rss+xml" />
@@ -106,7 +106,8 @@ $$
       <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect1-introduction/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://chihaozhang.com/teaching/Prob2025/lectures/lec1/lec1.html&#34;&gt;课程讲义&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;在这门课里，我们会专注于所谓的 &lt;a href=&#34;https://en.wikipedia.org/wiki/Probability_axioms&#34;&gt;科尔莫哥洛夫（Kolmogorov）的公理体系&lt;/a&gt;，它使得我们能够使用数学分析的工具来研究概率。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;在这门课里，我们会专注于所谓的 &lt;a href=&#34;https://en.wikipedia.org/wiki/Probability_axioms&#34;&gt;科尔莫哥洛夫（Kolmogorov）的公理体系&lt;/a&gt;，它使得我们能够使用数学分析的工具来研究概率。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id=&#34;stpetersburg-paradox&#34;&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/St._Petersburg_paradox&#34;&gt;St. Petersburg Paradox&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;圣彼得堡悖论。假设一个基于抛硬币赌博的游戏，庄家会一直扔硬币直到结果是正面，如果扔了 $ k $ 次，那么就会给玩家 $ 2^{k} $ 元的奖金。现在的问题是你愿意花多少钱来购买一次玩这个游戏的机会。&lt;/p&gt;
 &lt;p&gt;一个很自然的想法是计算游戏的期望，那么我们很容易发现期望收益是

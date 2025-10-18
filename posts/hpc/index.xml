@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.151.0</generator>
+    <generator>Hugo -- 0.151.2</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 12 Sep 2025 10:43:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/hpc/index.xml" rel="self" type="application/rss+xml" />
@@ -202,7 +202,8 @@ C_{i,j} = \sum_{k=0}^{K-1} A_{i,k}\times B_{k,j}
 &lt;h2 id=&#34;2-the-mpi-programming-model&#34;&gt;2. The MPI Programming Model&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;分布式内存模型&lt;/strong&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;在分布式内存模型中，各个处理节点可以独立运行自己的进程，使用自己的本地内存来存储和处理数据。每个进程的内存是私有的，其他进程无法直接访问它们。如果一个进程需要访问另一个进程的数据，就必须通过显式的消息传递机制将数据从一个进程发送到另一个进程。同一个节点（服务器）内部需要借助高速数据总线等硬件实现，而跨节点的通信通常由网络连接来实现，比如通过高速以太网、IB（InfiniBand）等。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;在分布式内存模型中，各个处理节点可以独立运行自己的进程，使用自己的本地内存来存储和处理数据。每个进程的内存是私有的，其他进程无法直接访问它们。如果一个进程需要访问另一个进程的数据，就必须通过显式的消息传递机制将数据从一个进程发送到另一个进程。同一个节点（服务器）内部需要借助高速数据总线等硬件实现，而跨节点的通信通常由网络连接来实现，比如通过高速以太网、IB（InfiniBand）等。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;核心概念&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
