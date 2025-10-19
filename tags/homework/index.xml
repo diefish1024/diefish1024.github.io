@@ -29,6 +29,47 @@
 &lt;p&gt;If there exists $ B $ with $ AB = I $, then $ A $ is surjective, so $ \operatorname{rank}(A) = n $.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>CS0901 HW4</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw4/</link>
+      <pubDate>Thu, 09 Oct 2025 21:26:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw4/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;证明存在常数 $ c &gt; 1 $ 和 $ N &gt; 0 $，使得当 $ n &gt; N $ 时， $ [n] $ 上树的同构类数量至少为 $ c^n $ 。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我们需要的同构类的数量则可以看成 $ n $ 个点无标号的树的数量。需要证明这个数量增长的足够快。&lt;/p&gt;
+&lt;p&gt;首先根据 Cayley 公式，$ n $ 个点的有标号的树的数量为 $ n^{n-2} $。显然所有无标号的树的数量大于 $ \dfrac{n^{n-2}}{n!} $，因为这里直接假设所有点都是对称的，但是实际上一棵有标号的树并不会对应 $ n! $ 颗无标号的树。我们直接取 $ c=2 $，于是就只需要证明存在 $ N&gt;0 $ 满足在 $ n&gt;N $ 时有
+$$ 
+
+\dfrac{n^{n-2}}{n!} &gt; 2^{n}
+
+ $$
+我们使用斯特林公式，在 $ n $ 足够大时有
+$$ 
+
+n! \approx \sqrt{ 2\pi n }\left( \dfrac{n}{e} \right)^{n}
+
+ $$
+带入下界，得到
+$$ 
+
+\dfrac{n^{n-2}}{n!} \approx \dfrac{e^{n}}{\sqrt{ 2\pi}\cdot n^{5 / 2}}
+
+ $$
+所以只需要证明在 $ n&gt;N $ 时有
+$$ 
+
+(\sqrt{ 2\pi })^{1 / n} \cdot n^{5 / 2n} &lt; \dfrac{e}{2}
+
+ $$
+对于左式，显然有
+$$ 
+
+\lim_{ n \to \infty } [(\sqrt{ 2\pi })^{1 / n} \cdot n^{5 / 2n}] = 1 &lt; \dfrac{e}{2}
+
+ $$
+根据极限的定义，我们总能找到一个 $ N $ 满足条件。因此得证！&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>MATH1205H HW5</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw5/</link>
       <pubDate>Thu, 09 Oct 2025 14:53:00 +0800</pubDate>
