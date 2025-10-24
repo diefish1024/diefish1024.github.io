@@ -9,10 +9,22 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.151.2</generator>
+    <generator>Hugo -- 0.152.1</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 19 Oct 2025 22:04:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 21 Oct 2025 09:54:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/homework/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW8</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw8/</link>
+      <pubDate>Tue, 21 Oct 2025 09:54:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw8/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;先证明行阶梯矩阵中主元列的唯一性。由于初等行变换保持了列向量之间的线性关系，因此如果矩阵 $ A $ 的第 $ j $ 列是前 $ j-1 $ 列的线性组合，初等行变换之后也仍然成立。并且一个列为主元列，当且仅当它不能被前面的列线性表示，所以 $ A_{1} $ 和 $ A_{2} $ 中的主元列位置完全相同。&lt;/p&gt;
+&lt;p&gt;接着证明简化行阶梯矩阵的唯一性。对于每个主元列 $ j_{k} $，必须化简成单位向量 $ e_{k} $，满足主元为 $ 1 $，其余元素为 $ 0 $，具有唯一性；对于非主元列，可以表示为前面的列的线性组合，所以为 $ 0 $，也具有唯一性。因此简化行阶梯矩阵具有唯一性。&lt;/p&gt;
+&lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我们通过选择 $ W=\text{span}\{ v_{1},v_{2},\dots,v_{n} \} $ 中的一个子集，可以构造出 $ W $ 的一个基。我们依次考虑 $ i=1,2,\dots,n $，如果 $ i=1 $ 或者 $ v_{i} $ 不是前 $ i-1 $ 个向量的线性组合，就选择 $ v_{i} $，这样最终就得到了 $ B=\{ v_{i_{1}},v_{i_{2}},\dots,v_{i_{r}} \} $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW7</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw7/</link>
