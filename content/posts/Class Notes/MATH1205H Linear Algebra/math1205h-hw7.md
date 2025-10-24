@@ -184,33 +184,37 @@ N(A) = \left\{ \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix} \right\}
  & \begin{pmatrix}
 2 & 2 & 0 & 1 & 0 \\
 0 & 5 & 1 & -1 & 1 \\
-1 & -2 & 7 & 1 & 0
-\end{pmatrix} \xrightarrow{R_1 \leftrightarrow R_3} \begin{pmatrix}
-1 & -2 & 7 & 1 & 0 \\
-0 & 5 & 1 & -1 & 1 \\
-2 & 2 & 0 & 1 & 0
-\end{pmatrix} \xrightarrow{R_3 \to R_3 - 2R_1} \begin{pmatrix}
-1 & -2 & 7 & 1 & 0 \\
-0 & 5 & 1 & -1 & 1 \\
-0 & 6 & -14 & -1 & 0
-\end{pmatrix} \\ \\
- & \xrightarrow{R_2 \to \frac{1}{5}R_2} \begin{pmatrix}
-1 & -2 & 7 & 1 & 0 \\
-0 & 1 & 1/5 & -1/5 & 1/5 \\
-0 & 6 & -14 & -1 & 0
-\end{pmatrix} \xrightarrow{\begin{smallmatrix} R_1 \to R_1 + 2R_2 \\ R_3 \to R_3 - 6R_2 \end{smallmatrix}} \begin{pmatrix}
-1 & 0 & 37/5 & 3/5 & 2/5 \\
-0 & 1 & 1/5 & -1/5 & 1/5 \\
-0 & 0 & -76/5 & 1/5 & -6/5
-\end{pmatrix} \\ \\
- & \xrightarrow{R_3 \to -\frac{5}{76}R_3} \begin{pmatrix}
-1 & 0 & 37/5 & 3/5 & 2/5 \\
-0 & 1 & 1/5 & -1/5 & 1/5 \\
-0 & 0 & 1 & -1/76 & 3/38
-\end{pmatrix} \xrightarrow{\begin{smallmatrix} R_1 \to R_1 - \frac{37}{5}R_3 \\ R_2 \to R_2 - \frac{1}{5}R_3 \end{smallmatrix}} \begin{pmatrix}
-1 & 0 & 0 & 53/76 & -7/38 \\
-0 & 1 & 0 & -15/76 & 7/38 \\
-0 & 0 & 1 & -1/76 & 3/38
+11 & -2 & 7 & 1 & 0
+\end{pmatrix} \to \begin{pmatrix}
+1 & 1 & 0 & \frac{1}{2} & 0 \\
+0 & 1 & \frac{1}{5} & - \frac{1}{5} & \frac{1}{5} \\
+1 & -\frac{2}{11} & \frac{7}{11} & \frac{1}{11} & 0 \\
+\end{pmatrix} \to \begin{pmatrix}
+1 & 1 & 0 & \frac{1}{2} & 0 \\
+0 & 1 & \frac{1}{5} & - \frac{1}{5} & \frac{1}{5} \\
+0 & -\frac{13}{11} & \frac{7}{11} & -\frac{9}{22} & 0 \\
+\end{pmatrix} \\
+ & \to \begin{pmatrix}
+1 & 1 & 0 & \frac{1}{2} & 0 \\
+0 & 1 & \frac{1}{5} & - \frac{1}{5} & \frac{1}{5} \\
+0 & 1 & -\frac{7}{13} & \frac{9}{26} & 0 \\
+\end{pmatrix} \to \begin{pmatrix}
+1 & 1 & 0 & \frac{1}{2} & 0 \\
+0 & 1 & \frac{1}{5} & - \frac{1}{5} & \frac{1}{5} \\
+0 & 0 & -\frac{48}{65} & \frac{71}{130} & -\frac{1}{5} \\
+\end{pmatrix} \to \begin{pmatrix}
+1 & 1 & 0 & \frac{1}{2} & 0 \\
+0 & 1 & \frac{1}{5} & - \frac{1}{5} & \frac{1}{5} \\
+0 & 0 & 1 & -\frac{71}{96} & \frac{13}{48} \\
+\end{pmatrix} \\
+ & \to \begin{pmatrix}
+1 & 1 & 0 & \frac{1}{2} & 0 \\
+0 & 1 & 0 & - \frac{5}{96} & \frac{7}{48} \\
+0 & 0 & 1 & -\frac{71}{96} & \frac{13}{48} \\
+\end{pmatrix} \to \begin{pmatrix}
+1 & 0 & 0 & \frac{53}{96} & -\frac{7}{48} \\
+0 & 1 & 0 & - \frac{5}{96} & \frac{7}{48} \\
+0 & 0 & 1 & -\frac{71}{96} & \frac{13}{48} \\
 \end{pmatrix}
 \end{align*}
 
@@ -223,39 +227,21 @@ N(A) = \left\{ \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix} \right\}
 \text{rank}(A) = 3
 
 {{< /math >}}
-由上述步骤得到：
+由上述步骤得到： {{< math >}}
+ A' = \begin{pmatrix} 1 & 0 & 0 & \frac{53}{96} & -\frac{7}{48} \\ 0 & 1 & 0 & - \frac{5}{96} & \frac{7}{48} \\ 0 & 0 & 1 & -\frac{71}{96} & \frac{13}{48} \ \end{pmatrix} 
+{{< /math >}} 我们要求解 {{< imath >}}Ax=0{{< /imath >}}，这等价于求解 {{< imath >}}A'x=0{{< /imath >}}。将 {{< imath >}}A'{{< /imath >}} 写回方程组形式： {{< math >}}
+ \begin{cases} x_1 = -\frac{53}{96}x_4 + \frac{7}{48}x_5 \\ x_2 = \frac{5}{96}x_4 - \frac{7}{48}x_5 \\ x_3 = \frac{71}{96}x_4 - \frac{13}{48}x_5 \end{cases} 
+{{< /math >}} 解向量 {{< imath >}}x{{< /imath >}} 可以写为： {{< math >}}
+ x = \begin{pmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \end{pmatrix} = x_4 \begin{pmatrix} -53/96 \\ 5/96 \\ 71/96 \\ 1 \\ 0 \end{pmatrix} + x_5 \begin{pmatrix} 7/48 \\ -7/48 \\ -13/48 \\ 0 \\ 1 \end{pmatrix} 
+{{< /math >}} 零空间 {{< imath >}}N(A){{< /imath >}} 的基是： 
 {{< math >}}
 
-A' = \begin{pmatrix}
-1 & 0 & 0 & 53/76 & -7/38 \\
-0 & 1 & 0 & -15/76 & 7/38 \\
-0 & 0 & 1 & -1/76 & 3/38
-\end{pmatrix}
+\left\{
+\begin{pmatrix} -53/96 \\ 5/96 \\ 71/96 \\ 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 7/48 \\ -7/48 \\ -13/48 \\ 0 \\ 1 \end{pmatrix}
+\right\}
 
 {{< /math >}}
 
-我们要求解 {{< imath >}}Ax=0{{< /imath >}}，这等价于求解 {{< imath >}}A'x=0{{< /imath >}}。将 {{< imath >}}A'{{< /imath >}} 写回方程组形式：
-{{< math >}}
-
-\begin{cases}
-x_1 = -\frac{53}{76}x_4 + \frac{7}{38}x_5 \\
-x_2 = \frac{15}{76}x_4 - \frac{7}{38}x_5 \\
-x_3 = \frac{1}{76}x_4 - \frac{3}{38}x_5
-\end{cases}
-
-{{< /math >}}
-解向量 {{< imath >}}x{{< /imath >}} 可以写为：
-{{< math >}}
-
-x = \begin{pmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \end{pmatrix} = x_4 \begin{pmatrix} -53/76 \\ 15/76 \\ 1/76 \\ 1 \\ 0 \end{pmatrix} + x_5 \begin{pmatrix} 7/38 \\ -7/38 \\ -3/38 \\ 0 \\ 1 \end{pmatrix}
-
-{{< /math >}}
-零空间 {{< imath >}}N(A){{< /imath >}} 的基是：
-{{< math >}}
-
-\left\{ \begin{pmatrix} -53/76 \\ 15/76 \\ 1/76 \\ 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 7/38 \\ -7/38 \\ -3/38 \\ 0 \\ 1 \end{pmatrix} \right\}
-
-{{< /math >}}
 **(c)**
 
 我们对矩阵 {{< imath >}}A{{< /imath >}} 施行初等行变换：
