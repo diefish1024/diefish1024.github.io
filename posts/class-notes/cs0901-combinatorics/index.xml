@@ -9,10 +9,33 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.152.1</generator>
+    <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 09 Oct 2025 21:26:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 23 Oct 2025 14:27:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS0901 HW5</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw5/</link>
+      <pubDate>Thu, 23 Oct 2025 14:27:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw5/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;证明：
+$$ 
+
+\chi(G) + \chi(\overline{G}) \leq  v(G) + 1
+
+ $$
+&lt;strong&gt;证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;归纳证明。对于大小为 $ 1 $ 的图，结论显然成立，此时 $ \chi(G)=\chi(\overline{G})=1 $。&lt;/p&gt;
+&lt;p&gt;假设对于大小为 $ n-1 $ 的图这个结论都成立，那么对于一个大小为 $ n $ 的图 $ G $，我们考虑加入一个点 $ v $。此时我们有
+$$ 
+
+\chi(G-v)+\chi(\overline{G}-v) \leq  n
+
+ $$
+我们现在证明 $ \chi(G) $ 和 $ \chi(\overline{G}) $ 中至多只有一个可能会增加 $ 1 $。设 $ G $ 中 $ v $ 的度数为 $ d(v) $，在 $ \overline{G} $ 中为 $ \overline{d}(v)=n-1-d(v) $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>CS0901 HW4</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw4/</link>
