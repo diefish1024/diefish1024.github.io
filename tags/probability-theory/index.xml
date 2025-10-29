@@ -11,8 +11,33 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 15 Oct 2025 09:07:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 24 Oct 2025 13:10:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/probability-theory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH2701 HW3</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw3/</link>
+      <pubDate>Fri, 24 Oct 2025 13:10:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw3/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://notes.sjtu.edu.cn/s/_-B0cVjkY&#34;&gt;题目&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;problem-11&#34;&gt;Problem 1.1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;：若 $ \sigma $-代数包含所有 $ (a,b) $，则包含 $ [a,b] $。
+$$ 
+[a,b] = \bigcap_{n=1}^{\infty} \left(a-\frac{1}{n}, b+\frac{1}{n}\right)
+ $$
+由 $ \sigma $-代数对可数交封闭，故 $ [a,b] $ 在其中。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;：若 $ \sigma $-代数包含所有 $ [a,b] $，则包含 $ (a,b) $。
+$$ 
+（a,b) = \bigcup_{n=1}^{\infty} \left[a+\frac{1}{n}, b-\frac{1}{n}\right]
+ $$
+由 $ \sigma $-代数对可数并封闭，故 $ (a,b) $ 在其中。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;：若 σ-代数包含所有 $ (a,b) $，则包含 $ [x,\infty) $。
+$$ 
+[x,\infty) = \bigcap_{n=1}^{\infty} \left(x-\frac{1}{n}, \infty\right) = \bigcap_{n=1}^{\infty} \bigcup_{m=1}^{\infty} \left(x-\frac{1}{n}, m\right)
+ $$
+由 $ \sigma $-代数对可数并、可数交封闭，故 $ [x,\infty) $ 在其中。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH2701 HW2</title>
       <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw2/</link>
