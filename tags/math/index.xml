@@ -11,8 +11,28 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 27 Oct 2025 13:21:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 29 Oct 2025 14:14:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/math/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS0901 HW6</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw6/</link>
+      <pubDate>Wed, 29 Oct 2025 14:14:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw6/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;在一个 $ m $ 条边的二分图中，存在一个匹配，其大小至少为 $ m / \Delta $，其中 $ \Delta $ 表示图中最大顶点的度数。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我们需要证明这个二分图最大匹配的大小大于等于 $ m / \Delta $。根据柯尼希定理，只需要证明最小边覆盖的大小大于等于 $ m / \Delta $。&lt;/p&gt;
+&lt;p&gt;设最小边覆盖大小为 $ t $。若 $ t&lt;  m / \Delta $，对于一个被选中的顶点 $ v $，其至多覆盖 $ \text{deg}(v)\leq\Delta $ 条边，因此最多只能覆盖
+$$ 
+
+t\cdot\Delta &lt; m
+
+ $$
+显然不能覆盖所有的边，不可能是一个边覆盖，矛盾。&lt;/p&gt;
+&lt;p&gt;因此至少存在一个匹配的大小至少为 $ m / \Delta $。&lt;/p&gt;
+&lt;h2 id=&#34;problem-2&#34;&gt;Problem 2&lt;/h2&gt;
+&lt;p&gt;证明一名学生有 $ 20 $ 周的时间来准备 ICPC，他决定每周至少完成一次训练比赛，但他只有 $ 30 $ 套训练题。请证明，无论他如何安排训练，都会存在连续的几周，他完成的训练题集数正好是 $ 9 $ 套。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW10</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw10/</link>
