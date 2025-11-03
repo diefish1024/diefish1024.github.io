@@ -11,8 +11,20 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 27 Oct 2025 13:21:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 31 Oct 2025 10:16:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW11</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw11/</link>
+      <pubDate>Fri, 31 Oct 2025 10:16:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw11/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果 $ A=B $，那么 $ Ax=Bx $ 对于所有 $ x \in \mathbb{R}^{n\times 1} $ 是显然的。&lt;/p&gt;
+&lt;p&gt;如果 $ \forall x \in \mathbb{R}^{n\times 1} $，都有 $ Ax=Bx $，那么我们有 $ (A-B)x=0 $。由于 $ x $ 是 $ \mathbb{R}^{n} $ 中的任意一个向量，说明 $ A-B $ 的零空间是 $ \mathbb{R}^{n} $，因此 $ \text{rank}(A-B)=0 $，也就有 $ A-B=0 $，从而 $ A=B $。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;$ A(A^{T}A)^{-1}A^{T} $ 和 $ B(B^{T}B)^{-1}B^{T} $ 分别是 $ A $ 和 $ B $ 的投影矩阵，记为 $ P_{A},P_{B} $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW10</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw10/</link>

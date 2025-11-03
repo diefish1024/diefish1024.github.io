@@ -11,8 +11,57 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 24 Oct 2025 13:10:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 30 Oct 2025 18:45:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH2701 HW4</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw4/</link>
+      <pubDate>Thu, 30 Oct 2025 18:45:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw4/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://notes.sjtu.edu.cn/s/pu3AkRu9g&#34;&gt;题目&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;不正确。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;反例&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;设离散概率空间 $ (\Omega,\mathcal{F},\mathbb{P}) $，其中 $ \Omega=\mathbb{N}^{+} $，$ \mathcal{F} $ 是 $ \Omega $ 的幂集，概率测度定义为 $ \mathbb{P}(\{ k \})=\dfrac{1}{2^{k}} $。我们定义随机变量 $ X_{n}:\Omega\to \mathbb{R} $ 为
+$$ 
+
+X_{n}(k) = \begin{cases}
+2^{n} &amp; k = n \\
+-2^{n+1} &amp; k = n+1\\
+0 &amp; \text{o.w.}
+\end{cases}
+
+ $$
+此时显然每个 $ X_{n} $ 都可积，并且
+$$ 
+
+\mathbb{E}[X_{n}] = X_{n}(n)\mathbb{P}(\{ n \}) + X_{n}(n+1)\mathbb{P}(\{ n+1 \}) = 0 \implies \sum_{n=1}^{\infty} \mathbb{E}[X_{n}] = 0
+
+ $$
+但是
+$$ 
+
+\sum_{n=1}^{\infty} X_{n}(k) = \begin{cases}
+2 &amp; k=1 \\
+0 &amp; \text{o.w.}
+\end{cases}
+
+ $$
+从而
+$$ 
+
+\mathbb{E}\left[ \sum_{n=1}^{\infty} X_{n} \right] = 2 \times \mathbb{P}(\{ 1 \}) + 0 \times (1 - \mathbb{P}(\{ 1 \})) = 1
+
+ $$
+所以此时
+$$ 
+
+\sum_{n=1}^{\infty} \mathbb{E}[X_{n}] \neq \mathbb{E}\left[ \sum_{n=1}^{\infty} X_{n} \right]
+
+ $$
+不成立的原因在于我们需要级数绝对可积才能交换求和和期望。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH2701 HW3</title>
       <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw3/</link>
