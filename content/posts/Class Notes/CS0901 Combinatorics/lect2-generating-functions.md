@@ -327,9 +327,9 @@ h_{n} = n![x^{n}](\hat{F}(x)\hat{G}(x)) = \sum_{k=0}^{n} \binom{ n }{ k } f_{k}g
 {{< math >}}
 
 \begin{align*}
- & \hat{B}(x) = \sum_{n \ge 1} \frac{1}{n!} x^n = e^x - 1 \quad (\text{至少一个蓝色格子}) \\
- & \hat{G}(x) = \sum_{n \ge 0} \frac{1}{n!} x^n = e^x \quad (\text{任意数量的绿色格子}) \\
- & \hat{R}(x) = \sum_{n \ge 0, n \text{ 偶数}} \frac{1}{n!} x^n = 1 + \frac{x^2}{2!} + \frac{x^4}{4!} + \dots = \frac{e^x + e^{-x}}{2} \quad (\text{偶数个红色格子})
+ & \hat{B}(x) = \sum_{n \ge 1} \frac{1}{n!} x^n = e^x - 1  &  (\text{至少一个蓝色格子}) \\
+ & \hat{G}(x) = \sum_{n \ge 0} \frac{1}{n!} x^n = e^x  &  (\text{任意数量的绿色格子}) \\
+ & \hat{R}(x) = \sum_{n \ge 0, n \text{ 偶数}} \frac{1}{n!} x^n = 1 + \frac{x^2}{2!} + \frac{x^4}{4!} + \dots = \frac{e^x + e^{-x}}{2}  &  (\text{偶数个红色格子})
 \end{align*}
 
 {{< /math >}}

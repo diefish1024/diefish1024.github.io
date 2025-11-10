@@ -72,7 +72,27 @@ D_n = \sum_{S \subseteq [n]} (-1)^{|S|} (n - |S|)! = n! \sum_{k=0}^n \frac{(-1)^
 
 **方法 2：循环分解**
 
+分解成大小 {{< imath >}}\geq 2{{< /imath >}} 的循环。对于一个大小至少为 {{< imath >}}2{{< /imath >}} 的循环，它的 EGF 为
+{{< math >}}
 
+C(x) = \ln \dfrac{1}{1-x} - x
+
+{{< /math >}}
+错排看成一系列这样的循环的集合，所以
+{{< math >}}
+
+D(x) = \exp(C(x)) = \dfrac{1}{1-x}\cdot e^{ -x }
+
+{{< /math >}}
+从而
+{{< math >}}
+
+\begin{align*}
+D_{n} = n![x^{n}]D(x) & = n!\sum_{k=0}^{n} ([x^{k}]e^{ -x })\left( [x^{n-k} ] \dfrac{1}{1-x} \right) \\
+ & = n!\sum_{k=0}^{n} \dfrac{(-1)^{k}}{k!}\cdot 1
+\end{align*}
+
+{{< /math >}}
 
 **方法 3：指数生成函数**
 
@@ -171,7 +191,7 @@ n = \sum_{d|n} |{k \in [n] \mid \gcd(n,k) = d}| = \sum_{d|n} \phi(n/d) = \sum_{d
 
 **容斥计算 {{< imath >}}\phi(n){{< /imath >}}**
 
-设 {{< imath >}}n = p_1^{r_1} \dots p_m^{r_m}{{< /imath >}}，{{< imath >}}U = [n]{{< /imath >}}，{{< imath >}}B_i = {k \in [n] \mid p_i \text{ 整除 } k}{{< /imath >}}。则 {{< imath >}}\phi(n) = \left| U \setminus \bigcup_{i=1}^m B_i \right|{{< /imath >}}，且 {{< imath >}}\left| \bigcap_{i \in S} B_i \right| = \frac{n}{\prod_{i \in S} p_i}{{< /imath >}}。由补集形式
+设 {{< imath >}}n = p_1^{r_1} \dots p_m^{r_m}{{< /imath >}}，{{< imath >}}U = [n]{{< /imath >}}，{{< imath >}}B_i = \{k \in [n] \mid p_i | k\}{{< /imath >}}。则 {{< imath >}}\phi(n) = \left| U \setminus \bigcup_{i=1}^m B_i \right|{{< /imath >}}，且 {{< imath >}}\left| \bigcap_{i \in S} B_i \right| = \frac{n}{\prod_{i \in S} p_i}{{< /imath >}}。由补集形式
 {{< math >}}
   
 \phi(n) = n \prod_{i=1}^m \left( 1 - \frac{1}{p_i} \right)  
@@ -183,7 +203,7 @@ n = \sum_{d|n} |{k \in [n] \mid \gcd(n,k) = d}| = \sum_{d|n} \phi(n/d) = \sum_{d
 \mu(n) =  
 \begin{cases}  
 1 & \text{若 } n = 1 \\
-0 & \text{若 } \exists p, p^2 \text{ 整除 } n \\  
+0 & \text{若 } \exists p, p^2 | n \\  
 (-1)^k & \text{若 } n = p_1 \dots p_k \text{（不同素数）}  
 \end{cases}  
 
