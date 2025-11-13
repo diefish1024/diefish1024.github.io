@@ -11,8 +11,17 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 09 Nov 2025 13:42:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 13 Nov 2025 13:51:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/course-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW15</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw15/</link>
+      <pubDate>Thu, 13 Nov 2025 13:51:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw15/</guid>
+      <description>&lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
+&lt;p&gt;先证充分性。如果 $ G $ 是一个二分图，设两部分的点集分别为 $ L,R $，所有边均满足两端点分别在 $ L,R $ 中。反证法，加入存在奇环，设环中第一和最后一个点分别为 $ v_{1},v_{k} $，那么 $ k $ 为奇数。不妨设 $ v_{1}\in L $，由于一条边必然在 $ L,R $ 两部分之间 ，所以环中的点在 $ L,R $ 交替出现，即 $ v_{2}\in R,v_{3}\in L,\dots $，由于 $ k $ 是奇数，因此 $ v_{k}\in L $。这说明 $ v_{1},v_{k} $ 两个 $ L $ 中的点存在连边，与二分图矛盾。因此二分图中没有奇环。&lt;/p&gt;
+&lt;p&gt;再证必要性。如果 $ G $ 没有奇环，我们可以将 $ G $ 分成若干个连通块，每个连通块中任取一个点 $ u_{i} $，我们按照一下顺序将所有点分成 $ L,R $ 两组：首先令 $ u_{i}\in L $，将所有与 $ u_{i} $ 最短距离为偶数的点加入 $ L $，其余的点，也就是到 $ u_{i} $ 最短距离为奇数的点加入 $ R $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW14</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw14/</link>
