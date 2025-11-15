@@ -11,8 +11,27 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 13 Nov 2025 13:51:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 15 Nov 2025 15:11:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/linear-algebra/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW16</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw16/</link>
+      <pubDate>Sat, 15 Nov 2025 15:11:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw16/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;设 $ A $ 是一个 $ n\times n $ 的矩阵，记 $ A $ 的不同特征值为 $ \lambda_{1},\lambda_{2},\dots,\lambda_{k} $，代数重数分别为 $ a_{i} $，几何重数为 $ g_{i}=\text{dim ker}(A-\lambda_{i}I) $。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(⇒)&lt;/strong&gt; 若 $ A $ 可对角化，则存在可逆矩阵 $ P $ 使得 $ P^{-1}AP=D $ 为对角阵。由于
+$$ 
+
+\begin{align*}
+\det(A - \lambda I) &amp; = \det(P^{-1}DP-\lambda I) \\
+ &amp; = \det(P^{-1}(D-\lambda I)P) \\
+ &amp; = \det(D-\lambda I)
+\end{align*}
+
+ $$
+说 $ A $ 和 $ D $ 的特征多项式相同，从而有一样的特征值和代数重数。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW15</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw15/</link>

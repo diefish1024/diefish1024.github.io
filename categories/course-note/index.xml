@@ -11,8 +11,27 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 13 Nov 2025 13:51:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 15 Nov 2025 15:11:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/course-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW16</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw16/</link>
+      <pubDate>Sat, 15 Nov 2025 15:11:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw16/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;设 $ A $ 是一个 $ n\times n $ 的矩阵，记 $ A $ 的不同特征值为 $ \lambda_{1},\lambda_{2},\dots,\lambda_{k} $，代数重数分别为 $ a_{i} $，几何重数为 $ g_{i}=\text{dim ker}(A-\lambda_{i}I) $。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(⇒)&lt;/strong&gt; 若 $ A $ 可对角化，则存在可逆矩阵 $ P $ 使得 $ P^{-1}AP=D $ 为对角阵。由于
+$$ 
+
+\begin{align*}
+\det(A - \lambda I) &amp; = \det(P^{-1}DP-\lambda I) \\
+ &amp; = \det(P^{-1}(D-\lambda I)P) \\
+ &amp; = \det(D-\lambda I)
+\end{align*}
+
+ $$
+说 $ A $ 和 $ D $ 的特征多项式相同，从而有一样的特征值和代数重数。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW15</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw15/</link>
@@ -92,6 +111,18 @@ c &amp; c^{2}
 \end{align*}
 
  $$&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>CS0901 HW7</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw7/</link>
+      <pubDate>Fri, 07 Nov 2025 13:58:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw7/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;设 $ n&gt;rst $。证明 $ n $ 个数的实数列一定至少含有长度为 $ r $ 的严格上升子序列、长度为 $ s $ 的严格下降子序列、长度为 $ t $ 的常数列中的一个。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;反证法，假设结论不成立。&lt;/p&gt;
+&lt;p&gt;我们为第 $ i $ 个元素 $ x_{i} $ 记下标签 $ (a_{i},b_{i}) $，其中 $ a_{i} $ 表示以 $ x_{i} $ 结尾的最长上升子序列长度，$ b_{i} $ 表示以 $ x_{i} $ 结尾的最长下降子序列长度。那么我们有 $ a_{i}\in[r-1],b_{i}\in[s-1] $。因此总共只有 $ (r-1)(s-1) $ 种标签，此时又有 $ n&gt;t\cdot(r-1)(s-1) $，所以至少有 $ t $ 个元素的标签完全相同。&lt;/p&gt;
+&lt;p&gt;我们假设 $ a_{i}=a_{j},b_{i}=b_{j} $，可以证明 $ x_{i}=x_{j} $。如果不相等，不妨设 $ i&lt; j $。若 $ x_{i}&lt; x_{j} $，那么我们将 $ x_{j} $ 加到以 $ x_{i} $ 结尾的最长上升子序列之后，就得到了一个长度为 $ a_{i}+1 $ 的上升子序列，所以 $ a_{j}\geq a_{i}+1 $，与 $ a_{i}=a_{j} $ 矛盾；若 $ x_{i}&gt;x_{j} $，同理可以得到 $ b_{j}\geq b_{i}+1 $，与 $ b_{i}=b_{j} $ 矛盾。所以一定有 $ x_{i}=x_{j} $。&lt;/p&gt;</description>
     </item>
     <item>
       <title>MATH1205H HW12</title>
