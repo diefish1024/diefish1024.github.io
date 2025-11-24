@@ -11,8 +11,32 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 15 Nov 2025 15:11:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 20 Nov 2025 08:49:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/math/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS0901 HW8</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw8/</link>
+      <pubDate>Thu, 20 Nov 2025 08:49:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw8/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;给定平面上 $ 2n $ 个点，任意将 $ n $ 个点染成红色，剩下 $ n $ 个点染成蓝色。证明存在一种红蓝点的 $ 1 $-$ 1 $ 配对，使得连接它们的 $ n $ 条线段相互不相交。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;定义红点集 $ R=\{ r_{1},r_{2},\dots,r_{n} \} $，蓝点集 $ B=\{ b_{1},b_{2},\dots,b_{n} \} $。$ R\to B $ 的映射，对应一种配对方案，总数为 $ n! $。&lt;/p&gt;
+&lt;p&gt;对于任意一种配对方案 $ \sigma $，我们定义它的总长度 $ L(\sigma) $ 为该方案中所有线段的长度之和
+$$ 
+
+L(\sigma) = \sum_{(r,b)\in\sigma}\text{dist}(r,b)
+
+ $$
+由于总方案数有限，因此一定存在一种方案 $ \sigma_{m} $ 使得总长度 $ L(\sigma_{m}) $ 最小。我们下面证明这个最小方案中没有相交的线段。&lt;/p&gt;
+&lt;p&gt;假设在 $ \sigma_{m} $ 中存在两条线段相交，设为 $ (r_{1},b_{1}) $ 和 $ (r_{2},b_{2}) $，相交于点 $ P $。那么我们考虑交换配对变为 $ (r_{1},b_{2}) $ 和 $ (r_{2},b_{1}) $。根据三角不等式，有 $ \left| r_{1}b_{2} \right|&lt;\left| r_{1}X \right|+\left| Xb_{2} \right|,\left| r_{2}b_{1} \right|&lt;\left| r_{2}X \right|+\left| Xb_{1} \right| $，从而
+$$ 
+
+\left| r_{1}b_{2} \right| +\left| r_{2}b_{1} \right| &lt; \left| r_{1}X \right| +\left| Xb_{1} \right| +\left| r_{2}X \right| +\left| Xb_{2} \right| = \left| r_{1}b_{1} \right| +\left| r_{2}b_{2} \right| 
+
+ $$
+发现交换后得到了一个总长度更小的方案，从而与总长度最小矛盾。这样我们就证明了总长度最小的配对方案所有线段必然不相交，证毕。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW16</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw16/</link>
