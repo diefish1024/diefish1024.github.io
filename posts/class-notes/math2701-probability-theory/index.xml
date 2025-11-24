@@ -11,8 +11,34 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 30 Oct 2025 18:45:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 19 Nov 2025 09:20:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH2701 HW5</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw5/</link>
+      <pubDate>Wed, 19 Nov 2025 09:20:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw5/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;根据题设条件，我们知道最多抽取 $ m $ 个黑球，最少抽取 $ 0 $ 个黑球。设随机变量 $ X $ 表示抽到黑球的个数，根据组合意义，我们得到 $ X $ 的概率质量函数为
+$$ 
+
+\mathbb{P}(X=x) = \dfrac{\binom{ m }{ x } \binom{ n-m }{ k-x } }{\binom{ n }{ k } },\quad x = 0,1,\dots,m
+
+ $$
+&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;矩生成函数定义为 $ M_{X}(\theta) = \mathbb{E}[e^{ \theta X }] $。我们带入得到
+$$ 
+
+\begin{align*}
+M_{X}(\theta) &amp; = \sum_{x}e^{ \theta x }\mathbb{P}(X=x) \\
+ &amp; = \sum_{x=0}^{m} e^{ \theta x } \dfrac{\binom{ m }{ x } \binom{ n-m }{ k-x } }{\binom{ n }{ k } } \\
+ &amp; = \dfrac{1}{\binom{ n }{ k } }\sum_{x=0}^{m} e^{ \theta x }\binom{ m }{ x } \binom{ n-m }{ k-x } 
+\end{align*}
+
+ $$
+&lt;strong&gt;(3)&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH2701 HW4</title>
       <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw4/</link>
