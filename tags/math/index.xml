@@ -11,8 +11,41 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Nov 2025 08:49:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 27 Nov 2025 19:54:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/math/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS0901 HW9</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw9/</link>
+      <pubDate>Thu, 27 Nov 2025 19:54:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw9/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;假设有 $ m $ 个俱乐部和 $ n $ 个人，满足以下条件： (i) 每个俱乐部的人数为&lt;strong&gt;偶数&lt;/strong&gt;； (ii) 任意两个俱乐部之间共同拥有的人数为&lt;strong&gt;奇数&lt;/strong&gt;。 证明：$ m \le n $。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;我们在有限域 $ \mathbb{F}_{2} $ 上考虑。设 $ v_{1},\dots,v_{m}\in \mathbb{F}_{2}^{n} $ 为每个俱乐部对应向量。根据条件，我们知道&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;人数为偶数：$ v_{i}\cdot v_{i}=0 $&lt;/li&gt;
+&lt;li&gt;交集为奇数：$ v_{i}\cdot v_{j}=1(i\neq j) $&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;考察这 $ m $ 个向量的线性相关性。假设存在系数 $ c_{1},\dots c_{m}\in \mathbb{F}_{2} $ 使得
+$$ 
+
+\sum_{i=1}^{m} c_{i}v_{i}=\mathbf{0}
+
+ $$
+那么对于任意 $ j\in [m] $，我们将上式与 $ v_{j} $ 做内积
+$$ 
+
+\left( \sum_{i=1}^{m} c_{i}v_{i} \right)\cdot v_{j} = c_{j}(v_{j}\cdot v_{j}) + \sum_{i\neq j}c_{i}(v_{i}\cdot v_{j}) = 0
+
+ $$
+带入得到
+$$ 
+
+\sum_{i\neq j}c_{i}=0
+
+ $$
+由于对于每个 $ j $ 这个条件都要成立，从而 $ c_{j}=\sum_{i\in[m]}c_{i} $，这意味着所有的 $ c_{i} $ 都相等，因此要么全为 $ 0 $，要么全为 $ 1 $。若全为 $ 0 $，则线性无关；若全为 $ 1 $，显然与 $ \sum_{i\neq j}c_{i}=0 $ 矛盾。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>CS0901 HW8</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw8/</link>
