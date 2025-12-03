@@ -11,8 +11,60 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 27 Nov 2025 19:54:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 02 Dec 2025 10:21:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW18</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw18/</link>
+      <pubDate>Tue, 02 Dec 2025 10:21:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw18/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;对于任意标量 $ c $ 和向量 $ x,y\in U $，都有
+$$ 
+
+\begin{align*}
+TS(cx+y) &amp; = T(S(cx+y)) \\
+ &amp; = T(cS(x)+S(y)) \\
+ &amp; = cT(S(x)) + T(S(y)) \\
+ &amp; = cTS(x) + TS(y)
+\end{align*}
+
+ $$
+从而证明了这是一个线性变换。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;设 $ U,V,W $ 的基为
+$$ 
+
+\bar{u} = \{ u_{1},\dots,u_{p} \},\bar{v}=\{ v_{1},\dots,v_{n} \},\bar{w}=\{ w_{1},\dots,w_{m} \}
+
+ $$
+根据线性变换矩阵的定义，有
+$$ 
+
+S(u_{i}) = \sum_{k=1}^{n} (A_{S})_{k,i}v_{k},\quad T(v_{i})=\sum_{k=1}^{m} (A_{T})_{k,i}w_{k}
+
+ $$
+计算 $ TS(u_{i}) $ 并观察系数
+$$ 
+
+\begin{align*}
+TS(u_{j}) &amp; = T(S(u_{j})) \\
+ &amp; = T\left( \sum_{k=1}^{n} (A_{S})_{k,j}v_{k} \right) \\
+ &amp; = \sum_{k=1}^{n} (A_{S})_{k,j}T(v_{k}) \\
+ &amp; = \sum_{k=1}^{n} (A_{S})_{k,j}\left( \sum_{i=1}^{m} (A_{T})_{i,k}w_{i} \right) \\
+ &amp; = \sum_{i=1}^{m} \left( \sum_{k=1}^{n} (A_{T})_{i,k}(A_{S})_{k,j} \right)w_{i} \\
+ &amp; = \sum_{i=1}^{m} (A_{T}A_{S})_{i,j}w_{i}
+\end{align*}
+
+ $$
+再结合 $ A_{TS} $ 的定义就证明了
+$$ 
+
+A_{TS}=A_{T}A_{S}
+
+ $$&lt;/p&gt;</description>
+    </item>
     <item>
       <title>CS0901 HW9</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw9/</link>
@@ -45,6 +97,64 @@ $$
 
  $$
 由于对于每个 $ j $ 这个条件都要成立，从而 $ c_{j}=\sum_{i\in[m]}c_{i} $，这意味着所有的 $ c_{i} $ 都相等，因此要么全为 $ 0 $，要么全为 $ 1 $。若全为 $ 0 $，则线性无关；若全为 $ 1 $，显然与 $ \sum_{i\neq j}c_{i}=0 $ 矛盾。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MATH2701 HW6</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw6/</link>
+      <pubDate>Tue, 25 Nov 2025 10:18:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw6/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;根据泊松分布的定义，我们有
+$$ 
+
+\mathbb{P}[X=\lambda+k] = \dfrac{e^{ -\lambda }\lambda^{\lambda+k}}{(\lambda+k)!},\quad \mathbb{P}[X=\lambda-k-1] = \dfrac{e^{ -\lambda }\lambda^{\lambda-k-1}}{(\lambda-k-1)!}
+
+ $$
+我们计算两者的比值，有
+$$ 
+
+\dfrac{\mathbb{P}[X=\lambda+k]}{\mathbb{P}[X=\lambda-k-1]} = \dfrac{\lambda^{2k+1}\cdot(\lambda-k-1)!}{(\lambda+k)!} = \dfrac{\lambda^{2k+1}}{(\lambda+k)(\lambda+k-1)\dots(\lambda-k)}
+
+ $$
+将分母的乘积左右两两配对，得到
+$$ 
+
+(\lambda+k)\dots(\lambda-k) = \lambda \cdot \prod_{i=1}^{k} (\lambda^{2}-k^{2}) &gt; \lambda \cdot \prod_{i=1}^{k} \lambda^{2} = \lambda^{2k+1}
+
+ $$
+从而就有
+$$ 
+
+\dfrac{\mathbb{P}[X=\lambda+1]}{\mathbb{P}[X=\lambda-k-1]} \geq  1 \implies \mathbb{P}[X=\lambda+1]\geq  \mathbb{P}[X=\lambda-k-1]
+
+ $$&lt;/p&gt;
+&lt;p&gt;接着证明 $ \mathbb{P}[X\geq\lambda]\geq \frac{1}{2} $，将事件展开并拆分可以得到
+$$ 
+
+\begin{align*}
+\mathbb{P}[X\geq \lambda] &amp; =\sum_{k=0}^{\infty} \mathbb{P}[X=\lambda+k] \\
+ &amp; = \sum_{k=0}^{\lambda-1} \mathbb{P}[X=\lambda+k] + \mathbb{P}[X\geq  2\lambda] \\
+ &amp; \geq  \sum_{k=0}^{\lambda-1} \mathbb{P}[X=\lambda+k]
+\end{align*}
+
+ $$
+我们再考虑 $ \mathbb{P}[X&lt; \lambda] $，也就是
+$$ 
+
+\begin{align*}
+\mathbb{P}[X&lt; \lambda] &amp; = \sum_{k=0}^{\lambda-1} \mathbb{P}[X=\lambda-k-1] \\
+ &amp; \leq  \sum_{k=0}^{\lambda-1} \mathbb{P}[X=\lambda+k]
+\end{align*}
+
+ $$
+又因为 $ \mathbb{P}[X\geq\lambda]+\mathbb{P}[X&lt; \lambda]=1 $，这样就得到了
+$$ 
+
+1-\mathbb{P}[X\geq \lambda] \leq  \mathbb{P}[X\geq \lambda] \implies \mathbb{P}[X\geq  \lambda] = \dfrac{1}{2}
+
+ $$
+&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>CS0901 HW8</title>

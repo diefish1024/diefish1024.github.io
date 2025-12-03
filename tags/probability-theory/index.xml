@@ -11,8 +11,66 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 19 Nov 2025 09:20:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 25 Nov 2025 10:18:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/probability-theory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH2701 HW6</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw6/</link>
+      <pubDate>Tue, 25 Nov 2025 10:18:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw6/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;根据泊松分布的定义，我们有
+$$ 
+
+\mathbb{P}[X=\lambda+k] = \dfrac{e^{ -\lambda }\lambda^{\lambda+k}}{(\lambda+k)!},\quad \mathbb{P}[X=\lambda-k-1] = \dfrac{e^{ -\lambda }\lambda^{\lambda-k-1}}{(\lambda-k-1)!}
+
+ $$
+我们计算两者的比值，有
+$$ 
+
+\dfrac{\mathbb{P}[X=\lambda+k]}{\mathbb{P}[X=\lambda-k-1]} = \dfrac{\lambda^{2k+1}\cdot(\lambda-k-1)!}{(\lambda+k)!} = \dfrac{\lambda^{2k+1}}{(\lambda+k)(\lambda+k-1)\dots(\lambda-k)}
+
+ $$
+将分母的乘积左右两两配对，得到
+$$ 
+
+(\lambda+k)\dots(\lambda-k) = \lambda \cdot \prod_{i=1}^{k} (\lambda^{2}-k^{2}) &gt; \lambda \cdot \prod_{i=1}^{k} \lambda^{2} = \lambda^{2k+1}
+
+ $$
+从而就有
+$$ 
+
+\dfrac{\mathbb{P}[X=\lambda+1]}{\mathbb{P}[X=\lambda-k-1]} \geq  1 \implies \mathbb{P}[X=\lambda+1]\geq  \mathbb{P}[X=\lambda-k-1]
+
+ $$&lt;/p&gt;
+&lt;p&gt;接着证明 $ \mathbb{P}[X\geq\lambda]\geq \frac{1}{2} $，将事件展开并拆分可以得到
+$$ 
+
+\begin{align*}
+\mathbb{P}[X\geq \lambda] &amp; =\sum_{k=0}^{\infty} \mathbb{P}[X=\lambda+k] \\
+ &amp; = \sum_{k=0}^{\lambda-1} \mathbb{P}[X=\lambda+k] + \mathbb{P}[X\geq  2\lambda] \\
+ &amp; \geq  \sum_{k=0}^{\lambda-1} \mathbb{P}[X=\lambda+k]
+\end{align*}
+
+ $$
+我们再考虑 $ \mathbb{P}[X&lt; \lambda] $，也就是
+$$ 
+
+\begin{align*}
+\mathbb{P}[X&lt; \lambda] &amp; = \sum_{k=0}^{\lambda-1} \mathbb{P}[X=\lambda-k-1] \\
+ &amp; \leq  \sum_{k=0}^{\lambda-1} \mathbb{P}[X=\lambda+k]
+\end{align*}
+
+ $$
+又因为 $ \mathbb{P}[X\geq\lambda]+\mathbb{P}[X&lt; \lambda]=1 $，这样就得到了
+$$ 
+
+1-\mathbb{P}[X\geq \lambda] \leq  \mathbb{P}[X\geq \lambda] \implies \mathbb{P}[X\geq  \lambda] = \dfrac{1}{2}
+
+ $$
+&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH2701 HW5</title>
       <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw5/</link>
