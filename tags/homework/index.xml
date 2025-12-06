@@ -66,6 +66,45 @@ A_{TS}=A_{T}A_{S}
  $$&lt;/p&gt;</description>
     </item>
     <item>
+      <title>MATH1205H HW17</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw17/</link>
+      <pubDate>Fri, 28 Nov 2025 09:13:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw17/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;设 $ A $ 的特征多项式为 $ P(\lambda) = \det(A-\lambda I) $。由于特征值 $ \lambda_{1},\lambda_{2},\dots,\lambda_{n} $ 是 $ P(\lambda) $ 的根，因此
+$$ 
+
+P(\lambda) = (-1)^{n}(\lambda-\lambda_{1})(\lambda-\lambda_{2})\dots(\lambda-\lambda_{n})
+
+ $$
+我们首先证明 $ \prod_{i=1}^{n}\lambda_{i}=\det(A) $。首先直接带入
+$$ 
+
+P(0)=\det(A-0\cdot I)=\det A
+
+ $$
+又有
+$$ 
+
+P(0) = (-1)^{n}(0-\lambda_{1})(0-\lambda_{2})\dots(0-\lambda_{n})=\prod_{i=1}^{n} \lambda_{i}
+
+ $$
+这样就得到了 $ \prod_{i=1}^{n}\lambda_{i}=\det(A) $。&lt;/p&gt;
+&lt;p&gt;接着证明 $ \sum_{i=1}^{n}\lambda_{i}=\mathrm{trace}(A) $。展开 $ P(\lambda) $ 考察 $ \lambda^{n-1} $ 的系数，为
+$$ 
+
+(-1)^{n}\cdot \sum_{i=1}^{n} (-\lambda_{i}) = (-1)^{n+1}\sum_{i=1}^{n} \lambda_{i}
+
+ $$
+同时对于矩阵 $ M=A-\lambda I $，利用行列式定义，有
+$$ 
+
+\det(A-\lambda I)=\sum_{\sigma \in S_{n}}\text{sgn}(n)\prod_{i=1}^{n} (A-\lambda I)_{i,\sigma(i)}
+
+ $$
+其中 $ S_{n} $ 表示 $ [n] $ 中所有置换的集合。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>CS0901 HW9</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw9/</link>
       <pubDate>Thu, 27 Nov 2025 19:54:00 +0800</pubDate>
