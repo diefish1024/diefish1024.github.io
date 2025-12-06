@@ -11,8 +11,71 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 02 Dec 2025 10:21:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 05 Dec 2025 16:35:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW19</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw19/</link>
+      <pubDate>Fri, 05 Dec 2025 16:35:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw19/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;根据分块对角矩阵的性质，秩等于对角线上各个子块的秩之和，因此
+$$ 
+
+\text{rank}(AB)+n = \text{rank}\left(\begin{bmatrix}
+AB &amp; 0 \\ 0 &amp; I
+\end{bmatrix}\right)
+
+ $$
+接着由于初等列变换不改变矩阵的秩，将第二列右乘 $ B $ 加到第一列得到
+$$ 
+
+\text{rank}\left(\begin{bmatrix}
+AB &amp; 0 \\ 0 &amp; I
+\end{bmatrix}\right) = \text{rank}\left(\begin{bmatrix}
+AB &amp; 0 \\ B &amp; I
+\end{bmatrix}\right)
+
+ $$
+同样由于初等行变换也不改变矩阵的秩，将第二行左乘 $ A $ 再和第一行相减，得到
+$$ 
+
+\text{rank}\left(\begin{bmatrix}
+AB &amp; 0 \\ B &amp; I
+\end{bmatrix}\right) = \text{rank}\left(\begin{bmatrix}
+0 &amp; -A \\ B &amp; I
+\end{bmatrix}\right)
+
+ $$
+交换上下两行，得到
+$$ 
+
+\text{rank}\left(\begin{bmatrix}
+0 &amp; -A \\ B &amp; I
+\end{bmatrix}\right) = \text{rank}\left(\begin{bmatrix}
+B &amp; I \\ 0 &amp; -A
+\end{bmatrix}\right)
+
+ $$
+第二行乘以 $ -1 $ 就得到了
+$$ 
+
+\text{rank}\left(\begin{bmatrix}
+B &amp; I \\ 0 &amp; -A
+\end{bmatrix}\right) = \text{rank}\left(\begin{bmatrix}
+B &amp; -I \\ 0 &amp; A
+\end{bmatrix}\right)
+
+ $$
+再根据上三角分块矩阵的性质，就有
+$$ 
+
+\text{rank}\left(\begin{bmatrix}
+B &amp; -I \\ 0 &amp; A
+\end{bmatrix}\right) \geq  \text{rank}(A) + \text{rank}(B)
+
+ $$&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW18</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw18/</link>
