@@ -11,8 +11,30 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 25 Nov 2025 10:18:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 06 Dec 2025 20:14:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/probability-theory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH2701 HW7</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw7/</link>
+      <pubDate>Sat, 06 Dec 2025 20:14:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw7/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;总共有 $ N=\binom{ n }{ 2 } $ 对点。设 $ X_{ij}=\mathbb{I}[(i,j)\in E_{n}] $。那么 $ \mathbf{E}[X_{ij}]=p $。并且
+$$ 
+
+\left| E_{n} \right| = \sum_{1\leq i&lt; j\leq n} X_{i}
+
+ $$
+由于边与边之间独立，因此 $ X_{i} $ 是独立同分布，并且可积，那么根据强大数定律，就有
+$$ 
+
+\dfrac{\sum X_{i}}{N} = \dfrac{\left| E_{n} \right| }{\binom{ n }{ 2 } } \xrightarrow{a.s.} \mathbf{E}[X_{i}]=p
+
+ $$
+&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;设 $ \mathcal{C}_n $ 为 $ V_n $ 中所有大小为 $ 3 $ 的子集的集合，也就是所有无序三元组 $ \{i, j, k\} $。集合大小 $ |\mathcal{C}_n| = \binom{n}{3} $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH2701 HW6</title>
       <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw6/</link>

@@ -11,8 +11,79 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 05 Dec 2025 16:35:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 10 Dec 2025 17:03:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/math/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS0901 HW10</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw10/</link>
+      <pubDate>Wed, 10 Dec 2025 17:03:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw10/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;设 $ H = (V, \mathcal{F}) $ 是一个没有孤立点的超图，满足每条超边至少包含 3 个顶点，且任意两条超边恰好共享一个顶点。假设 $ H $ 不是 2-可着色的（即不能用两种颜色对顶点染色使得每条超边内都有不同颜色的点）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;证明每个顶点 $ v $ 至少属于 $ \mathcal{F} $ 中的两条超边。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;假设存在一个顶点 $ v $ 满足 $ d(v)&lt; 2 $。由于没有孤立顶点，因此 $ d(v)=1 $，恰好属于一条超边，记为 $ E $。&lt;/p&gt;
+&lt;p&gt;我们将顶点 $ v $ 染成红色，将 $ E $ 中的其他点染成蓝色，再将图中除了 $ E $ 之外的所有点染成红色。由于任意两条超边恰好共享一个顶点，并且 $ v $ 只在 $ E $ 中，所以任意一条超边必然和 $ E $ 存在蓝色交点，存在颜色不同的点。因此我们就构造出了一个合法的 2-着色方案，与题设矛盾。&lt;/p&gt;
+&lt;p&gt;因此每个顶点至少属于两条超边。证毕。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MATH1205H HW20</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw20/</link>
+      <pubDate>Tue, 09 Dec 2025 22:58:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw20/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;根据对偶变换的定义
+$$ 
+
+(T&#39;(L))(v) = L(T(v))
+
+ $$
+带入 $ T(v)=v $，就有
+$$ 
+
+(T&#39;(L))(v) = L(v)
+
+ $$
+由于这对所有 $ v \in V $ 均成立，从而 $ T&#39;(L) $ 和 $ L $ 是一个函数，因为输入输出完全相同，因此 $ T&#39;(L)=L $，是恒等变换。&lt;/p&gt;
+&lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
+&lt;p&gt;先证充分性，如果 $ T=\mathbf{0} $，那么对于任意 $ v \in V $，都有 $ T(v)=\vec{0} $。根据定义
+$$ 
+
+(T&#39;(L))(v) = L(T(v)) = 0
+
+ $$
+说明 $ T&#39;(L) $ 是零泛函，从而 $ T&#39;=\mathbf{0} $。&lt;/p&gt;
+&lt;p&gt;如果 $ T&#39;=\mathbf{0} $，那么对于任意 $ L\in W&#39; $，$ T&#39;(L) $ 是 $ V $ 上的零泛函。带入定义就有
+$$ 
+
+L(T(v)) =(T&#39;(L))(v) = 0
+
+ $$
+由于对所有的线性泛函均成立，那么可以证明 $ T(v)=\vec{0} $。否则将 $ T(v)=w $ 扩充为 $ W $ 的一组基，定义 $ L $ 只在 $ w $ 上为 $ 1 $，否则为 $ 0 $，这样就构造出了一个不符合的 $ L $，因此矛盾。从而 $ T(v)=\vec{0} $ 对所有 $ v $ 均成立，也就有 $ T=\mathbf{0} $。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MATH2701 HW7</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw7/</link>
+      <pubDate>Sat, 06 Dec 2025 20:14:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/math2701-hw7/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;总共有 $ N=\binom{ n }{ 2 } $ 对点。设 $ X_{ij}=\mathbb{I}[(i,j)\in E_{n}] $。那么 $ \mathbf{E}[X_{ij}]=p $。并且
+$$ 
+
+\left| E_{n} \right| = \sum_{1\leq i&lt; j\leq n} X_{i}
+
+ $$
+由于边与边之间独立，因此 $ X_{i} $ 是独立同分布，并且可积，那么根据强大数定律，就有
+$$ 
+
+\dfrac{\sum X_{i}}{N} = \dfrac{\left| E_{n} \right| }{\binom{ n }{ 2 } } \xrightarrow{a.s.} \mathbf{E}[X_{i}]=p
+
+ $$
+&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;设 $ \mathcal{C}_n $ 为 $ V_n $ 中所有大小为 $ 3 $ 的子集的集合，也就是所有无序三元组 $ \{i, j, k\} $。集合大小 $ |\mathcal{C}_n| = \binom{n}{3} $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW19</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw19/</link>

@@ -11,8 +11,43 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 05 Dec 2025 16:35:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 09 Dec 2025 22:58:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW20</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw20/</link>
+      <pubDate>Tue, 09 Dec 2025 22:58:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw20/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;根据对偶变换的定义
+$$ 
+
+(T&#39;(L))(v) = L(T(v))
+
+ $$
+带入 $ T(v)=v $，就有
+$$ 
+
+(T&#39;(L))(v) = L(v)
+
+ $$
+由于这对所有 $ v \in V $ 均成立，从而 $ T&#39;(L) $ 和 $ L $ 是一个函数，因为输入输出完全相同，因此 $ T&#39;(L)=L $，是恒等变换。&lt;/p&gt;
+&lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
+&lt;p&gt;先证充分性，如果 $ T=\mathbf{0} $，那么对于任意 $ v \in V $，都有 $ T(v)=\vec{0} $。根据定义
+$$ 
+
+(T&#39;(L))(v) = L(T(v)) = 0
+
+ $$
+说明 $ T&#39;(L) $ 是零泛函，从而 $ T&#39;=\mathbf{0} $。&lt;/p&gt;
+&lt;p&gt;如果 $ T&#39;=\mathbf{0} $，那么对于任意 $ L\in W&#39; $，$ T&#39;(L) $ 是 $ V $ 上的零泛函。带入定义就有
+$$ 
+
+L(T(v)) =(T&#39;(L))(v) = 0
+
+ $$
+由于对所有的线性泛函均成立，那么可以证明 $ T(v)=\vec{0} $。否则将 $ T(v)=w $ 扩充为 $ W $ 的一组基，定义 $ L $ 只在 $ w $ 上为 $ 1 $，否则为 $ 0 $，这样就构造出了一个不符合的 $ L $，因此矛盾。从而 $ T(v)=\vec{0} $ 对所有 $ v $ 均成立，也就有 $ T=\mathbf{0} $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW19</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw19/</link>

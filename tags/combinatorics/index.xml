@@ -11,8 +11,22 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 27 Nov 2025 19:54:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 10 Dec 2025 17:03:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/combinatorics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS0901 HW10</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw10/</link>
+      <pubDate>Wed, 10 Dec 2025 17:03:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw10/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;设 $ H = (V, \mathcal{F}) $ 是一个没有孤立点的超图，满足每条超边至少包含 3 个顶点，且任意两条超边恰好共享一个顶点。假设 $ H $ 不是 2-可着色的（即不能用两种颜色对顶点染色使得每条超边内都有不同颜色的点）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;证明每个顶点 $ v $ 至少属于 $ \mathcal{F} $ 中的两条超边。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;假设存在一个顶点 $ v $ 满足 $ d(v)&lt; 2 $。由于没有孤立顶点，因此 $ d(v)=1 $，恰好属于一条超边，记为 $ E $。&lt;/p&gt;
+&lt;p&gt;我们将顶点 $ v $ 染成红色，将 $ E $ 中的其他点染成蓝色，再将图中除了 $ E $ 之外的所有点染成红色。由于任意两条超边恰好共享一个顶点，并且 $ v $ 只在 $ E $ 中，所以任意一条超边必然和 $ E $ 存在蓝色交点，存在颜色不同的点。因此我们就构造出了一个合法的 2-着色方案，与题设矛盾。&lt;/p&gt;
+&lt;p&gt;因此每个顶点至少属于两条超边。证毕。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>CS0901 HW9</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw9/</link>
