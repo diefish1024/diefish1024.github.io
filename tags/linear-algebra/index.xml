@@ -11,8 +11,30 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 09 Dec 2025 22:58:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 12 Dec 2025 09:40:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/linear-algebra/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW21</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw21/</link>
+      <pubDate>Fri, 12 Dec 2025 09:40:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw21/</guid>
+      <description>&lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
+&lt;p&gt;根据定义，对于任意 $ \phi \in V&#39; $，有
+$$ 
+T_{\text{incl}}&#39;(\phi) = \phi \circ T_{\text{incl}}
+ $$
+由于 $ T_{\text{incl}} $ 是包含映射，因此 $ T_{\text{incl}}&#39; $ 实际上将 $ \phi $ 的定义域限制在了 $ U $ 上，也就是 $ T_{\text{incl}}&#39;(\phi)=\phi|_{U} $，因此 $ \mathrm{Im}(T_{\text{incl}}&#39;) $ 由所有形式为 $ \phi|_{U} $ 的线性泛函组成，从而 $ \mathrm{Im}(T_{\text{incl}}&#39;)\subseteq U&#39; $。&lt;/p&gt;
+&lt;p&gt;证明满射。即证对于任意 $ \psi \in U&#39; $，都存在 $ \phi \in V&#39; $ 使得 $ T_{\text{incl}}&#39;(\phi)=\psi $。设 $ \{ u_{1},\dots,u_{m} \} $ 是 $ U $ 的一组基，将它扩充为 $ V $ 的一组基 $ \{ u_{1},\dots,u_{m},v_{m+1},\dots,v_{n} \} $。那么对于给定的 $ \psi \in U&#39; $，在 $ V $ 的基上定义 $ \phi \in V&#39; $ 满足
+$$ 
+
+\begin{cases}
+\phi(u_{i}) = \psi(u_{i}), \\
+\phi(v_{j}) = 0
+\end{cases}
+
+ $$
+根据线性扩展定理，$ \phi $ 在 $ V $ 上唯一确定。从而对于任意 $ u \in U $，$ \phi(u) = \psi(u) $，即 $ \phi|_U = \psi $。因此就有 $ U&#39;\subseteq \mathrm{Im}(T_{\text{incl}}&#39;) $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW20</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw20/</link>
