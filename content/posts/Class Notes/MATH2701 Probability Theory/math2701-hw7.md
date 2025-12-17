@@ -246,7 +246,9 @@ H(X) \leq  \log_{2}\left| A \right|
 
 \lim_{ n \to \infty } \mathbf{E}[X_{n}] \leq  \lim_{ n \to \infty } \dfrac{4}{3}(3p)^{n} = 0
 
-{{< /math >}}**(2)**
+{{< /math >}}
+
+**(2)**
 
 设一条路关闭的概率为 {{< imath >}}q=1-p{{< /imath >}}，那么根据题设，有 {{< imath >}}q<  \frac{1}{10}{{< /imath >}}。
 
