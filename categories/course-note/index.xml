@@ -11,8 +11,25 @@
     </image>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 17 Dec 2025 16:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 19 Dec 2025 15:48:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/course-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW23</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw23/</link>
+      <pubDate>Fri, 19 Dec 2025 15:48:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw23/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;不唯一。只有奇异值 $ \Sigma $ 是唯一的，而 $ U,V $ 通常不唯一。首先我们改变 $ U,V $ 中对应列的符号不会产生影响；其次相同的奇异值对应的奇异向量可以在保持正交的情况下任意变换，也不会对 SVD 分解产生影响；并且如果存在零奇异值，也可以任意选择。&lt;/p&gt;
+&lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
+&lt;p&gt;我们需要证明对于所有 $ k\in \{ r+1,\dots, m\} $ 满足 $ AA^{T}u_{k}=\mathbf{0} $。&lt;/p&gt;
+&lt;p&gt;首先根据正交矩阵，因此对于任意 $ j\in [r] $ 和 $ k\in \{ r+1,\dots,m \} $，有 $ u_{j}^{T}u_{k}=0 $。我们考虑 $ A $ 的列空间，显然 $ \{ u_{j} \}_{j=1}^{r} $ 是 $ AA^{T} $ 的非零特征值对应的特征向量，构成了 $ \text{Col}(A) $ 的一组正交基，从而 $ \{ u_{k} \}_{k=r+1}^{m} $ 属于 $ \text{Col}(A) $ 的正交补空间，也就属于 $ A^{T} $ 的零空间，因此
+$$ 
+
+A^{T}u_{k} = \mathbf{0},\quad k=r+1,\dots,m
+
+ $$
+带入就有 $ AA^{T}u_{k}=\mathbf{0} $，证毕。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>CS0901 HW11</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw11/</link>
