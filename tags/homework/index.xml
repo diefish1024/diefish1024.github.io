@@ -9,10 +9,26 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.152.2</generator>
+    <generator>Hugo -- 0.153.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 19 Dec 2025 15:48:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 20 Dec 2025 21:40:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/homework/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW24</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw24/</link>
+      <pubDate>Sat, 20 Dec 2025 21:40:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw24/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;注意到
+$$ 
+\begin{aligned} \left\| \sum_{i=1}^k c_i w_i \right\|^2 &amp;= \left\langle \sum_{i=1}^k c_i w_i, \sum_{j=1}^k c_j w_j \right\rangle \\ &amp;= \sum_{i=1}^k \sum_{j=1}^k c_i c_j \langle w_i, w_j \rangle \end{aligned}
+ $$
+根据题设，我们知道当 $ i \neq j $ 时 $ \langle w_i, w_j \rangle = 0 $，当 $ i = j $ 时 $ \langle w_i, w_j \rangle = 1 $。因此，上述双重求和中仅保留 $ i=j $ 的项
+$$ 
+\sum_{i=1}^k c_i^2 \cdot 1 = \sum_{i=1}^k c_i^2
+ $$
+得证。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW23</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw23/</link>

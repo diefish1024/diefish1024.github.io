@@ -180,7 +180,7 @@ void T_player() {
 </span><span class=lnt>6
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=nf>mutex_lock</span><span class=p>(</span><span class=n>lk</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=k>while</span> <span class=p>(</span><span class=o>!</span><span class=n>cond</span><span class=p>)</span> <span class=p>{</span> <span class=c1>// cond can be any calculate
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nf>cond_wait</span><span class=p>(</span><span class=o>&amp;</span><span class=n>cv</span><span class=p>,</span> <span class=n>lk</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>	<span class=nf>cond_wait</span><span class=p>(</span><span class=o>&amp;</span><span class=n>cv</span><span class=p>,</span> <span class=n>lk</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=nf>assert</span><span class=p>(</span><span class=n>cond</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=nf>mutex_lock</span><span class=p>(</span><span class=n>lk</span><span class=p>);</span>
@@ -191,7 +191,7 @@ void T_player() {
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=nf>mutex_lock</span><span class=p>(</span><span class=n>lk</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=n>cond</span> <span class=o>=</span> <span class=nb>true</span>
 </span></span><span class=line><span class=cl><span class=nf>cond_broadcast</span><span class=p>(</span><span class=o>&amp;</span><span class=n>cv</span><span class=p>);</span> <span class=c1>//⚠️
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nf>mutex_unlock</span><span class=p>(</span><span class=n>lk</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl><span class=nf>mutex_unlock</span><span class=p>(</span><span class=n>lk</span><span class=p>);</span>
 </span></span></code></pre></td></tr></table></div></div><p><strong>注意</strong>：全局广播 <code>cond_broadcast</code> 不能被替换成单独唤醒一个线程 <code>cond_signal</code> ，在这里显然可能会导致所有进程都被锁住无法触发新的同步变量；并发编程很多看起来正确的地方都需要仔细思考</p><p>遇到任何同步问题的核心都是<strong>同步条件是什么</strong>，比如括号打印可以拓展成打印 <code>&lt;>&lt;</code> 或者 <code>>&lt;></code> 两种形状，核心也是画出状态机，找到同步条件，再套入模板就解决了问题</p><h2 id=计算图与并发控制>计算图与并发控制<a hidden class=anchor aria-hidden=true href=#计算图与并发控制>#</a></h2><p>并行计算的模型可以用一个 DAG 计算图去理解，任务之间存在依赖关系，通过拓扑排序的顺序去解决问题，相互不存在 &ldquo;happens-before&rdquo; 依赖关系的任务都可以并发解决</p><p>为了优化效率，我们对计算任务的分配需要保证每个节点计算的消耗是远大于同步和锁的开销的，因此实际上可能是把很多个小的任务聚合成一个大的并发计算节点，交给一个线程去执行</p><p>实现计算图有两种思路，第一种是朴素的<strong>为每个节点设置一个线程和条件变量</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
@@ -210,12 +210,12 @@ void T_player() {
 </span><span class=lnt>16
 </span><span class=lnt>17
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=line><span class=cl><span class=c1>// The dependency edge is u-&gt;v
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>void</span> <span class=nf>T_u</span><span class=p>()</span> <span class=p>{</span>
+</span></span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>T_u</span><span class=p>()</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>	<span class=c1>// calculate u
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=n>mutex_lock</span><span class=p>(</span><span class=n>v</span><span class=o>-&gt;</span><span class=n>lock</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>	<span class=n>mutex_lock</span><span class=p>(</span><span class=n>v</span><span class=o>-&gt;</span><span class=n>lock</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>	<span class=n>v</span><span class=o>-&gt;</span><span class=n>num_done</span><span class=o>++</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>	<span class=n>cond_signal</span><span class=p>(</span><span class=n>v</span><span class=o>-&gt;</span><span class=n>cv</span><span class=p>);</span> <span class=c1>// it&#39;s okay
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=n>mutex_unlock</span><span class=p>(</span><span class=n>v</span><span class=o>-&gt;</span><span class=n>lock</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>	<span class=n>mutex_unlock</span><span class=p>(</span><span class=n>v</span><span class=o>-&gt;</span><span class=n>lock</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>T_v</span><span class=p>()</span> <span class=p>{</span>
@@ -225,7 +225,7 @@ void T_player() {
 </span></span><span class=line><span class=cl>	<span class=p>}</span>
 </span></span><span class=line><span class=cl>	<span class=n>mutex_unlock</span><span class=p>(</span><span class=n>v</span><span class=o>-&gt;</span><span class=n>lock</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>	<span class=c1>// calculate v
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span></code></pre></td></tr></table></div></div><p>但是这样实际会产生过多的线程，造成不必要的性能开销（比如产生了多余 CPU 的 core 数量的线程），实际上更优的办法是创建一个任务调度器线程 $ T_{\text{scheduler}} $ 来专门控制产生 $ T_{\text{worker}} $ ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3

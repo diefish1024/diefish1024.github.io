@@ -243,10 +243,10 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span><span class=lnt>28
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;mpi.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>**</span> <span class=n>argv</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// 1. 初始化 MPI 环境
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>MPI_Init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>argc</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>argv</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>MPI_Init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>argc</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>argv</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>world_size</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>world_rank</span><span class=p>;</span>
@@ -254,18 +254,18 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>name_len</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 2. 获取通信子信息
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>MPI_Comm_size</span><span class=p>(</span><span class=n>MPI_COMM_WORLD</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>world_size</span><span class=p>);</span> <span class=c1>// 获取总进程数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>MPI_Comm_rank</span><span class=p>(</span><span class=n>MPI_COMM_WORLD</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>world_rank</span><span class=p>);</span> <span class=c1>// 获取当前进程的秩
-</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>MPI_Comm_size</span><span class=p>(</span><span class=n>MPI_COMM_WORLD</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>world_size</span><span class=p>);</span> <span class=c1>// 获取总进程数
+</span></span></span><span class=line><span class=cl>    <span class=nf>MPI_Comm_rank</span><span class=p>(</span><span class=n>MPI_COMM_WORLD</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>world_rank</span><span class=p>);</span> <span class=c1>// 获取当前进程的秩
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 获取处理器名称 (可选)
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>MPI_Get_processor_name</span><span class=p>(</span><span class=n>processor_name</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>name_len</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>MPI_Get_processor_name</span><span class=p>(</span><span class=n>processor_name</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>name_len</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 3. 基于秩执行不同的代码
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Hello world from processor %s, rank %d out of %d processors</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Hello world from processor %s, rank %d out of %d processors</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span>
 </span></span><span class=line><span class=cl>           <span class=n>processor_name</span><span class=p>,</span> <span class=n>world_rank</span><span class=p>,</span> <span class=n>world_size</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 4. 结束 MPI 环境
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nf>MPI_Finalize</span><span class=p>();</span>
+</span></span></span><span class=line><span class=cl>    <span class=nf>MPI_Finalize</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
@@ -301,7 +301,7 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span><span class=lnt>30
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;mpi.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>**</span> <span class=n>argv</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=nf>MPI_Init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>argc</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>argv</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>world_rank</span><span class=p>,</span> <span class=n>world_size</span><span class=p>;</span>
@@ -317,12 +317,12 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>number</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>world_rank</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 进程 0 发送数据给进程 1
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>number</span> <span class=o>=</span> <span class=mi>42</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>        <span class=n>number</span> <span class=o>=</span> <span class=mi>42</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>        <span class=nf>MPI_Send</span><span class=p>(</span><span class=o>&amp;</span><span class=n>number</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=n>MPI_INT</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>MPI_COMM_WORLD</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Process 0 sent number %d to process 1</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>number</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=n>world_rank</span> <span class=o>==</span> <span class=mi>1</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 进程 1 接收来自进程 0 的数据
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>MPI_Recv</span><span class=p>(</span><span class=o>&amp;</span><span class=n>number</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=n>MPI_INT</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>MPI_COMM_WORLD</span><span class=p>,</span> <span class=n>MPI_STATUS_IGNORE</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>MPI_Recv</span><span class=p>(</span><span class=o>&amp;</span><span class=n>number</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=n>MPI_INT</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>MPI_COMM_WORLD</span><span class=p>,</span> <span class=n>MPI_STATUS_IGNORE</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Process 1 received number %d from process 0</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>number</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>    
@@ -379,7 +379,7 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;mpi.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>**</span> <span class=n>argv</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl><span class=nf>MPI_Init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>argc</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>argv</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
@@ -393,7 +393,7 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>world_rank</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=c1>// 主进程初始化数据
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>data_size</span> <span class=o>=</span> <span class=mi>5</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>        <span class=n>data_size</span> <span class=o>=</span> <span class=mi>5</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>        <span class=n>data</span> <span class=o>=</span> <span class=p>(</span><span class=kt>int</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=n>data_size</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=kt>int</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>data_size</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span> <span class=n>data</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
@@ -405,7 +405,7 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></span><span class=line><span class=cl>    <span class=nf>MPI_Bcast</span><span class=p>(</span><span class=o>&amp;</span><span class=n>data_size</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=n>MPI_INT</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>MPI_COMM_WORLD</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>// 分配缓冲区
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=n>world_rank</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>world_rank</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=n>data</span> <span class=o>=</span> <span class=p>(</span><span class=kt>int</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=n>data_size</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=kt>int</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl>
@@ -500,7 +500,7 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;math.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;time.h&gt;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span><span class=o>**</span> <span class=n>argv</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=nf>MPI_Init</span><span class=p>(</span><span class=o>&amp;</span><span class=n>argc</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>argv</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
@@ -519,7 +519,7 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></span><span class=line><span class=cl>        <span class=n>full_B</span> <span class=o>=</span> <span class=p>(</span><span class=kt>float</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=n>vector_size</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=kt>float</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>        <span class=c1>// 使用固定种子初始化完整向量（保证可重复性）
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nf>srand</span><span class=p>(</span><span class=mi>12345</span><span class=p>);</span>
+</span></span></span><span class=line><span class=cl>        <span class=nf>srand</span><span class=p>(</span><span class=mi>12345</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>vector_size</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=n>full_A</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=kt>float</span><span class=p>)</span><span class=nf>rand</span><span class=p>()</span> <span class=o>/</span> <span class=n>RAND_MAX</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>            <span class=n>full_B</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=kt>float</span><span class=p>)</span><span class=nf>rand</span><span class=p>()</span> <span class=o>/</span> <span class=n>RAND_MAX</span><span class=p>;</span>
@@ -530,7 +530,7 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></span><span class=line><span class=cl>    <span class=kt>float</span> <span class=o>*</span><span class=n>local_B</span> <span class=o>=</span> <span class=p>(</span><span class=kt>float</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=n>local_size</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=kt>float</span><span class=p>));</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>//============ 并行计算 ============
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>float</span> <span class=n>global_dot</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
+</span></span></span><span class=line><span class=cl>    <span class=kt>float</span> <span class=n>global_dot</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=nf>MPI_Scatter</span><span class=p>(</span><span class=n>full_A</span><span class=p>,</span> <span class=n>local_size</span><span class=p>,</span> <span class=n>MPI_FLOAT</span><span class=p>,</span> 
 </span></span><span class=line><span class=cl>                <span class=n>local_A</span><span class=p>,</span> <span class=n>local_size</span><span class=p>,</span> <span class=n>MPI_FLOAT</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>MPI_COMM_WORLD</span><span class=p>);</span>
@@ -545,7 +545,7 @@ MPI_Finalize()：清理并结束 MPI 环境，必须是最后一个被调用的 
 </span></span><span class=line><span class=cl>    <span class=nf>MPI_Reduce</span><span class=p>(</span><span class=o>&amp;</span><span class=n>local_dot</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>global_dot</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=n>MPI_FLOAT</span><span class=p>,</span> <span class=n>MPI_SUM</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>MPI_COMM_WORLD</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=c1>//============串行计算============
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=n>rank</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>rank</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>        <span class=kt>double</span> <span class=n>serial_dot</span> <span class=o>=</span> <span class=mf>0.0</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>vector_size</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=n>serial_dot</span> <span class=o>+=</span> <span class=p>(</span><span class=kt>double</span><span class=p>)</span><span class=n>full_A</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>*</span> <span class=p>(</span><span class=kt>double</span><span class=p>)</span><span class=n>full_B</span><span class=p>[</span><span class=n>i</span><span class=p>];</span>
