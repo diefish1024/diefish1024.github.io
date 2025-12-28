@@ -9,10 +9,33 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.153.2</generator>
+    <generator>Hugo -- 0.153.3</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 20 Dec 2025 21:40:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 28 Dec 2025 11:00:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/course-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MATH1205H HW26</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw26/</link>
+      <pubDate>Sun, 28 Dec 2025 11:00:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw26/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;(1)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;利用内积的双线性性质，对于任意 $ u \in V $，有 $ \langle u, 0 \rangle = \langle u, 0 + 0 \rangle = \langle u, 0 \rangle + \langle u, 0 \rangle $，即可得到 $ \langle u, 0 \rangle = 0 $。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(2)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;若对于所有 $ u \in V $ 都有 $ \langle u, v \rangle = 0 $，那么我们可以取特例 $ u = v $，此时有 $ \langle v, v \rangle = 0 $。根据内积的正定性公理，$ \langle v, v \rangle = 0 $ 当且仅当 $ v = 0 $。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MATH1205H HW25</title>
+      <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw25/</link>
+      <pubDate>Wed, 24 Dec 2025 20:02:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw25/</guid>
+      <description>&lt;h2 id=&#34;exercise-1&#34;&gt;Exercise 1&lt;/h2&gt;
+&lt;p&gt;不唯一。考虑有奇异值相等的情况，那么最优子空间不唯一。假设 $ \sigma_{k}=\sigma_{k+1} $，那么在由 $ v_{k} $ 和 $ v_{k+1} $ 张成的平面内进行任意旋转后得到的向量组也满足条件。&lt;/p&gt;
+&lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
+&lt;p&gt;根据给定的分解，$ A $ 有唯一的非零奇异值 $ \sigma_1=5 $，对应的 $ u_1 = \begin{bmatrix} 0.6 \\ 0.8 \end{bmatrix} $，$ v_1 = [1] $。&lt;/p&gt;
+&lt;p&gt;首先计算伪逆 $ A^+ = \frac{1}{\sigma_1} v_1 u_1^T = \frac{1}{5} [1] \begin{bmatrix} 0.6 &amp; 0.8 \end{bmatrix} = \begin{bmatrix} 0.12 &amp; 0.16 \end{bmatrix} $。&lt;/p&gt;
+&lt;p&gt;接着计算 $ A^+ A = \begin{bmatrix} 0.12 &amp; 0.16 \end{bmatrix} \begin{bmatrix} 3 \\ 4 \end{bmatrix} = 0.36 + 0.64 = 1 $（即 $ I_1 $）。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MATH1205H HW24</title>
       <link>https://diefish1024.github.io/posts/class-notes/math1205h-linear-algebra/math1205h-hw24/</link>
@@ -1197,8 +1220,7 @@ G(x) = 1+ax+a^{2}x^{2} + a^{3}x^{3} + \dots = \dfrac{1}{1-ax}
       <pubDate>Mon, 22 Sep 2025 10:09:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect3-conditional-probability/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;条件概率指一个事件在另一个事件发生的条件下发生的概率，用记号 $ \mathbb{P}(A|B) $ 表示，仅在 $ \mathbb{P}(B)&gt;0 $
-时有定义：
+&lt;p&gt;条件概率指一个事件在另一个事件发生的条件下发生的概率，用记号 $ \mathbb{P}(A|B) $ 表示，仅在 $ \mathbb{P}(B)&gt;0 $ 时有定义：
 $$ 
 
 \mathbb{P}(A|B) = \dfrac{\mathbb{P}(A \cap B)}{P(B)}
@@ -1225,7 +1247,7 @@ $$
       <link>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect2-probability-space/</link>
       <pubDate>Wed, 17 Sep 2025 09:53:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/posts/class-notes/math2701-probability-theory/lect2-probability-space/</guid>
-      <description>&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
+      <description>&lt;p&gt;6## Motivation&lt;/p&gt;
 &lt;p&gt;例题：在圆上“随机”选一段弧，问弧长大于圆周的 $ \frac{1}{3} $ 的概率？（&lt;a href=&#34;https://en.wikipedia.org/wiki/Bertrand_paradox_(probability)&#34;&gt;Bertrand paradox&lt;/a&gt;）&lt;/p&gt;
 &lt;p&gt;至少三种自然的“均匀化”模型会给出不同答案：&lt;/p&gt;
 &lt;ol&gt;
