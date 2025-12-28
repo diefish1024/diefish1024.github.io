@@ -11,8 +11,38 @@
     </image>
     <generator>Hugo -- 0.153.3</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 17 Dec 2025 16:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 28 Dec 2025 16:20:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/combinatorics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS0901 HW13</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw13/</link>
+      <pubDate>Sun, 28 Dec 2025 16:20:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw13/</guid>
+      <description>&lt;h2 id=&#34;problem-1&#34;&gt;Problem 1&lt;/h2&gt;
+&lt;p&gt;对于随机图 $ \mathcal{G}(n, p) $，属性“没有孤立点”具有一个锐阈值函数 $ p = \ln n / n $。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;令 $ p=c\cdot \frac{\ln n}{n} $。设 $ X $ 为图中孤立点的数量。
+$$ 
+X = \sum_{i=1}^n I_i
+ $$
+其中 $ I_i $ 是指示变量：若顶点 $ i $ 孤立，则 $ I_i=1 $，否则 $ I_i=0 $。我们需要计算 $ I_i $ 的期望
+$$ 
+
+\mathbf{E}[I_{i}] = (1-p)^{n-1}
+
+ $$
+我们首先证明当 $ c&gt;1 $ 时 $ \mathbb{P}(X &gt; 0) \to 0 $。根据 Markov 不等式，有
+$$ 
+
+\mathbb{P}(X&gt;0) = \mathbb{P}(X\geq  1) \leq  \mathbf{E}[X] = \sum_{i=1}^{n} \mathbf{E}[I_{i}] = n(1-p)^{n-1}
+
+ $$
+使用不等式 $ 1-x \le e^{-x} $ 近似
+$$ 
+\mathbf{E}[X] \le n e^{-p(n-1)} \approx n e^{-pn} = n e^{-c \ln n} = n \cdot n^{-c} = n^{1-c}
+ $$
+因为 $ c &gt; 1 $，所以 $ 1-c &lt; 0 $。当 $ n \to \infty $ 时，$ n^{1-c} \to 0 $。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>CS0901 HW11</title>
       <link>https://diefish1024.github.io/posts/class-notes/cs0901-combinatorics/cs0901-hw11/</link>
