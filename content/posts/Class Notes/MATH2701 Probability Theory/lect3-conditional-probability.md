@@ -12,8 +12,7 @@ categories:
 ---
 ## Introduction
 
-条件概率指一个事件在另一个事件发生的条件下发生的概率，用记号 {{< imath >}}\mathbb{P}(A|B){{< /imath >}} 表示，仅在 {{< imath >}}\mathbb{P}(B)>0{{< /imath >}}
-时有定义：
+条件概率指一个事件在另一个事件发生的条件下发生的概率，用记号 {{< imath >}}\mathbb{P}(A|B){{< /imath >}} 表示，仅在 {{< imath >}}\mathbb{P}(B)>0{{< /imath >}} 时有定义：
 {{< math >}}
 
 \mathbb{P}(A|B) = \dfrac{\mathbb{P}(A \cap B)}{P(B)}
@@ -107,7 +106,7 @@ A_{\infty} := \bigcap_{n\geq 0}A_{n} = \lim_{ n \to \infty } A_{n}
 \mathbb{P}(A_{n}) = \prod_{k=0}^{n} \left( 1 - \dfrac{1}{9(k+1)+1} \right) \leq  e^{ -\sum_{k=0}^{n} 1/(9k+10) }
 
 {{< /math >}}
-由于级数 {{< imath >}}\sum_{k=0}^{n} \frac{1}{9k+10}{{< /imath >}} 发散，所以 {{< imath >}}\lim_{ n \to \infty }\mathbb{P}(A_{n})=0{{< /imath >}}，所以 12 点时 1 号球还在箱子里的概率 {{< imath >}}\mathbb{P}(S_{1}){{< /imath >}} 为 0。类似地，还能得到其他球的概率 {{< imath >}}\mathbb{P}(S_{n})=0{{< /imath >}}。我们现在需要知道 12 点时箱子里还有球的概率，即 {{< imath >}}\mathbb{P}(\exists n \subset \mathbb{N},S_{n}){{< /imath >}}，利用上一届的 union-bound，可以得到
+由于级数 {{< imath >}}\sum_{k=0}^{n} \frac{1}{9k+10}{{< /imath >}} 发散，所以 {{< imath >}}\lim_{ n \to \infty }\mathbb{P}(A_{n})=0{{< /imath >}}，所以 12 点时 1 号球还在箱子里的概率 {{< imath >}}\mathbb{P}(S_{1}){{< /imath >}} 为 0。类似地，还能得到其他球的概率 {{< imath >}}\mathbb{P}(S_{n})=0{{< /imath >}}。我们现在需要知道 12 点时箱子里还有球的概率，即 {{< imath >}}\mathbb{P}(\exists n \subset \mathbb{N},S_{n}){{< /imath >}}，利用上一节的 union-bound，可以得到
 {{< math >}}
 
 \mathbb{P}(\exists n \subset \mathbb{N},S_{n}) \leq \sum_{n\geq 1}\mathbb{P}(S_{n})=0

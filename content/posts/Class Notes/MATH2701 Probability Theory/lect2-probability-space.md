@@ -10,7 +10,7 @@ title: Lect2-Probability Space
 categories:
 - course-note
 ---
-## Motivation
+6## Motivation
 
 例题：在圆上“随机”选一段弧，问弧长大于圆周的 {{< imath >}}\frac{1}{3}{{< /imath >}} 的概率？（[Bertrand paradox](https://en.wikipedia.org/wiki/Bertrand_paradox_(probability))）
 
