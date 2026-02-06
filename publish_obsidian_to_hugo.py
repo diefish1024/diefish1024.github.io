@@ -35,6 +35,9 @@ CATEGORY_MAP = {
 
 # Directories or files to ignore during synchronization
 IGNORE_PATTERNS = ["Templates", "Attachments", "Copilot Prompts", ".obsidian", ".trash", "00-Inbox", "05-Journal"]
+
+PRESERVED_HUGO_FILES = ["archives.md", "search.md", "_index.md", "about.md"]
+
 PUBLISH_KEY = "publish"
 MARKDOWN_EXTENSIONS = (".md", ".markdown")
 
@@ -115,7 +118,7 @@ def process_content(main_content, note_slug):
     # --- 2. Split into code fences / inline code vs normal text (do not touch code) ---
     fence_re = re.compile(
         r'(?P<fence>(^|\n)(```|~~~)[^\n]*\n.*?\n\3[ \t]*\n?)'  # fenced code block ``` or ~~~
-        r'|(?P<inline>`[^`\n]+`)',                             # inline code `...`
+        r'|(?P<inline>`[^`\n]+`)',                              # inline code `...`
         re.DOTALL
     )
     # Pattern for math-like '<' fix: add a space after '<' if preceded by letter/digit/underscore/closing bracket
@@ -285,6 +288,32 @@ def map_obsidian_path_to_hugo(obsidian_file_path, vault_path, publish_map):
     return None
 
 
+def clean_stale_files(expected_files):
+    """
+    Deletes markdown files in the Hugo content directory that are NOT in the expected_files set.
+    This fixes Issue A (Deleted files) and Issue C (Renamed files causing duplicates).
+    """
+    logging.info("Checking for stale files to delete...")
+    # Normalize paths in expected_files for consistent comparison
+    normalized_expected = {os.path.abspath(p) for p in expected_files}
+    
+    for root, dirs, files in os.walk(HUGO_CONTENT_PATH):
+        for file_name in files:
+            if file_name.endswith(MARKDOWN_EXTENSIONS):
+                if file_name in PRESERVED_HUGO_FILES or file_name == "_index.md":
+                    logging.info(f"Skipping preservation file: {file_name}")
+                    continue
+                
+                full_path = os.path.abspath(os.path.join(root, file_name))
+                
+                if full_path not in normalized_expected:
+                    try:
+                        os.remove(full_path)
+                        logging.info(f"Deleted stale file (renamed or deleted in Obsidian): {os.path.relpath(full_path, HUGO_SITE_PATH)}")
+                    except OSError as e:
+                        logging.error(f"Error deleting stale file {full_path}: {e}")
+
+
 def sync_obsidian_to_hugo():
     logging.info("Starting Obsidian to Hugo synchronization...")
     expected_hugo_files = set()
@@ -300,14 +329,17 @@ def sync_obsidian_to_hugo():
                 hugo_target_path = map_obsidian_path_to_hugo(obsidian_file_path, OBSIDIAN_VAULT_PATH, PUBLISH_SOURCE_MAP)
 
                 if hugo_target_path:
+                    # If publish is true, process it and mark it as EXPECTED
                     if get_publish_status(obsidian_file_path):
                         if process_and_copy_note(obsidian_file_path, hugo_target_path):
-                            expected_hugo_files.add(hugo_target_path)
+                            expected_hugo_files.add(os.path.abspath(hugo_target_path))
                     else:
-                        if os.path.exists(hugo_target_path):
-                            os.remove(hugo_target_path)
-                            logging.info(f"Removed (publish not true): {os.path.relpath(hugo_target_path, HUGO_SITE_PATH)}")
+                        # If publish is false, we don't add it to expected_files.
+                        # The clean_stale_files function will catch it and delete it if it exists.
+                        pass
 
+    clean_stale_files(expected_hugo_files)
+    
     logging.info("Synchronization and processing finished.")
     run_hugo_build_and_git()
 
