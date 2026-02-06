@@ -57,7 +57,6 @@ X_{n}(k) = \begin{cases}
 \sum_{n=1}^{\infty} \mathbb{E}[X_{n}] \neq \mathbb{E}\left[ \sum_{n=1}^{\infty} X_{n} \right]
 
 {{< /math >}}
-不成立的原因在于我们需要级数绝对可积才能交换求和和期望。
 
 **(2)**
 
