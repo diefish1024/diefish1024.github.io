@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.153.3</generator>
+    <generator>Hugo -- 0.155.2</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 28 Dec 2025 11:00:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/homework/index.xml" rel="self" type="application/rss+xml" />
@@ -697,8 +697,7 @@ $$
 
 \sum_{n=1}^{\infty} \mathbb{E}[X_{n}] \neq \mathbb{E}\left[ \sum_{n=1}^{\infty} X_{n} \right]
 
- $$
-不成立的原因在于我们需要级数绝对可积才能交换求和和期望。&lt;/p&gt;</description>
+ $$&lt;/p&gt;</description>
     </item>
     <item>
       <title>CS0901 HW6</title>

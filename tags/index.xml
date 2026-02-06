@@ -9,22 +9,36 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.153.3</generator>
+    <generator>Hugo -- 0.155.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 28 Dec 2025 11:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 06 Feb 2026 13:29:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Homework</title>
-      <link>https://diefish1024.github.io/tags/homework/</link>
-      <pubDate>Sun, 28 Dec 2025 11:00:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/tags/homework/</guid>
+      <title>AI-Infra</title>
+      <link>https://diefish1024.github.io/tags/ai-infra/</link>
+      <pubDate>Fri, 06 Feb 2026 13:29:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/ai-infra/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CS</title>
+      <link>https://diefish1024.github.io/tags/cs/</link>
+      <pubDate>Fri, 06 Feb 2026 13:29:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/cs/</guid>
       <description></description>
     </item>
     <item>
       <title>Learning</title>
       <link>https://diefish1024.github.io/tags/learning/</link>
-      <pubDate>Sun, 28 Dec 2025 11:00:00 +0800</pubDate>
+      <pubDate>Fri, 06 Feb 2026 13:29:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/learning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Homework</title>
+      <link>https://diefish1024.github.io/tags/homework/</link>
+      <pubDate>Sun, 28 Dec 2025 11:00:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/tags/homework/</guid>
       <description></description>
     </item>
     <item>
@@ -53,13 +67,6 @@
       <link>https://diefish1024.github.io/tags/probability-theory/</link>
       <pubDate>Sat, 06 Dec 2025 20:14:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/probability-theory/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>CS</title>
-      <link>https://diefish1024.github.io/tags/cs/</link>
-      <pubDate>Fri, 12 Sep 2025 10:43:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/tags/cs/</guid>
       <description></description>
     </item>
     <item>
@@ -130,13 +137,6 @@
       <link>https://diefish1024.github.io/tags/tta/</link>
       <pubDate>Thu, 28 Aug 2025 10:10:00 +0800</pubDate>
       <guid>https://diefish1024.github.io/tags/tta/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>AI-Infra</title>
-      <link>https://diefish1024.github.io/tags/ai-infra/</link>
-      <pubDate>Wed, 30 Jul 2025 22:21:00 +0800</pubDate>
-      <guid>https://diefish1024.github.io/tags/ai-infra/</guid>
       <description></description>
     </item>
     <item>

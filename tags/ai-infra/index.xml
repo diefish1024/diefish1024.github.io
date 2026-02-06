@@ -9,10 +9,34 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.153.3</generator>
+    <generator>Hugo -- 0.155.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 30 Jul 2025 22:21:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 06 Feb 2026 13:29:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/ai-infra/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lect12-ML Parallelization-part1</title>
+      <link>https://diefish1024.github.io/posts/class-notes/cmu-15-779/lect12-ml-parallelization-part1/</link>
+      <pubDate>Fri, 06 Feb 2026 13:29:00 +0800</pubDate>
+      <guid>https://diefish1024.github.io/posts/class-notes/cmu-15-779/lect12-ml-parallelization-part1/</guid>
+      <description>&lt;p&gt;整理自 CMU 15-779 Lect 12，从数据并行到 ZeRO，解答了是如何把大模型塞进有限的显存里的问题。&lt;/p&gt;
+&lt;h2 id=&#34;data-parallelism&#34;&gt;Data Parallelism&lt;/h2&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://diefish1024.github.io/images/lect12-ml-parallelization-part1/pasted-image-20260206223357.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;训练本质上是计算梯度并更新权重。数据并行直观理解就是如果有 $ N $ 个 GPU，那么把总的 Batch Size 分成 $ N $ 份。&lt;/p&gt;
+&lt;p&gt;在第 $ k $ 个 GPU上的计算过程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Local Gradient&lt;/strong&gt;：基于本地数据 $ x^{(k)} $ 计算梯度 $$ 
+g^{(k)} = \nabla L(w_t, x^{(k)})
+ $$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;All-Reduce&lt;/strong&gt;：计算全局平均梯度 $$ 
+\bar{g} = \frac{1}{N} \sum_{k=1}^{N} g^{(k)}
+ $$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Weight Update&lt;/strong&gt;：所有 GPU 使用相同的 $ \bar{g} $ 更新权重 $$ 
+w_{t+1} = w_t - \eta \cdot \text{Optimizer}(\bar{g}, \text{State}_t)
+ $$
+这时每个 GPU 上都会有一样的完整模型副本，各算各的梯度，最后在汇总计算。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;实现方法&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>KV Cache 入门</title>
       <link>https://diefish1024.github.io/posts/ai-infra/kv-cache-%E5%85%A5%E9%97%A8/</link>
