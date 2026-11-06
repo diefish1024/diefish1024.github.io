@@ -1,6 +1,7 @@
 import {normalize} from './core/schema.mjs';
 import {EDITS,match} from './core/edits.mjs';
 import {courseOf} from './mobile-model.js';
+import {createOptimisticStore} from './optimistic-store.js';
 
 // Cloud tasks remain authoritative. Views never keep separate task copies.
 export function toDoc(board){
@@ -40,10 +41,16 @@ export async function editBoard(board,method,path,body={}){
  return fromDoc(board,normalize(doc));
 }
 export const itemCourse=(item,groups)=>courseOf({...item,card_id:item.group},groups);
-export function cloudBackend({readBoard,mutateBoard}){
- return async(method,path,body={})=>{
-  if(method==='GET'&&path==='/api/todo')return toDoc(await readBoard());
+export function cloudBackend({readBoard,writeBoard,storage=null}){
+ const store=createOptimisticStore({read:readBoard,write:writeBoard,edit:editBoard,storage});
+ const backend=async(method,path,body={})=>{
+  if(method==='GET'&&path==='/api/todo')return toDoc(await store.load());
   if(method==='GET'&&path==='/api/canvas')return (await readBoard()).canvasSync||{};
-  return toDoc(await mutateBoard(body.rev,b=>editBoard(b,method,path,body)));
+  if(method==='POST'&&path==='/api/retry')return toDoc(await store.flush(!!body.force));
+  if(method==='POST'&&path==='/api/discard')return toDoc(await store.discard());
+  return toDoc(await store.change(method,path,body));
  };
+ backend.subscribe=fn=>store.subscribe(event=>fn({...event,doc:event.board&&toDoc(event.board)}));
+ backend.pending=()=>store.state().pending;
+ return backend;
 }

@@ -9,6 +9,7 @@
 // The demo site (demo/) has no server: after setBackend(fn), api() hands every call to fn(method, path, body); see demo/backend.js
 let backend = null;
 export const setBackend = (fn) => { backend = fn; };
+export const subscribeBackend = (fn) => backend?.subscribe?.(fn) || (() => {});
 
 export async function api(method, path, body) {
   if (backend) return backend(method, path, body);

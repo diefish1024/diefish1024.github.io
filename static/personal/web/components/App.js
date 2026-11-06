@@ -29,7 +29,7 @@ export function App() {
   const [shownPop, popLeaving] = useLingering(pop, reducedMotion() ? 0 : 220);
   const [drawerOn, drawerShown] = usePresence(!!ui.settings, 300);
   const busy = !!(ui.editing || ui.adding || pop || ui.settings);
-  const { doc, err, reload, save } = useDoc(busy);
+  const { doc, err, reload, save, syncState, retry, discard } = useDoc(busy);
   const [toastMsg, toast] = useToast();
 
   const setUi = (patch) => setUiState((u) => ({ ...u, ...(typeof patch === "function" ? patch(u) : patch) }));
@@ -41,7 +41,7 @@ export function App() {
       await save(method, path, body);
       if (!quiet) setPop(null);
       if (close) setUi({ editing: null });
-      if (okMsg) toast(okMsg);
+      if (okMsg) toast(okMsg==='已保存'?'已更新':okMsg);
       return true;
     } catch (e) { toast(e.message); return false; }
   };
@@ -67,12 +67,13 @@ export function App() {
     if((ui.editing||ui.adding)&&!confirm('有还没保存的内容，确定切换？'))return;
     setUi({editing:null,adding:null,editMode:false,locate:null});setPop(null);setView(next);window.scrollTo(0,0);
   };
-  const ctx = { doc, ui, setUi, call, act: actions(call), toast, reload, pop, setPop, openPop, locate,view,changeView };
+  const ctx = { doc, ui, setUi, call, act: actions(call), toast, reload, pop, setPop, openPop, locate,view,changeView,syncState };
   return html`<${Ctx.Provider} value=${ctx}>
     <${Header} />
     ${view==='todo'&&t.hero !== false ? html`<div class="container"><${Hero} theme=${t} /></div>` : null}
     <main><div class="container">
       ${err?html`<div class="personal-error" role="alert">暂时无法更新：${err}</div>`:null}
+      ${syncState.error?html`<div class="sync-error" role="alert"><span>尚未同步到云端：${syncState.error}</span><div><button class="btn" onClick=${()=>retry(syncState.conflict)}>${syncState.conflict?'保留本页修改并同步':'重试同步'}</button>${syncState.conflict?html`<button class="tbtn" onClick=${()=>{if(confirm('放弃本页尚未同步的改动，使用云端版本？'))discard()}}>使用云端版本</button>`:null}</div></div>`:null}
       ${view==='courses'?html`<${Courses} />`:view==='memos'?html`<${Memos} />`:html`
       ${t.showStats !== false ? html`<${Overview} />` : null}
       <${AgentBlock} />

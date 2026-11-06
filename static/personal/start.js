@@ -1,7 +1,10 @@
-import {connectGitHub,readBoard,mutateBoard} from './github-store.js';
+import {connectGitHub,readBoard,writeBoard} from './github-store.js';
 import {setBackend} from './web/lib/api.js';
 import {cloudBackend} from './todo-adapter.js';
 await connectGitHub();
 document.getElementById('app').innerHTML='<div id="root"></div>';
-setBackend(cloudBackend({readBoard,mutateBoard}));
+const backend=cloudBackend({readBoard,writeBoard,storage:sessionStorage});
+setBackend(backend);
+addEventListener('beforeunload',e=>{if(backend.pending()){e.preventDefault();e.returnValue=''}});
+addEventListener('online',()=>backend('POST','/api/retry').catch(()=>{}));
 await import('./web/main.js');

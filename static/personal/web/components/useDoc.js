@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "../vendor/preact-htm.js";
-import { api } from "../lib/api.js";
+import { api, subscribeBackend } from "../lib/api.js";
 import { noteChanges } from "../lib/motion.js";
 
 // The board's data: read once on open, then every 15 s (not while the tab is in the background) and again when the window
@@ -11,6 +11,7 @@ import { noteChanges } from "../lib/motion.js";
 export function useDoc(busy) {
   const [doc, setDoc] = useState(null);
   const [err, setErr] = useState(null);
+  const [syncState,setSyncState]=useState({pending:false,saving:false,error:null,conflict:false});
   const [, setTick] = useState(0);
   const busyRef = useRef(busy), pending = useRef(null);
   busyRef.current = busy;
@@ -34,14 +35,22 @@ export function useDoc(busy) {
     pending.current = null;
     take(d, true);
   };
+  const retry=(force=false)=>api('POST','/api/retry',{force});
+  const discard=()=>api('POST','/api/discard').catch(e=>setErr(e.message));
 
   useEffect(() => {
+    const unsubscribe=subscribeBackend(({doc:d,state,origin})=>{
+      setSyncState(state);
+      if(!d)return;
+      if(origin==='remote'&&busyRef.current){pending.current=d;return}
+      pending.current=null;take(d,true);
+    });
     reload(true);
     const poll = setInterval(() => !document.hidden && reload(), 15000);
     const tick = setInterval(() => setTick((x) => x + 1), 60000);
     const onFocus = () => reload();
     addEventListener("focus", onFocus);
-    return () => { clearInterval(poll); clearInterval(tick); removeEventListener("focus", onFocus); };
+    return () => { unsubscribe();clearInterval(poll); clearInterval(tick); removeEventListener("focus", onFocus); };
   }, []);
   useEffect(() => {
     if (busy || !pending.current) return;
@@ -50,5 +59,5 @@ export function useDoc(busy) {
     take(d);
   }, [busy]);
 
-  return { doc, err, reload, save };
+  return { doc, err, reload, save, syncState, retry, discard };
 }

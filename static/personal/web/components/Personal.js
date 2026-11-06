@@ -5,12 +5,23 @@ import {ItemRow} from './Item.js';
 import {itemCourse} from '../../todo-adapter.js';
 import {CanvasSide} from './Canvas.js';
 import {OPEN} from '../lib/model.js';
+import {dueLabel} from '../../mobile-model.js';
 
 export function Courses(){
- const {doc}=useBoard();
+ const {doc,ui,setUi}=useBoard(),[selected,setSelected]=useState(null);
  const names=[...new Set([...doc.courses,...doc.items.map(i=>itemCourse(i,doc.groups)).filter(Boolean)])];
- return html`<div class="course-hint">作业与课程待办，与 ToDo 共用一份清单。<${CanvasSide} /></div>
- ${names.map(name=>html`<${Course} key=${name} name=${name} />`)}`;
+ const back=()=>{if((ui.editing||ui.adding)&&!confirm('有还没保存的内容，确定返回？'))return;setUi({editing:null,adding:null});setSelected(null)};
+ if(selected)return html`<button class="course-back" onClick=${back}>← 全部课程</button><${Course} key=${selected} name=${selected} />`;
+ return html`<h2 class="courses-title">本学期课程</h2><div class="course-hint">还有什么要做，什么时候交。<${CanvasSide} /></div>
+ <div class="course-grid">${names.map((name,index)=>{
+  const tasks=doc.items.filter(i=>itemCourse(i,doc.groups)===name&&OPEN.includes(i.status));
+  const dated=tasks.filter(i=>/^\d{4}-/.test(i.due||'')).sort((a,b)=>a.due.localeCompare(b.due));
+  return html`<button class="card course-summary" onClick=${()=>setSelected(name)}>
+   <div class="course-top"><span class="mono">${String(index+1).padStart(2,'0')}</span><span aria-hidden="true">→</span></div>
+   <h2>${name}</h2><div class="course-count">${tasks.length?html`<b>${tasks.length}</b> 件待办`:html`<span>暂无已记录待办</span>`}</div>
+   <p class="next-due">${dated.length?'最近截止 · '+dueLabel(dated[0].due).replace(/ 截止$/,''):tasks.length?'有待办尚未设置截止时间':'随时添加复习或实验计划'}</p>
+  </button>`;
+ })}</div>`;
 }
 function Course({name}){
  const {doc,call,ui,setUi}=useBoard(),[text,setText]=useState(''),[saving,setSaving]=useState(false),[expanded,setExpanded]=useState(false);
