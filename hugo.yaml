@@ -71,6 +71,8 @@ params:
         url: "tags"
       - name: "Search"
         url: "search"
+      - name: "Personal"
+        url: "personal/"
 
   tree:
     expandDepth: 0
@@ -126,6 +128,10 @@ menu:
       name: "Archives"
       url: "/archives/"
       weight: 40
+    - identifier: "Personal"
+      name: "Personal"
+      url: "/personal/"
+      weight: 50
 
 markup:
   goldmark:
