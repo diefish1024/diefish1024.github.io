@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.155.2</generator>
+    <generator>Hugo -- 0.169.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sat, 06 Dec 2025 20:14:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/probability-theory/index.xml" rel="self" type="application/rss+xml" />
@@ -308,7 +308,20 @@ $$
 &lt;h2 id=&#34;sigma-algebra&#34;&gt;Sigma-Algebra&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;要求 $ \mathcal{F} $ 构成一个 $ \sigma $- 代数（域）：&lt;/p&gt;</description>
+&lt;p&gt;要求 $ \mathcal{F} $ 构成一个 $ \sigma $- 代数（域）：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;$ \emptyset \in \mathcal{F},\ \Omega \in \mathcal{F} $。&lt;/li&gt;
+&lt;li&gt;若 $ A \in \mathcal{F} $，则其补集 $ A^{c} \in \mathcal{F} $。&lt;/li&gt;
+&lt;li&gt;若 $ A_{1}, A_{2}, \dots \in \mathcal{F} $，则可数并 $ \bigcup_{n \ge 1} A_{n} \in \mathcal{F} $。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;注：由德摩根律得可数交封闭。 “$ \sigma $”表示对可数并封闭。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;直觉：这些封闭性保证我们做常见的事件运算不“跑出”可测范围。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     <item>
       <title>Lect1-Introduction</title>

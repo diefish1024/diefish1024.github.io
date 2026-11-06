@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.155.2</generator>
+    <generator>Hugo -- 0.169.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 24 Dec 2025 20:56:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/combinatorics/index.xml" rel="self" type="application/rss+xml" />
@@ -423,45 +423,45 @@ $$
 &lt;h2 id=&#34;twelvefoldway&#34;&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Twelvefold_way&#34;&gt;Twelvefoldway&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;将 $ n $ 个球放入 $ m $ 个盒子，球与盒子可“可区分/不可区分”，以及盒子容量约束“任意/至多 1/至少 1”。&lt;/p&gt;
 &lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;$ n $&lt;/th&gt;
-          &lt;th&gt;$ m $&lt;/th&gt;
-          &lt;th&gt;任意&lt;/th&gt;
-          &lt;th&gt;$ \leq 1 $&lt;/th&gt;
-          &lt;th&gt;$ \geq 1 $&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;不同&lt;/td&gt;
-          &lt;td&gt;不同&lt;/td&gt;
-          &lt;td&gt;$ m^{n} $&lt;/td&gt;
-          &lt;td&gt;$ m^{\underline{n}} $&lt;/td&gt;
-          &lt;td&gt;$ m!\left\{ {n \atop m} \right\} $&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;同&lt;/td&gt;
-          &lt;td&gt;不同&lt;/td&gt;
-          &lt;td&gt;$ \binom{ n+m-1 }{ m-1 } $&lt;/td&gt;
-          &lt;td&gt;$ \binom{ m }{ n } $&lt;/td&gt;
-          &lt;td&gt;$ \binom{ n-1 }{ m-1 } $&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;不同&lt;/td&gt;
-          &lt;td&gt;同&lt;/td&gt;
-          &lt;td&gt;$ \sum_{k=0}^{\min(n,m)} \left\{ {n \atop k} \right\} $&lt;/td&gt;
-          &lt;td&gt;$ [n \leq m] $&lt;/td&gt;
-          &lt;td&gt;$ \left\{ {n \atop m} \right\} $&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;同&lt;/td&gt;
-          &lt;td&gt;同&lt;/td&gt;
-          &lt;td&gt;$ p_{\leq m}(n) $&lt;/td&gt;
-          &lt;td&gt;$ [n \leq m] $&lt;/td&gt;
-          &lt;td&gt;$ p(n,m) $&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;$ n $&lt;/th&gt;
+					&lt;th&gt;$ m $&lt;/th&gt;
+					&lt;th&gt;任意&lt;/th&gt;
+					&lt;th&gt;$ \leq 1 $&lt;/th&gt;
+					&lt;th&gt;$ \geq 1 $&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;不同&lt;/td&gt;
+					&lt;td&gt;不同&lt;/td&gt;
+					&lt;td&gt;$ m^{n} $&lt;/td&gt;
+					&lt;td&gt;$ m^{\underline{n}} $&lt;/td&gt;
+					&lt;td&gt;$ m!\left\{ {n \atop m} \right\} $&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;同&lt;/td&gt;
+					&lt;td&gt;不同&lt;/td&gt;
+					&lt;td&gt;$ \binom{ n+m-1 }{ m-1 } $&lt;/td&gt;
+					&lt;td&gt;$ \binom{ m }{ n } $&lt;/td&gt;
+					&lt;td&gt;$ \binom{ n-1 }{ m-1 } $&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;不同&lt;/td&gt;
+					&lt;td&gt;同&lt;/td&gt;
+					&lt;td&gt;$ \sum_{k=0}^{\min(n,m)} \left\{ {n \atop k} \right\} $&lt;/td&gt;
+					&lt;td&gt;$ [n \leq m] $&lt;/td&gt;
+					&lt;td&gt;$ \left\{ {n \atop m} \right\} $&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;同&lt;/td&gt;
+					&lt;td&gt;同&lt;/td&gt;
+					&lt;td&gt;$ p_{\leq m}(n) $&lt;/td&gt;
+					&lt;td&gt;$ [n \leq m] $&lt;/td&gt;
+					&lt;td&gt;$ p(n,m) $&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;“把 $ n $ 个不同球分成 $ k $ 个非空无序盒”对应第二类斯特林数 $ \left\{ {n \atop k} \right\} $。&lt;/p&gt;</description>
     </item>

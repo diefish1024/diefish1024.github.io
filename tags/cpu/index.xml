@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.155.2</generator>
+    <generator>Hugo -- 0.169.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 12 Sep 2025 10:36:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/cpu/index.xml" rel="self" type="application/rss+xml" />
@@ -38,7 +38,9 @@
 &lt;p&gt;&lt;strong&gt;主内存 (Main Memory/RAM)&lt;/strong&gt;： 容量远大于缓存，但访问速度慢得多。当数据不在任何缓存中时，CPU 必须从主内存中获取。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;TLB (Translation Lookaside Buffer)&lt;/strong&gt;： TLB 是一个专用的高性能缓存，用于存储虚拟地址到物理地址的转换映射。当 CPU 访问一个虚拟地址时，它首先检查 TLB。如果找到对应的物理地址（TLB 命中），则可以快速进行内存访问；如果未找到（TLB 未命中），则需要查询页表，这将导致显著的延迟。理解 TLB 对于优化内存页访问模式，尤其是在处理大型数据集时至关重要。&lt;/p&gt;</description>
+&lt;p&gt;&lt;strong&gt;TLB (Translation Lookaside Buffer)&lt;/strong&gt;： TLB 是一个专用的高性能缓存，用于存储虚拟地址到物理地址的转换映射。当 CPU 访问一个虚拟地址时，它首先检查 TLB。如果找到对应的物理地址（TLB 命中），则可以快速进行内存访问；如果未找到（TLB 未命中），则需要查询页表，这将导致显著的延迟。理解 TLB 对于优化内存页访问模式，尤其是在处理大型数据集时至关重要。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
   </channel>
 </rss>

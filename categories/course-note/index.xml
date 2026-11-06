@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.155.2</generator>
+    <generator>Hugo -- 0.169.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 06 Feb 2026 13:29:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/categories/course-note/index.xml" rel="self" type="application/rss+xml" />
@@ -1026,7 +1026,10 @@ $$
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Prove that:&lt;/p&gt;
-&lt;p&gt;(i) $ S&#39; $ is maximally linearly independent in $ S $ if and only if $ S&#39; $ (viewed as a sequence of vectors) is a basis for $ \operatorname{span}(S) $.&lt;/p&gt;</description>
+&lt;p&gt;(i) $ S&#39; $ is maximally linearly independent in $ S $ if and only if $ S&#39; $ (viewed as a sequence of vectors) is a basis for $ \operatorname{span}(S) $.&lt;/p&gt;
+&lt;p&gt;(ii) A finite subset $ S \subseteq V $ constitutes a basis for $ V $ if and only if $ S $ is maximally linearly independent in $ V $.&lt;/p&gt;
+&lt;p&gt;(ii) Every finite $ S $ must have a maximally linearly independent $ S&#39; \subseteq S $ (without assuming that $ V $ is finite dimensional).&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     <item>
       <title>MATH1205H HW4</title>
@@ -1040,7 +1043,8 @@ $$
 &lt;p&gt;A basis consists of the matrices $ E_{ij} $ for $ 1 \leq i \leq m $ and $ 1 \leq j \leq n $, where $ E_{ij} $ has a 1 in the $ (i,j) $-th position and 0 elsewhere.&lt;/p&gt;
 &lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Give a basis for $ V = \mathbb{R}^+ = \{x \mid x \in \mathbb{R} \text{ with } x &gt; 0\} $ with $ x \oplus x&#39; = x \times x&#39; $ and $ c \otimes x = x^c $.&lt;/p&gt;</description>
+&lt;p&gt;Give a basis for $ V = \mathbb{R}^+ = \{x \mid x \in \mathbb{R} \text{ with } x &gt; 0\} $ with $ x \oplus x&#39; = x \times x&#39; $ and $ c \otimes x = x^c $.&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     <item>
       <title>CS0901 HW3</title>
@@ -1122,7 +1126,8 @@ $$
  C_{il} = \sum_{j \in [t]} A_{ij} B_{jl}
  
  $$
-for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;</description>
+for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     <item>
       <title>MATH1205H HW2</title>
@@ -1141,7 +1146,18 @@ for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;</description>
 &lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;To find the second column of $ AB $, we multiply matrix $ A $ by the second column of matrix $ B $.&lt;/p&gt;</description>
+&lt;p&gt;To find the second column of $ AB $, we multiply matrix $ A $ by the second column of matrix $ B $.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Multiply the first row of $ A $ by matrix $ B $.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Multiply the third row of $ A $ and the fifth column of $ B $.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Multiply first the first row of $ C $ by $ D $, then product the first column of $ E $.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
     </item>
     <item>
       <title>Lect3-The Principle of Inclusion and Exclusion</title>
@@ -1338,7 +1354,20 @@ $$
 &lt;h2 id=&#34;sigma-algebra&#34;&gt;Sigma-Algebra&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;要求 $ \mathcal{F} $ 构成一个 $ \sigma $- 代数（域）：&lt;/p&gt;</description>
+&lt;p&gt;要求 $ \mathcal{F} $ 构成一个 $ \sigma $- 代数（域）：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;$ \emptyset \in \mathcal{F},\ \Omega \in \mathcal{F} $。&lt;/li&gt;
+&lt;li&gt;若 $ A \in \mathcal{F} $，则其补集 $ A^{c} \in \mathcal{F} $。&lt;/li&gt;
+&lt;li&gt;若 $ A_{1}, A_{2}, \dots \in \mathcal{F} $，则可数并 $ \bigcup_{n \ge 1} A_{n} \in \mathcal{F} $。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;注：由德摩根律得可数交封闭。 “$ \sigma $”表示对可数并封闭。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;直觉：这些封闭性保证我们做常见的事件运算不“跑出”可测范围。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     <item>
       <title>CS0901 HW1</title>
@@ -1404,45 +1433,45 @@ $$
 &lt;h2 id=&#34;twelvefoldway&#34;&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Twelvefold_way&#34;&gt;Twelvefoldway&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;将 $ n $ 个球放入 $ m $ 个盒子，球与盒子可“可区分/不可区分”，以及盒子容量约束“任意/至多 1/至少 1”。&lt;/p&gt;
 &lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;$ n $&lt;/th&gt;
-          &lt;th&gt;$ m $&lt;/th&gt;
-          &lt;th&gt;任意&lt;/th&gt;
-          &lt;th&gt;$ \leq 1 $&lt;/th&gt;
-          &lt;th&gt;$ \geq 1 $&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;不同&lt;/td&gt;
-          &lt;td&gt;不同&lt;/td&gt;
-          &lt;td&gt;$ m^{n} $&lt;/td&gt;
-          &lt;td&gt;$ m^{\underline{n}} $&lt;/td&gt;
-          &lt;td&gt;$ m!\left\{ {n \atop m} \right\} $&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;同&lt;/td&gt;
-          &lt;td&gt;不同&lt;/td&gt;
-          &lt;td&gt;$ \binom{ n+m-1 }{ m-1 } $&lt;/td&gt;
-          &lt;td&gt;$ \binom{ m }{ n } $&lt;/td&gt;
-          &lt;td&gt;$ \binom{ n-1 }{ m-1 } $&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;不同&lt;/td&gt;
-          &lt;td&gt;同&lt;/td&gt;
-          &lt;td&gt;$ \sum_{k=0}^{\min(n,m)} \left\{ {n \atop k} \right\} $&lt;/td&gt;
-          &lt;td&gt;$ [n \leq m] $&lt;/td&gt;
-          &lt;td&gt;$ \left\{ {n \atop m} \right\} $&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;同&lt;/td&gt;
-          &lt;td&gt;同&lt;/td&gt;
-          &lt;td&gt;$ p_{\leq m}(n) $&lt;/td&gt;
-          &lt;td&gt;$ [n \leq m] $&lt;/td&gt;
-          &lt;td&gt;$ p(n,m) $&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;$ n $&lt;/th&gt;
+					&lt;th&gt;$ m $&lt;/th&gt;
+					&lt;th&gt;任意&lt;/th&gt;
+					&lt;th&gt;$ \leq 1 $&lt;/th&gt;
+					&lt;th&gt;$ \geq 1 $&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;不同&lt;/td&gt;
+					&lt;td&gt;不同&lt;/td&gt;
+					&lt;td&gt;$ m^{n} $&lt;/td&gt;
+					&lt;td&gt;$ m^{\underline{n}} $&lt;/td&gt;
+					&lt;td&gt;$ m!\left\{ {n \atop m} \right\} $&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;同&lt;/td&gt;
+					&lt;td&gt;不同&lt;/td&gt;
+					&lt;td&gt;$ \binom{ n+m-1 }{ m-1 } $&lt;/td&gt;
+					&lt;td&gt;$ \binom{ m }{ n } $&lt;/td&gt;
+					&lt;td&gt;$ \binom{ n-1 }{ m-1 } $&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;不同&lt;/td&gt;
+					&lt;td&gt;同&lt;/td&gt;
+					&lt;td&gt;$ \sum_{k=0}^{\min(n,m)} \left\{ {n \atop k} \right\} $&lt;/td&gt;
+					&lt;td&gt;$ [n \leq m] $&lt;/td&gt;
+					&lt;td&gt;$ \left\{ {n \atop m} \right\} $&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;同&lt;/td&gt;
+					&lt;td&gt;同&lt;/td&gt;
+					&lt;td&gt;$ p_{\leq m}(n) $&lt;/td&gt;
+					&lt;td&gt;$ [n \leq m] $&lt;/td&gt;
+					&lt;td&gt;$ p(n,m) $&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;“把 $ n $ 个不同球分成 $ k $ 个非空无序盒”对应第二类斯特林数 $ \left\{ {n \atop k} \right\} $。&lt;/p&gt;</description>
     </item>
@@ -1532,7 +1561,37 @@ $$
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;方法二：将指针集中存放在文件系统的某个区域&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;为了解决上述问题，我们可以将所有数据块的“链表指针”抽离出来，集中存放在一个被称为&lt;strong&gt;文件分配表 (File Allocation Table, FAT)&lt;/strong&gt; 的核心数据结构中。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;FAT&lt;/strong&gt; 本质上是一个大数组。数组的&lt;strong&gt;下标&lt;/strong&gt;与磁盘上的数据块编号一一对应。数组中存储的&lt;strong&gt;值&lt;/strong&gt;则是该文件链表中的&lt;strong&gt;下一个数据块的编号&lt;/strong&gt;。&lt;/p&gt;</description>
+&lt;p&gt;&lt;strong&gt;FAT&lt;/strong&gt; 本质上是一个大数组。数组的&lt;strong&gt;下标&lt;/strong&gt;与磁盘上的数据块编号一一对应。数组中存储的&lt;strong&gt;值&lt;/strong&gt;则是该文件链表中的&lt;strong&gt;下一个数据块的编号&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;它是如何工作的？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;一个文件的起始块号记录在它的目录项 (&lt;code&gt;dentry&lt;/code&gt;) 中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;假设文件从第 &lt;code&gt;100&lt;/code&gt; 号块开始，我们查询 &lt;code&gt;FAT[100]&lt;/code&gt;，如果值为 &lt;code&gt;105&lt;/code&gt;，那么 &lt;code&gt;105&lt;/code&gt; 号块就是文件的第二个数据块。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;接着我们查询 &lt;code&gt;FAT[105]&lt;/code&gt;，得到下一个块号，如此往复，直到遇到一个特殊的文件结尾标记。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;优点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;大幅改善的随机访问&lt;/strong&gt;：虽然仍然需要遍历链表，但这个遍历过程发生在 FAT 表内部。因为 FAT 表相比整个磁盘要小得多，可以被&lt;strong&gt;完整加载到内存中缓存&lt;/strong&gt;。要访问第 N 个数据块，只需要在内存中进行 N-1 次数组查询，这比 N-1 次磁盘 I/O 快了几个数量级。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;数据块纯净&lt;/strong&gt;：数据块可以 100% 用于存储文件内容，没有元数据混入。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;写回策略&lt;/strong&gt;：对文件结构的修改（如新增/删除数据块）可以先在内存中的 FAT 缓存上进行，然后利用&lt;strong&gt;延迟写回 (Write-back Caching)&lt;/strong&gt; 机制，在稍后的某个时刻一次性将更新后的 FAT 表写回磁盘，合并了多次 I/O 操作，提升了性能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     <item>
       <title>22. 文件系统 API</title>
@@ -1703,7 +1762,12 @@ $$
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;向量处理单元 (Vector ALU)&lt;/strong&gt;：CPU 内部也配备了能够对整个向量进行并行计算的 ALU&lt;/p&gt;</description>
+&lt;p&gt;&lt;strong&gt;向量处理单元 (Vector ALU)&lt;/strong&gt;：CPU 内部也配备了能够对整个向量进行并行计算的 ALU&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当执行一条 SIMD 指令时，这个特殊的 ALU 会在同一个时钟周期内，同时对寄存器中的 4 对浮点数分别执行操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
     </item>
     <item>
       <title>18. 真实世界的并发编程 (1)</title>

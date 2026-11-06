@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.155.2</generator>
+    <generator>Hugo -- 0.169.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 28 Dec 2025 11:00:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/tags/linear-algebra/index.xml" rel="self" type="application/rss+xml" />
@@ -583,7 +583,10 @@ A\cdot \begin{pmatrix}
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Prove that:&lt;/p&gt;
-&lt;p&gt;(i) $ S&#39; $ is maximally linearly independent in $ S $ if and only if $ S&#39; $ (viewed as a sequence of vectors) is a basis for $ \operatorname{span}(S) $.&lt;/p&gt;</description>
+&lt;p&gt;(i) $ S&#39; $ is maximally linearly independent in $ S $ if and only if $ S&#39; $ (viewed as a sequence of vectors) is a basis for $ \operatorname{span}(S) $.&lt;/p&gt;
+&lt;p&gt;(ii) A finite subset $ S \subseteq V $ constitutes a basis for $ V $ if and only if $ S $ is maximally linearly independent in $ V $.&lt;/p&gt;
+&lt;p&gt;(ii) Every finite $ S $ must have a maximally linearly independent $ S&#39; \subseteq S $ (without assuming that $ V $ is finite dimensional).&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     <item>
       <title>MATH1205H HW4</title>
@@ -597,7 +600,8 @@ A\cdot \begin{pmatrix}
 &lt;p&gt;A basis consists of the matrices $ E_{ij} $ for $ 1 \leq i \leq m $ and $ 1 \leq j \leq n $, where $ E_{ij} $ has a 1 in the $ (i,j) $-th position and 0 elsewhere.&lt;/p&gt;
 &lt;h2 id=&#34;exercise-2&#34;&gt;Exercise 2&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Give a basis for $ V = \mathbb{R}^+ = \{x \mid x \in \mathbb{R} \text{ with } x &gt; 0\} $ with $ x \oplus x&#39; = x \times x&#39; $ and $ c \otimes x = x^c $.&lt;/p&gt;</description>
+&lt;p&gt;Give a basis for $ V = \mathbb{R}^+ = \{x \mid x \in \mathbb{R} \text{ with } x &gt; 0\} $ with $ x \oplus x&#39; = x \times x&#39; $ and $ c \otimes x = x^c $.&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     <item>
       <title>MATH1205H HW3</title>
@@ -638,7 +642,8 @@ $$
  C_{il} = \sum_{j \in [t]} A_{ij} B_{jl}
  
  $$
-for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;</description>
+for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     <item>
       <title>MATH1205H HW2</title>
@@ -657,7 +662,18 @@ for any $ i \in [p] $ and $ l \in [q] $.&lt;/p&gt;</description>
 &lt;/blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;To find the second column of $ AB $, we multiply matrix $ A $ by the second column of matrix $ B $.&lt;/p&gt;</description>
+&lt;p&gt;To find the second column of $ AB $, we multiply matrix $ A $ by the second column of matrix $ B $.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Multiply the first row of $ A $ by matrix $ B $.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Multiply the third row of $ A $ and the fifth column of $ B $.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Multiply first the first row of $ C $ by $ D $, then product the first column of $ E $.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
     </item>
     <item>
       <title>MATH1205H HW1</title>

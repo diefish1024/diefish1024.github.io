@@ -9,7 +9,7 @@
       <url>https://diefish1024.github.io/images/avatar.jpg</url>
       <link>https://diefish1024.github.io/images/avatar.jpg</link>
     </image>
-    <generator>Hugo -- 0.155.2</generator>
+    <generator>Hugo -- 0.169.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 31 Aug 2025 20:34:00 +0800</lastBuildDate>
     <atom:link href="https://diefish1024.github.io/posts/class-notes/nju-os-2025/index.xml" rel="self" type="application/rss+xml" />
@@ -77,7 +77,37 @@
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;方法二：将指针集中存放在文件系统的某个区域&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;为了解决上述问题，我们可以将所有数据块的“链表指针”抽离出来，集中存放在一个被称为&lt;strong&gt;文件分配表 (File Allocation Table, FAT)&lt;/strong&gt; 的核心数据结构中。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;FAT&lt;/strong&gt; 本质上是一个大数组。数组的&lt;strong&gt;下标&lt;/strong&gt;与磁盘上的数据块编号一一对应。数组中存储的&lt;strong&gt;值&lt;/strong&gt;则是该文件链表中的&lt;strong&gt;下一个数据块的编号&lt;/strong&gt;。&lt;/p&gt;</description>
+&lt;p&gt;&lt;strong&gt;FAT&lt;/strong&gt; 本质上是一个大数组。数组的&lt;strong&gt;下标&lt;/strong&gt;与磁盘上的数据块编号一一对应。数组中存储的&lt;strong&gt;值&lt;/strong&gt;则是该文件链表中的&lt;strong&gt;下一个数据块的编号&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;它是如何工作的？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;一个文件的起始块号记录在它的目录项 (&lt;code&gt;dentry&lt;/code&gt;) 中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;假设文件从第 &lt;code&gt;100&lt;/code&gt; 号块开始，我们查询 &lt;code&gt;FAT[100]&lt;/code&gt;，如果值为 &lt;code&gt;105&lt;/code&gt;，那么 &lt;code&gt;105&lt;/code&gt; 号块就是文件的第二个数据块。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;接着我们查询 &lt;code&gt;FAT[105]&lt;/code&gt;，得到下一个块号，如此往复，直到遇到一个特殊的文件结尾标记。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;优点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;大幅改善的随机访问&lt;/strong&gt;：虽然仍然需要遍历链表，但这个遍历过程发生在 FAT 表内部。因为 FAT 表相比整个磁盘要小得多，可以被&lt;strong&gt;完整加载到内存中缓存&lt;/strong&gt;。要访问第 N 个数据块，只需要在内存中进行 N-1 次数组查询，这比 N-1 次磁盘 I/O 快了几个数量级。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;数据块纯净&lt;/strong&gt;：数据块可以 100% 用于存储文件内容，没有元数据混入。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;写回策略&lt;/strong&gt;：对文件结构的修改（如新增/删除数据块）可以先在内存中的 FAT 缓存上进行，然后利用&lt;strong&gt;延迟写回 (Write-back Caching)&lt;/strong&gt; 机制，在稍后的某个时刻一次性将更新后的 FAT 表写回磁盘，合并了多次 I/O 操作，提升了性能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     <item>
       <title>22. 文件系统 API</title>
@@ -248,7 +278,12 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;向量处理单元 (Vector ALU)&lt;/strong&gt;：CPU 内部也配备了能够对整个向量进行并行计算的 ALU&lt;/p&gt;</description>
+&lt;p&gt;&lt;strong&gt;向量处理单元 (Vector ALU)&lt;/strong&gt;：CPU 内部也配备了能够对整个向量进行并行计算的 ALU&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当执行一条 SIMD 指令时，这个特殊的 ALU 会在同一个时钟周期内，同时对寄存器中的 4 对浮点数分别执行操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
     </item>
     <item>
       <title>18. 真实世界的并发编程 (1)</title>
