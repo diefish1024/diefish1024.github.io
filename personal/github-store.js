@@ -8,11 +8,26 @@ async function request(path,options={}){const r=await fetch(API+path,{...options
 async function read(){const r=await request('/contents/board.json');if(!r.ok)throw Error('暂时读不到清单');const file=await r.json();const board=JSON.parse(decode(file.content));if(!Array.isArray(board.tasks)||!Array.isArray(board.groups)||!Array.isArray(board.courses))throw Error('清单格式异常');current={board,sha:file.sha};return {...board,rev:board.revision||0,runtime:'github',updatedAt:board.updatedAt||board.generatedAt}}
 export async function connectGitHub(){
  try{token=sessionStorage.getItem(KEY)||'';if(token){await verify();return}}catch{}token='';
- const host=document.getElementById('app');host.innerHTML=`<main class="connect-card"><h1>Personal</h1><p>待办、课程、项目。<br>把下一步记在这里。</p><form><label for="connection-key">连接你的私人清单</label><input id="connection-key" type="password" autocomplete="off" required placeholder="粘贴此仓库的 GitHub 访问密钥"><small>仅需要 personal-todo-data 私有仓库的 Contents 读写权限。密钥只发送给 GitHub；不要填写 Canvas 授权或 GitHub 密码。</small><label><input name="remember" type="checkbox" checked> 在此标签页保持连接</label><p class="connection-error" role="alert"></p><button class="tbtn on" type="submit">打开清单</button></form><p><a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noreferrer">管理 GitHub 访问授权 ↗</a></p></main>`;
+ const host=document.getElementById('app');host.innerHTML=`<main class="connect-card"><h1>ToDo</h1><p>待办、课程、备忘录。</p><form><label for="connection-key">连接你的私人清单</label><input id="connection-key" type="password" autocomplete="off" required placeholder="粘贴此仓库的 GitHub 访问密钥"><small>仅需要 personal-todo-data 私有仓库的 Contents 读写权限。密钥只发送给 GitHub；不要填写 Canvas 授权或 GitHub 密码。</small><label><input name="remember" type="checkbox" checked> 在此标签页保持连接</label><p class="connection-error" role="alert"></p><button class="tbtn on" type="submit">打开清单</button></form><p><a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noreferrer">管理 GitHub 访问授权 ↗</a></p></main>`;
  await new Promise(resolve=>{host.querySelector('form').addEventListener('submit',async e=>{e.preventDefault();const form=e.currentTarget,button=form.querySelector('button');token=form.querySelector('input[type=password]').value.trim();button.disabled=true;const error=host.querySelector('.connection-error');error.textContent='';try{await verify();if(form.elements.remember.checked)sessionStorage.setItem(KEY,token);form.querySelector('input[type=password]').value='';resolve()}catch(e){token='';error.textContent=e.message;button.disabled=false}})});
 }
 async function verify(){const r=await request('');if(!r.ok)throw Error('连接失败');const repo=await r.json();if(!repo.private)throw Error('数据仓库必须为私有，已停止读取');await read()}
 export function disconnectGitHub(){token='';current=null;sessionStorage.removeItem(KEY);location.reload()}
+export async function readBoard(){await read();return structuredClone(current.board)}
+let writeQueue=Promise.resolve();
+export function mutateBoard(expectedRev,change){
+ const run=async()=>{
+  const latest=await readBoard(),sha=current.sha;
+  if(expectedRev!==(latest.revision||0))throw Error('清单已在别处更新，请点右上角刷新，再保存；输入内容仍保留');
+  const next=await change(structuredClone(latest));next.revision=(latest.revision||0)+1;next.updatedAt=new Date().toISOString();
+  const r=await request('/contents/board.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'Update Personal board',content:encode(JSON.stringify(next,null,2)+'\n'),sha})});
+  if(r.status===409||r.status===422)throw Error('清单刚刚有更新，请刷新后重试；输入内容仍保留');
+  if(!r.ok)throw Error('保存失败，请检查仓库读写权限');
+  // The successful PUT is authoritative even if a later GET would fail.
+  current={board:next,sha:(await r.json()).content.sha};return structuredClone(next);
+ };
+ const result=writeQueue.then(run);writeQueue=result.catch(()=>{});return result;
+}
 export async function boardFetch(path,options={}){
  const reply=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}});
  try{
