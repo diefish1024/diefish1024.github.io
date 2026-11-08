@@ -1,7 +1,7 @@
 import {normalize} from './core/schema.mjs';
 import {EDITS,match} from './core/edits.mjs';
 import {courseOf} from './mobile-model.js';
-import {createOptimisticStore} from './optimistic-store.js';
+import {createOptimisticStore} from './optimistic-store.js?v=cached-open-20261108';
 
 // Cloud tasks remain authoritative. Views never keep separate task copies.
 export function toDoc(board){
@@ -41,12 +41,11 @@ export async function editBoard(board,method,path,body={}){
  return fromDoc(board,normalize(doc));
 }
 export const itemCourse=(item,groups)=>courseOf({...item,card_id:item.group},groups);
-export function cloudBackend({readBoard,writeBoard,storage=null,initialBoard=null}){
- let opening=initialBoard;
- const read=async()=>{if(opening){const board=opening;opening=null;return structuredClone(board)}return readBoard()};
- const store=createOptimisticStore({read,write:writeBoard,edit:editBoard,storage});
+export function cloudBackend({readBoard,writeBoard,storage=null,initialBoard=null,initialIsCached=false}){
+ let opening=!!initialBoard&&!initialIsCached;
+ const store=createOptimisticStore({read:readBoard,write:writeBoard,edit:editBoard,storage,initialBoard,initialIsCached});
  const backend=async(method,path,body={})=>{
-  if(method==='GET'&&path==='/api/todo')return toDoc(await store.load());
+  if(method==='GET'&&path==='/api/todo'){if(opening){opening=false;return toDoc(store.state().pending?await store.load():store.snapshot())}return toDoc(await store.load())}
   if(method==='GET'&&path==='/api/canvas')return (await readBoard()).canvasSync||{};
   if(method==='POST'&&path==='/api/retry')return toDoc(await store.flush(!!body.force));
   if(method==='POST'&&path==='/api/discard')return toDoc(await store.discard());
@@ -54,5 +53,7 @@ export function cloudBackend({readBoard,writeBoard,storage=null,initialBoard=nul
  };
  backend.subscribe=fn=>store.subscribe(event=>fn({...event,doc:event.board&&toDoc(event.board)}));
  backend.pending=()=>store.state().pending;
+ backend.snapshot=()=>{const board=store.snapshot();return board&&toDoc(board)};
+ backend.state=store.state;
  return backend;
 }

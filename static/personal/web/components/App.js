@@ -1,11 +1,11 @@
 import { html, useState, useEffect, useRef } from "../vendor/preact-htm.js";
 import { Ctx } from "./ctx.js";
-import { useDoc } from "./useDoc.js";
+import { useDoc } from "./useDoc.js?v=cached-open-20261108";
 import { actions } from "../lib/api.js";
 import { applyTheme } from "../lib/theme.js";
 import { usePresence, useLingering, anchorAt, isPhone } from "./ui.js";
 import { reducedMotion } from "../lib/motion.js";
-import { Header } from "./Header.js";
+import { Header } from "./Header.js?v=cached-open-20261108";
 import { Hero } from "./Hero.js";
 import { Overview } from "./Overview.js";
 import { AgentBlock } from "./AgentBlock.js";
@@ -15,7 +15,7 @@ import { SectionBlock, AddSection, shownSections } from "./Section.js";
 import { DoneBlock } from "./Done.js";
 import { Goals } from "./Goals.js";
 import { Toc } from "./Toc.js";
-import { Settings } from "./Settings.js";
+import { Settings } from "./Settings.js?v=cached-open-20261108";
 import { Popover } from "./Popover.js";
 import { Courses, Memos } from "./Personal.js";
 

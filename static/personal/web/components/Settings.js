@@ -1,4 +1,4 @@
-import {disconnectGitHub} from '../../github-store.js?v=fast-open-20261108';
+import {disconnectGitHub} from '../../github-store.js?v=cached-open-20261108';
 import { html, useState, useRef } from "../vendor/preact-htm.js";
 import { useBoard } from "./ctx.js";
 import { MoveTools } from "./ui.js";
@@ -22,7 +22,7 @@ export function Settings({ shown }) {
   return html`<div class=${`drawer-mask ${shown ? "on" : ""}`} onClick=${close}></div>
   <aside class=${`drawer ${shown ? "on" : ""}`}>
     <div class="drawer-head"><h2>设置</h2><span class="grow"></span><button class="tbtn" onClick=${close}>关闭</button></div>
-    <h4>私人清单</h4><button class="btn" onClick=${disconnectGitHub}>退出登录并清除此浏览器的密钥</button>
+    <h4>私人清单</h4><button class="btn" onClick=${disconnectGitHub}>退出登录并清除此浏览器的缓存与密钥</button>
     <h4>外观</h4>
     <${Field} label="标题"><${Text} k="title" value=${t.title} /><//>
     <${Field} label="明暗"><${Seg} k="mode" cur=${t.mode} opts=${[["auto", "跟随系统"], ["light", "亮"], ["dark", "暗"]]} /><//>

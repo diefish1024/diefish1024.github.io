@@ -14,7 +14,7 @@ export function Header() {
   }, []);
   return html`<header class=${floating ? "not-top" : ""}><div class="container"><div class="bar">
     <div class="brand">${doc.theme?.title || "ToDo"}</div>
-    ${syncState?.pending?html`<span class="save-state" role="status">${syncState.error?'待同步':'同步中…'}</span>`:null}
+    ${syncState?.pending||syncState?.refreshing||syncState?.fromCache?html`<span class="save-state" role="status">${syncState.pending?(syncState.error?'待同步':'同步中…'):syncState.fromCache?(syncState.refreshing?'本地清单 · 同步中…':'本地清单'):'同步中…'}</span>`:null}
     ${doc.demo ? html`<span class="demo-tag" title="数据是编的，改了只在这个页面里，刷新回到原样">示例</span>` : null}
     ${doc.demo?.repo ? html`<a class="demo-tag" href=${doc.demo.repo} target="_blank" rel="noopener noreferrer">GitHub</a>` : null}
     <div class="grow"></div>

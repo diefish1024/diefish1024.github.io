@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "../vendor/preact-htm.js";
 import { api, subscribeBackend } from "../lib/api.js";
 import { noteChanges } from "../lib/motion.js";
+import {openingSnapshot,openingSyncState} from '../lib/opening-state.js';
 
 // The board's data: read once on open, then every 15 s (not while the tab is in the background) and again when the window
 // regains focus; it re-renders every minute so "N minutes ago" keeps up.
@@ -9,9 +10,9 @@ import { noteChanges } from "../lib/motion.js";
 // Every swap first compares with the old data and notes whose status just changed, which the cards animate (lib/motion.js).
 // save(method, path, body): sends one change and swaps in the whole new document the server returns; throws on error
 export function useDoc(busy) {
-  const [doc, setDoc] = useState(null);
+  const [doc, setDoc] = useState(openingSnapshot);
   const [err, setErr] = useState(null);
-  const [syncState,setSyncState]=useState({pending:false,saving:false,error:null,conflict:false});
+  const [syncState,setSyncState]=useState(openingSyncState);
   const [, setTick] = useState(0);
   const busyRef = useRef(busy), pending = useRef(null);
   busyRef.current = busy;
