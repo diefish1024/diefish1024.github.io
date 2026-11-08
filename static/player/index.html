@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex,nofollow"><title>课程回放</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script><script src="offline.js" defer></script><script src="playback.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+  <header><h1>课程回放</h1></header>
+  <main>
+    <section class="watch" aria-label="播放器">
+      <div class="heading"><h2 id="now-title">选择一节回放</h2><span id="now-date"></span></div>
+      <div id="stage" class="stage" data-mode="dual">
+        <div id="primary-panel" class="video-panel"><span id="primary-label" class="video-label">PPT</span><video id="video" playsinline controls preload="auto" crossorigin="anonymous"></video></div>
+        <div id="secondary-panel" class="video-panel" hidden><span id="secondary-label" class="video-label">教师</span><video id="secondary" playsinline muted preload="auto" crossorigin="anonymous" aria-label="同步教师画面"></video></div>
+        <div id="caption-line" class="caption-line" aria-label="当前字幕" hidden></div>
+      </div>
+      <div class="toolbar">
+        <div class="group"><span class="label">画面</span><select id="layout" aria-label="显示画面" disabled><option value="dual">PPT + 教师</option></select></div>
+        <div class="group"><span class="label">倍速</span><div id="rates" class="segments" role="group" aria-label="播放速度"><button data-rate="1">1×</button><button data-rate="1.5">1.5×</button><button data-rate="2">2×</button><button data-rate="2.5">2.5×</button><button data-rate="3">3×</button></div></div>
+      </div>
+      <div class="actions"><button id="back" disabled>后退 15 秒</button><button id="forward" disabled>前进 15 秒</button><button id="caption-toggle" aria-pressed="true" disabled>字幕</button><button id="fullscreen" disabled>全屏</button><button id="refresh-media" disabled>重连</button><button id="download" disabled>保存离线</button></div>
+      <p id="player-status" class="status" role="status"></p>
+      <p id="download-note" class="status" role="status"></p>
+      <progress id="download-progress" max="1" value="0" hidden aria-label="离线保存进度"></progress>
+    </section>
+    <aside class="library">
+      <div class="tabs" role="group" aria-label="课程来源"><button id="online-tab" class="active" aria-pressed="true">课程</button><button id="offline-tab" aria-pressed="false">离线 <span id="offline-count">0</span></button><button id="reload" class="reload">刷新</button></div>
+      <div id="online-panel"><select id="courses" aria-label="选择课程" disabled><option>正在读取课程…</option></select><p id="list-status" class="status" role="status"></p><div id="recordings" class="recordings"></div></div>
+      <div id="offline-panel" hidden><div id="offline-list" class="recordings"></div><p class="status">离线视频保存在当前浏览器中。</p></div>
+    </aside>
+  </main>
+</body></html>
