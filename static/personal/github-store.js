@@ -14,10 +14,14 @@ async function request(path,options={}){
  if(r.status===403)throw Error('暂时没有权限，或 GitHub 请求过于频繁，请稍后再试');
  if(r.status===404)throw Error('找不到私人清单，请检查授权是否包含 personal-todo-data');return r;
 }
-async function read(){
+async function fetchBoardFile(){
  const r=await request('/contents/board.json');if(!r.ok)throw Error('暂时读不到清单');
  const file=await r.json(),board=JSON.parse(decode(file.content));
  if(!Array.isArray(board.tasks)||!Array.isArray(board.groups)||!Array.isArray(board.courses))throw Error('清单格式异常');
+ return {board,sha:file.sha};
+}
+async function read(){
+ const file=await fetchBoardFile(),board=file.board;
  // A poll started before a successful write must not roll the cached SHA backwards.
  if(!current||(board.revision||0)>=(current.board.revision||0))current={board,sha:file.sha};
  const latest=current.board;
@@ -28,11 +32,11 @@ export async function connectGitHub(){
  let saved=connection.load(),message='';
  if(saved){
   token=saved.token;
-  try{await verify();if(saved.legacy)connection.save(token,true);return}
+  try{await verify();if(saved.legacy)connection.save(token,true);return structuredClone(current.board)}
   catch(e){message=e.status===401?e.message:'登录信息仍在此浏览器中，暂时无法连接。请重试，或更换密钥。';if(e.status===401){connection.forget();saved=null;token=''}}
  }
  const host=document.getElementById('app');
- await new Promise(resolve=>{
+ return await new Promise(resolve=>{
   function render(){
    host.innerHTML=`<main class="connect-card"><h1>ToDo</h1><p>待办、课程、备忘录。</p><form>${saved?'<p>已记住你的私人清单连接。</p>':`<label for="connection-key">连接你的私人清单</label><input id="connection-key" type="password" autocomplete="off" required placeholder="粘贴此仓库的 GitHub 访问密钥"><small>仅需要 personal-todo-data 私有仓库的 Contents 读写权限。密钥只发送给 GitHub；不要填写 Canvas 授权或 GitHub 密码。</small><label><input name="remember" type="checkbox" checked> 在此浏览器保持登录</label><small>关闭网页后仍可直接打开；可在设置中退出登录。仅在自己的设备上勾选。</small>`}<p class="connection-error" role="alert"></p><button class="tbtn on" type="submit">${saved?'重试连接':'打开清单'}</button>${saved?'<button class="tbtn" type="button">更换密钥</button>':''}</form><p><a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noreferrer">管理 GitHub 访问授权 ↗</a></p></main>`;
    const form=host.querySelector('form'),error=host.querySelector('.connection-error');error.textContent=message;
@@ -40,7 +44,7 @@ export async function connectGitHub(){
    form.addEventListener('submit',async e=>{
     e.preventDefault();const buttons=form.querySelectorAll('button');for(const button of buttons)button.disabled=true;
     token=saved?.token||form.querySelector('input[type=password]').value.trim();error.textContent='';
-    try{await verify();connection.save(token,saved?saved.remember:form.elements.remember.checked);const input=form.querySelector('input[type=password]');if(input)input.value='';resolve()}
+    try{await verify();connection.save(token,saved?saved.remember:form.elements.remember.checked);const input=form.querySelector('input[type=password]');if(input)input.value='';resolve(structuredClone(current.board))}
     catch(e){
      if(saved&&e.status===401){connection.forget();saved=null;token='';message=e.message;render();return}
      if(!saved)token='';error.textContent=e.message;for(const button of buttons)button.disabled=false;
@@ -50,7 +54,16 @@ export async function connectGitHub(){
   render();
  });
 }
-async function verify(){const r=await request('');if(!r.ok)throw Error('连接失败');const repo=await r.json();if(!repo.private)throw Error('数据仓库必须为私有，已停止读取');await read()}
+async function verify(){
+ const [repoResult,boardResult]=await Promise.allSettled([
+  (async()=>{const r=await request('');if(!r.ok)throw Error('连接失败');const repo=await r.json();if(!repo.private)throw Error('数据仓库必须为私有，已停止读取')})(),
+  fetchBoardFile()
+ ]);
+ const failures=[repoResult,boardResult].filter(result=>result.status==='rejected');
+ if(failures.length)throw (failures.find(result=>result.reason.status===401)||failures[0]).reason;
+ // Only expose the snapshot after both authorization and private-repository checks pass.
+ current=boardResult.value;
+}
 export function disconnectGitHub(){if(sessionStorage.getItem('personal-pending-changes-v1')&&!confirm('还有未同步的改动，确定放弃这些改动并退出登录？'))return;createConnectionStorage().forget();token='';current=null;sessionStorage.removeItem('personal-pending-changes-v1');location.reload()}
 export async function readBoard(){await read();return structuredClone(current.board)}
 let writeQueue=Promise.resolve();

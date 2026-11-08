@@ -41,8 +41,10 @@ export async function editBoard(board,method,path,body={}){
  return fromDoc(board,normalize(doc));
 }
 export const itemCourse=(item,groups)=>courseOf({...item,card_id:item.group},groups);
-export function cloudBackend({readBoard,writeBoard,storage=null}){
- const store=createOptimisticStore({read:readBoard,write:writeBoard,edit:editBoard,storage});
+export function cloudBackend({readBoard,writeBoard,storage=null,initialBoard=null}){
+ let opening=initialBoard;
+ const read=async()=>{if(opening){const board=opening;opening=null;return structuredClone(board)}return readBoard()};
+ const store=createOptimisticStore({read,write:writeBoard,edit:editBoard,storage});
  const backend=async(method,path,body={})=>{
   if(method==='GET'&&path==='/api/todo')return toDoc(await store.load());
   if(method==='GET'&&path==='/api/canvas')return (await readBoard()).canvasSync||{};

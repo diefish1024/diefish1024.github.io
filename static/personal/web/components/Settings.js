@@ -1,4 +1,4 @@
-import {disconnectGitHub} from '../../github-store.js';
+import {disconnectGitHub} from '../../github-store.js?v=fast-open-20261108';
 import { html, useState, useRef } from "../vendor/preact-htm.js";
 import { useBoard } from "./ctx.js";
 import { MoveTools } from "./ui.js";
