@@ -1,5 +1,5 @@
 import { html, render } from "./vendor/preact-htm.js";
-import { App } from "./components/App.js?v=personal-focus-20261108";
+import { App } from "./components/App.js?v=local-shell-20261108";
 
 export function mountApp(){
  render(html`<${App} />`, document.getElementById("root"));

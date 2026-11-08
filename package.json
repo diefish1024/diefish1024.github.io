@@ -1,0 +1,7 @@
+{
+  "name": "personal-pages-build",
+  "private": true,
+  "type": "module",
+  "scripts": { "build:personal": "node scripts/build-personal.mjs", "test:personal-shell": "node --test scripts/personal-sw.test.mjs" },
+  "devDependencies": { "esbuild": "0.25.12" }
+}

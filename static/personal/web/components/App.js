@@ -5,7 +5,7 @@ import { actions } from "../lib/api.js";
 import { applyTheme } from "../lib/theme.js";
 import { usePresence, useLingering, anchorAt, isPhone } from "./ui.js";
 import { reducedMotion } from "../lib/motion.js";
-import { Header } from "./Header.js?v=personal-focus-20261108";
+import { Header } from "./Header.js?v=local-shell-20261108";
 import { Hero } from "./Hero.js";
 import { Focus } from "./Focus.js";
 import { AgentBlock } from "./AgentBlock.js?v=personal-focus-20261108";
@@ -22,7 +22,7 @@ import { Courses, Memos } from "./Personal.js?v=personal-focus-20261108";
 // The whole board: the data (useDoc), transient page state (ui, the open popover, the toast at the bottom) and the blocks
 // from top to bottom. These reach the components through Ctx (see ctx.js for what each one is)
 export function App() {
-  const [view,setView]=useState('overview');
+  const [view,setView]=useState('todo');
   const [ui, setUiState] = useState({ editMode: false, editing: null, adding: null, settings: false, locate: null });
   const [pop, setPop] = useState(null);
   // A closed popover stays a moment longer to animate out (the menu fades, the sheet slides down); it cannot be clicked then

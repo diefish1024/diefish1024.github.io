@@ -37,6 +37,17 @@ jobs:
       - name: Build Hugo Site
         run: hugo --minify
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Bundle Personal and prepare local page cache
+        run: |
+          npm ci
+          npm run test:personal-shell
+          npm run build:personal
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
