@@ -1,49 +1,61 @@
-/* Media coordination is separate from page rendering so seek/rate/buffer behavior is testable. */
+/* The audible video owns the clock. A slow auxiliary view never controls it. */
 (() => {
   class DualPlayback {
-    constructor(primary,secondary,notify=()=>{}) {
-      this.primary=primary;this.secondary=secondary;this.notify=notify;this.active=false;this.desired=false;this.held=false;
-      primary.addEventListener('play',()=>{this.desired=true;if(this.active){this.align(true);this.startSecondary();}});
-      primary.addEventListener('pause',()=>{if(!this.held)this.desired=false;secondary.pause();});
-      primary.addEventListener('ended',()=>{this.desired=false;this.held=false;secondary.pause();});
+    constructor(primary,secondary,notify=()=>{},now=()=>performance.now()) {
+      Object.assign(this,{primary,secondary,notify,now,active:false,waiting:false,pending:false,blocked:false,lastSeek:-Infinity});
+      primary.addEventListener('play',()=>{this.blocked=false;this.startSecondary();});
+      primary.addEventListener('pause',()=>secondary.pause());
+      primary.addEventListener('ended',()=>secondary.pause());
       primary.addEventListener('seeking',()=>this.align(true));
-      primary.addEventListener('seeked',()=>{this.align(true);this.resume();});
+      primary.addEventListener('seeked',()=>this.tick());
       primary.addEventListener('ratechange',()=>{secondary.playbackRate=primary.playbackRate;});
-      primary.addEventListener('waiting',()=>{if(this.active)secondary.pause();});
-      primary.addEventListener('playing',()=>{if(this.active){this.align(true);this.startSecondary();}});
-      secondary.addEventListener('waiting',()=>{
-        if(this.active&&this.desired&&!primary.paused&&!this.atSecondaryEnd()){
-          this.held=true;primary.pause();secondary.pause();this.notify('教师画面正在缓冲，两路画面会一起继续。');
-        }
-      });
-      for(const element of [primary,secondary])element.addEventListener('canplay',()=>this.resume());
-      secondary.addEventListener('loadedmetadata',()=>{this.align(true);if(this.desired)this.startSecondary();});
-      secondary.addEventListener('error',()=>{if(this.active){this.active=false;this.held=false;secondary.pause();if(this.desired)void primary.play().catch(()=>{});this.notify('教师画面加载失败，可重连或暂时只看 PPT。');}});
+      primary.addEventListener('waiting',()=>{this.waiting=true;secondary.pause();});
+      primary.addEventListener('playing',()=>{this.waiting=false;this.tick();});
+      secondary.addEventListener('waiting',()=>{if(this.active&&!primary.paused)this.notify('小窗正在缓冲，声音继续播放。');});
+      secondary.addEventListener('canplay',()=>this.tick());
+      secondary.addEventListener('playing',()=>{if(this.active)this.notify('');});
+      secondary.addEventListener('loadedmetadata',()=>{this.align(true);this.startSecondary();});
+      secondary.addEventListener('error',()=>{if(this.active){this.active=false;secondary.pause();this.notify('另一画面加载失败，可点击重连。');}});
       secondary.muted=true;
     }
-    enable(value) {this.active=value;this.held=false;this.desired=!this.primary.paused;if(!value)this.secondary.pause();else{this.align(true);if(this.desired)this.startSecondary();}}
+    enable(value){this.active=value;this.waiting=false;this.blocked=false;this.lastSeek=-Infinity;if(!value)this.secondary.pause();else{this.align(true);this.startSecondary();}}
     atSecondaryEnd(){return Number.isFinite(this.secondary.duration)&&this.primary.currentTime>=this.secondary.duration-.15;}
     align(force=false){
-      if(!this.active||this.secondary.readyState<1)return;
-      const end=Number.isFinite(this.secondary.duration)?Math.max(0,this.secondary.duration-.05):Infinity;
-      const target=Math.min(this.primary.currentTime,end);
-      if(force||Math.abs(this.secondary.currentTime-target)>.25){try{this.secondary.currentTime=target;}catch{}}
-      this.secondary.playbackRate=this.primary.playbackRate;this.secondary.muted=true;
+      const p=this.primary,s=this.secondary;
+      if(!this.active||s.readyState<1||(!force&&(p.seeking||s.seeking||s.readyState<3||this.waiting)))return;
+      const target=Math.min(p.currentTime,Number.isFinite(s.duration)?Math.max(0,s.duration-.05):Infinity),drift=target-s.currentTime;
+      // Let a slow request finish; never seek on every playing/canplay event.
+      const headroom=Math.min(target+p.playbackRate*1.5,Number.isFinite(s.duration)?s.duration:Infinity);
+      const cached=Array.from({length:s.buffered.length},(_,i)=>[s.buffered.start(i),s.buffered.end(i)]).some(([start,end])=>start<=target&&end>=headroom);
+      if(Math.abs(drift)>(force?.1:1.5)&&(force||(cached&&this.now()-this.lastSeek>=2500))){
+        this.lastSeek=this.now();try{s.currentTime=target;}catch{}
+      }
+      s.playbackRate=p.playbackRate*(!force&&Math.abs(drift)>.15&&Math.abs(drift)<=1.5?(drift>0?1.05:.95):1);
+      s.muted=true;
     }
     startSecondary(){
-      if(!this.active||!this.desired||this.held||this.primary.paused||this.primary.readyState<3||this.atSecondaryEnd())return;
-      void this.secondary.play().catch(error=>{if(error.name!=='AbortError')this.notify('请再次点击播放，以启动教师画面。');});
+      const p=this.primary,s=this.secondary;
+      if(!this.active||this.waiting||this.pending||this.blocked||p.paused||p.seeking||p.readyState<3||!s.paused||this.atSecondaryEnd())return;
+      this.pending=true;
+      Promise.resolve(s.play()).then(()=>{if(!this.active||p.paused||this.waiting)s.pause();}).catch(error=>{
+        if(error.name!=='AbortError'){this.blocked=true;this.notify('另一画面未启动，请暂停后再播放。');}
+      }).finally(()=>{this.pending=false;});
     }
-    resume(){
-      if(!this.active||!this.desired)return;
-      if(this.held&&this.primary.readyState>=3&&this.secondary.readyState>=3){
-        this.held=false;this.align(true);void this.primary.play().catch(()=>{this.desired=false;this.notify('点播放继续。');});this.startSecondary();
-      }else if(!this.primary.paused&&!this.primary.seeking)this.startSecondary();
-    }
-    tick(){if(!this.active||this.primary.seeking)return;this.align();if(!this.primary.paused&&this.secondary.paused&&!this.held)this.startSecondary();}
+    tick(){if(!this.active||this.primary.seeking)return;if(this.atSecondaryEnd()){this.secondary.pause();return;}this.align();this.startSecondary();}
   }
-  function captionAt(cues,time){return cues.filter(c=>c.start<=time&&time<c.end).map(c=>c.text).join('\n');}
+  // Older offline saves have paragraphs; live cues use original school timestamps.
+  function prepareCaptions(cues){
+    return (cues||[]).flatMap(c=>{
+      const chars=Array.from(String(c.text||'').trim());if(!chars.length||!(c.end>c.start))return[];
+      const parts=[];let offset=0;
+      while(offset<chars.length){let length=Math.min(40,chars.length-offset);
+        if(length===40){for(let j=length-1;j>=20;j--)if(/[，。！？；,.!?;\s]/.test(chars[offset+j])){length=j+1;break;}}
+        parts.push({start:c.start+(c.end-c.start)*offset/chars.length,end:c.start+(c.end-c.start)*(offset+length)/chars.length,text:chars.slice(offset,offset+length).join('')});offset+=length;
+      }return parts;
+    }).sort((a,b)=>a.start-b.start);
+  }
+  function captionAt(cues,time){let found='';for(const cue of cues){if(cue.start>time)break;if(time<cue.end)found=cue.text;}return found;}
   function vttTime(seconds){const ms=Math.max(0,Math.round(seconds*1000));return`${String(Math.floor(ms/3600000)).padStart(2,'0')}:${String(Math.floor(ms/60000)%60).padStart(2,'0')}:${String(Math.floor(ms/1000)%60).padStart(2,'0')}.${String(ms%1000).padStart(3,'0')}`;}
   function captionsVtt(cues){return 'WEBVTT\n\n'+cues.map((c,i)=>`${i+1}\n${vttTime(c.start)} --> ${vttTime(c.end)}\n${c.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/[\r\n]+/g,' ')}\n`).join('\n');}
-  globalThis.coursePlayback={DualPlayback,captionAt,captionsVtt};
+  globalThis.coursePlayback={DualPlayback,captionAt,captionsVtt,prepareCaptions};
 })();

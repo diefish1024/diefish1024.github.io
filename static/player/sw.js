@@ -1,6 +1,6 @@
 importScripts('./offline.js');
-const CACHE='course-player-shell-v2';
-const ASSETS=['./','./index.html','./style.css','./config.js','./offline.js','./playback.js','./app.js'];
+const CACHE='course-player-shell-v3';
+const ASSETS=['./','./index.html','./style.css?v=3','./config.js','./offline.js','./playback.js?v=3','./app.js?v=3'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('course-player-shell-')&&key!==CACHE)await caches.delete(key);await self.clients.claim();})());});
 self.addEventListener('fetch',event=>{
