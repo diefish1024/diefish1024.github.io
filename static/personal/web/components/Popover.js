@@ -81,7 +81,7 @@ function StatusMenu({ item }) {
     cheer(doc.theme, document.querySelector(`.pill[data-id="${CSS.escape(item.id)}"]`));
     return save();
   };
-  const edit = () => { setPop(null); setUi({ editing: pop.from === "agent" ? `i:${item.id}@agent` : `i:${item.id}`, adding: null }); };
+  const edit = () => { setPop(null); setUi({ editing: ["agent", "focus"].includes(pop.from) ? `i:${item.id}@${pop.from}` : `i:${item.id}`, adding: null }); };
   return html`${rep && st.scheduled && OPEN.includes(item.status) ? html`<${Opt} icon=${html`<${StatusIcon} s="done" />`} label=${st.done ? "取消今天的打卡" : "今天做完了"} onClick=${tick} /><div class="sep"></div>` : null}
     ${ORDER.filter((s) => !(rep && s === "done")).map((s) => html`<${Opt} key=${s} s=${s} icon=${html`<${StatusIcon} s=${s} />`} label=${LABEL[s]} cur=${item.status === s} onClick=${() => pick(s)} />`)}
     <div class="sep"></div>

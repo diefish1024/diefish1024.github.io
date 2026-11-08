@@ -3,7 +3,7 @@ import {setBackend} from './web/lib/api.js';
 import {cloudBackend} from './todo-adapter.js?v=cached-open-20261108';
 import {setOpeningBackend} from './web/lib/opening-state.js';
 // Download the interface while GitHub verifies the saved connection.
-const interfaceReady=import('./web/main.js?v=cached-open-20261108');
+const interfaceReady=import('./web/main.js?v=personal-focus-20261108');
 interfaceReady.catch(()=>{});
 const initialBoard=await connectGitHub();
 document.getElementById('app').innerHTML='<div id="root"></div>';

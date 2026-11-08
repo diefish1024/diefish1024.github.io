@@ -1,7 +1,7 @@
 import { html } from "../vendor/preact-htm.js";
 import { useBoard } from "./ctx.js";
 import { Block, Md, AutoText, AddInline, FormActions, MoveTools, useForm, useAutoFocus, onEnter } from "./ui.js";
-import { GroupCard } from "./Group.js";
+import { GroupCard } from "./Group.js?v=personal-focus-20261108";
 import { CanvasSide } from "./Canvas.js";
 import { OPEN, sections, groupsOf } from "../lib/model.js";
 import { closedModeOf, splitClosed } from "../lib/done.js";

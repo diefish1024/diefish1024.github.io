@@ -5,24 +5,24 @@ import { actions } from "../lib/api.js";
 import { applyTheme } from "../lib/theme.js";
 import { usePresence, useLingering, anchorAt, isPhone } from "./ui.js";
 import { reducedMotion } from "../lib/motion.js";
-import { Header } from "./Header.js?v=cached-open-20261108";
+import { Header } from "./Header.js?v=personal-focus-20261108";
 import { Hero } from "./Hero.js";
-import { Overview } from "./Overview.js";
-import { AgentBlock } from "./AgentBlock.js";
+import { Focus } from "./Focus.js";
+import { AgentBlock } from "./AgentBlock.js?v=personal-focus-20261108";
 import { RepeatBlock } from "./Repeat.js";
 import { CalendarBlock } from "./Calendar.js";
-import { SectionBlock, AddSection, shownSections } from "./Section.js";
+import { SectionBlock, AddSection, shownSections } from "./Section.js?v=personal-focus-20261108";
 import { DoneBlock } from "./Done.js";
 import { Goals } from "./Goals.js";
 import { Toc } from "./Toc.js";
-import { Settings } from "./Settings.js?v=cached-open-20261108";
-import { Popover } from "./Popover.js";
-import { Courses, Memos } from "./Personal.js";
+import { Settings } from "./Settings.js?v=personal-focus-20261108";
+import { Popover } from "./Popover.js?v=personal-focus-20261108";
+import { Courses, Memos } from "./Personal.js?v=personal-focus-20261108";
 
 // The whole board: the data (useDoc), transient page state (ui, the open popover, the toast at the bottom) and the blocks
 // from top to bottom. These reach the components through Ctx (see ctx.js for what each one is)
 export function App() {
-  const [view,setView]=useState('todo');
+  const [view,setView]=useState('overview');
   const [ui, setUiState] = useState({ editMode: false, editing: null, adding: null, settings: false, locate: null });
   const [pop, setPop] = useState(null);
   // A closed popover stays a moment longer to animate out (the menu fades, the sheet slides down); it cannot be clicked then
@@ -63,9 +63,10 @@ export function App() {
   if (!doc) return html`<main><div class="container"><div class="card" style="margin-top:40px">${err ? `读不到数据：${err}` : "加载中……"}</div></div></main>`;
   const t = doc.theme || {};
   const changeView=(next)=>{
-    if(next===view)return;
-    if((ui.editing||ui.adding)&&!confirm('有还没保存的内容，确定切换？'))return;
+    if(next===view)return true;
+    if((ui.editing||ui.adding)&&!confirm('有还没保存的内容，确定切换？'))return false;
     setUi({editing:null,adding:null,editMode:false,locate:null});setPop(null);setView(next);window.scrollTo(0,0);
+    return true;
   };
   const ctx = { doc, ui, setUi, call, act: actions(call), toast, reload, pop, setPop, openPop, locate,view,changeView,syncState };
   return html`<${Ctx.Provider} value=${ctx}>
@@ -74,12 +75,11 @@ export function App() {
     <main><div class="container">
       ${err?html`<div class="personal-error" role="alert">暂时无法更新：${err}</div>`:null}
       ${syncState.error?html`<div class="sync-error" role="alert"><span>尚未同步到云端：${syncState.error}</span><div><button class="btn" onClick=${()=>retry(syncState.conflict)}>${syncState.conflict?'保留本页修改并同步':'重试同步'}</button>${syncState.conflict?html`<button class="tbtn" onClick=${()=>{if(confirm('放弃本页尚未同步的改动，使用云端版本？'))discard()}}>使用云端版本</button>`:null}</div></div>`:null}
-      ${view==='courses'?html`<${Courses} />`:view==='memos'?html`<${Memos} />`:html`
-      ${t.showStats !== false ? html`<${Overview} />` : null}
-      <${AgentBlock} />
+      ${view==='overview'?html`<${Focus} />`:view==='courses'?html`<${Courses} />`:view==='memos'?html`<${Memos} />`:html`
       ${t.showRepeat !== false ? html`<${RepeatBlock} />` : null}
       ${t.showCalendar !== false ? html`<${CalendarBlock} />` : null}
       ${shownSections(doc, ui).map((s) => html`<${SectionBlock} key=${s.id} section=${s} />`)}
+      <${AgentBlock} />
       ${ui.editMode ? html`<${AddSection} />` : null}
       ${t.showDone !== false ? html`<${DoneBlock} />` : null}
       <${Goals} />

@@ -16,7 +16,7 @@ import { sections } from "../lib/model.js";
 // custom CSS.
 // Changes are saved right away (a Range once it stops moving)
 export function Settings({ shown }) {
-  const { doc, setUi, act } = useBoard();
+  const { doc, setUi, act, changeView } = useBoard();
   const t = doc.theme || {};
   const close = () => setUi({ settings: false });
   return html`<div class=${`drawer-mask ${shown ? "on" : ""}`} onClick=${close}></div>
@@ -58,7 +58,7 @@ export function Settings({ shown }) {
     <${PlacesEditor} />
     <h4>分区</h4>
     <${SectionList} />
-    <div class="row" style="margin-top:10px"><button class="btn" onClick=${() => setUi({ settings: false, editMode: true })}>编辑布局</button></div>
+    <div class="row" style="margin-top:10px"><button class="btn" onClick=${() => { if (changeView('todo')) setUi({ settings: false, editMode: true }); }}>编辑布局</button></div>
     <h4>自定义 CSS</h4>
     <${CustomCss} value=${t.customCss} />
   </aside>`;

@@ -19,12 +19,12 @@ import { useFoldAnim, staggerOf } from "./useFold.js";
 // Status pill: opens the status menu; recurring items use another kind (RepeatPill, one click checks in).
 // With an agent: the gear turns and the dashes of the frame travel around it (styles.css, .run); right after the hand-off
 // (handoff) the gear spins up and the frame whirls in
-export function Pill({ item }) {
+export function Pill({ item, from }) {
   const { openPop } = useBoard();
   if (item.repeat?.days?.length) return html`<${RepeatPill} item=${item} />`;
   const agent = item.status === "agent", handoff = agent && handedOff(item.id);
   return html`<button class=${`pill ${item.status} ${agent ? "run" : ""} ${handoff ? "handoff" : ""}`} data-id=${item.id} data-pop-anchor aria-label=${SHORT[item.status]}
-    onClick=${(e) => openPop("status", item.id, e.currentTarget)}>${agent ? html`<span class="gear"><${StatusIcon} s="agent" /></span>` : html`<${StatusIcon} s=${item.status} />`}<span class="lbl">${SHORT[item.status]}</span>${
+    onClick=${(e) => openPop("status", item.id, e.currentTarget, from ? { from } : {})}>${agent ? html`<span class="gear"><${StatusIcon} s="agent" /></span>` : html`<${StatusIcon} s=${item.status} />`}<span class="lbl">${SHORT[item.status]}</span>${
     agent ? html`<${AgentFrame} handoff=${handoff} />` : null}</button>`;
 }
 

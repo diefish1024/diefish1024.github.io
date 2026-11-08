@@ -24,6 +24,6 @@ export function Header() {
     <button class="tbtn" onClick=${() => setUi({ settings: true })}>设置</button>
     <button class="tbtn" title="刷新" onClick=${() => reload(true).then(() => toast("已刷新"))}>↻</button>
   </div></div></header><div class="container"><nav class="personal-nav" aria-label="主要页面">
-    ${[['todo','ToDo'],['courses','课程'],['memos','备忘录']].map(([id,label])=>html`<button class="tbtn" aria-current=${view===id?'page':null} onClick=${()=>changeView(id)}>${label}</button>`)}
+    ${[['overview','总览'],['todo','ToDo'],['courses','课程'],['memos','备忘录']].map(([id,label])=>html`<button class="tbtn" aria-current=${view===id?'page':null} onClick=${()=>changeView(id)}>${label}</button>`)}
   </nav></div>`;
 }

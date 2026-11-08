@@ -1,6 +1,7 @@
 import { html, useState, useEffect, useLayoutEffect, useRef } from "../vendor/preact-htm.js";
 import { useBoard } from "./ctx.js";
-import { Md, AutoText, AddInline, FormActions, MoveTools, useForm, useAutoFocus, onEnter } from "./ui.js";
+import { TaskAdd } from "./TaskAdd.js";
+import { Md, AutoText, FormActions, MoveTools, useForm, useAutoFocus, onEnter } from "./ui.js";
 import { ItemRow } from "./Item.js";
 import { OPEN, itemsOf, sectionOf, sections } from "../lib/model.js";
 import { StatusIcon } from "./icons.js";
@@ -122,7 +123,7 @@ export function GroupCard({ group: g, single, no = 0 }) {
     ${shown.length ? html`<div class=${`items ${showTitle || g.note ? "" : "flush"}`} ref=${listRef}>${rows.map(({ x: i, enter, leave }) => html`<${ItemRow} key=${i.id} item=${i} exiting=${lingering.includes(i)} enter=${enter} leave=${leave} />`)}</div>`
       : html`<div class="none">${all.length ? "都做完了。" : "还没有事。"}</div>`}
     ${older ? html`<button class="closed-more" onClick=${() => setExpanded(!expanded)}>${expanded ? "收起" : html`<${StatusIcon} s="done" />之前还做完了 ${older} 条`}</button>` : null}
-    <${AddInline} id=${`i:${g.id}`} keep label="＋ 添加" placeholder="要做的事" onSubmit=${(title) => act.addItem({ group: g.id, title })} />
+    <${TaskAdd} id=${`i:${g.id}`} group=${g.id} />
   </div>`;
 }
 

@@ -1,4 +1,4 @@
-import { html, useRef, useLayoutEffect } from "../vendor/preact-htm.js";
+import { html, useRef, useLayoutEffect, useState } from "../vendor/preact-htm.js";
 import { useBoard } from "./ctx.js";
 import { Block, Md } from "./ui.js";
 import { ItemForm } from "./Item.js";
@@ -15,13 +15,16 @@ import { Seg } from "./controls.js";
 // A recurring item that is done for today (or not scheduled today) is left out until the next day it is due
 export function AgentBlock() {
   const { doc, ui } = useBoard();
+  const [expanded, setExpanded] = useState(false);
+  const shown = expanded || ui.editMode || !!ui.editing?.endsWith('@agent');
   const stale = doc.settings?.staleHours ?? 3, cols = agentColsOf(doc.theme);
   const list = doc.items.filter((i) => agentActive(i)).sort((a, b) => (a.agent?.lastSeen ?? "").localeCompare(b.agent?.lastSeen ?? ""));
   const grid = useSlide();
+  if (!list.length && !ui.editMode) return null;
   const side = html`<h2>Agent</h2>${ui.editMode ? html`<${Seg} k="agentCols" cur=${cols} opts=${[[1, "一列"], [2, "两列"], [3, "三列"]]} />` : null}`;
   return html`<${Block} id="b-agent" toc="Agent" side=${side}>
-    ${list.length ? html`<div class="agent-wrap"><div class=${`agent-grid cols-${cols}`} ref=${grid}>${list.map((i) => html`<${AgentCard} key=${i.id} item=${i} stale=${stale} />`)}</div></div>`
-      : html`<div class="card"><div class="none" style="padding:0">现在没有挂在 Agent 上的事。</div></div>`}
+    <button class="card agent-summary" aria-expanded=${shown} onClick=${() => setExpanded(!shown)}><span>交给 Agent 的任务 <b>${list.length}</b></span><span>${shown ? '收起 ↑' : '展开查看 ↓'}</span></button>
+    ${shown && list.length ? html`<div class="agent-wrap"><div class=${`agent-grid cols-${cols}`} ref=${grid}>${list.map((i) => html`<${AgentCard} key=${i.id} item=${i} stale=${stale} />`)}</div></div>` : null}
   <//>`;
 }
 

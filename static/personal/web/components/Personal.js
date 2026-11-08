@@ -1,6 +1,7 @@
 import {html,useState} from '../vendor/preact-htm.js';
 import {useBoard} from './ctx.js';
 import {Block} from './ui.js';
+import {TaskAdd} from './TaskAdd.js';
 import {ItemRow} from './Item.js';
 import {itemCourse} from '../../todo-adapter.js';
 import {CanvasSide} from './Canvas.js';
@@ -24,19 +25,14 @@ export function Courses(){
  })}</div>`;
 }
 function Course({name}){
- const {doc,call,ui,setUi}=useBoard(),[text,setText]=useState(''),[saving,setSaving]=useState(false),[expanded,setExpanded]=useState(false);
+ const {doc,ui}=useBoard(),[expanded,setExpanded]=useState(false);
  const all=doc.items.filter(i=>itemCourse(i,doc.groups)===name),open=all.filter(i=>OPEN.includes(i.status));
  const shown=expanded?all:all.filter(i=>OPEN.includes(i.status)||ui.editing===`i:${i.id}`);
- const add=async e=>{
-  e.preventDefault();if(saving||!text.trim())return;setSaving(true);
-  const group=doc.groups.find(g=>g.id===doc.settings.canvasGroup)||doc.groups.find(g=>g.title==='课程作业')||doc.groups[0];
-  if(await call('POST','/api/items',{title:text.trim(),group:group?.id,course:name},'已加入待办')){setText('');setUi({adding:null})}
-  setSaving(false);
- };
+ const group=doc.groups.find(g=>g.id===doc.settings.canvasGroup)||doc.groups.find(g=>g.title==='课程作业')||doc.groups[0];
  return html`<${Block} side=${html`<h2>${name}</h2><div class="sub">${open.length?`${open.length} 项待办`:'暂无待办'}</div>`}>
   <div class="card"><div class="items">${shown.map(i=>html`<${ItemRow} key=${i.id} item=${i} />`)}</div>
    ${all.length>open.length?html`<button class="tbtn" onClick=${()=>setExpanded(!expanded)}>${expanded?'收起已完成':'查看已完成'}</button>`:null}
-   <form class="course-add" onSubmit=${add}><input class="input" aria-label=${`${name}的课程待办`} placeholder="添加课程待办" value=${text} disabled=${saving} onInput=${e=>{setText(e.target.value);setUi({adding:e.target.value?'course:'+name:null})}} /><button class="btn" disabled=${saving||!text.trim()}>${saving?'保存中':'添加'}</button></form>
+   <${TaskAdd} id=${'course:'+name} group=${group?.id} course=${name} label="＋ 添加课程待办" />
   </div>
  <//>`;
 }
