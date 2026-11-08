@@ -20,7 +20,7 @@
 .transport{display:flex;gap:6px;align-items:center}
 .transport #clock{font-variant-numeric:tabular-nums;font-size:11px;white-space:nowrap;margin-left:3px}
 #fullscreen{margin-left:auto;white-space:nowrap}
-#seek{width:100%;display:block;accent-color:#eee;height:22px;margin:2px 0;cursor:pointer;touch-action:pan-y}
+#seek{width:100%;display:block;accent-color:#eee;height:22px;margin:2px 0;cursor:pointer;touch-action:none;font-size:16px}
 .player .toolbar{margin:0;gap:6px;justify-content:flex-start;align-items:center}
 .player .segments button{min-width:32px;padding:6px 8px}
 .player .status{color:#bbb;margin:5px 0 0;font-size:11px}
@@ -31,3 +31,13 @@
 @media(max-width:800px){.player-controls{padding:6px 8px}.player .toolbar{gap:6px}.stage[data-mode=dual][data-main=primary] #secondary-panel,.stage[data-mode=dual][data-main=secondary] #primary-panel{width:38%}.video-label{font-size:10px}.player .segments button{padding:6px 7px;min-width:31px}}
 @media(max-width:420px){.transport{gap:3px}.transport button{padding:6px;min-height:36px}.transport #clock{font-size:10px}.player .toolbar select{max-width:145px}.player .toolbar{gap:5px}.player-controls{padding:5px 6px}.swap{font-size:10px;min-height:28px;padding:4px 6px}}
 @media(orientation:landscape) and (max-height:520px){.player.viewport-fullscreen .player-controls,.player:fullscreen .player-controls{padding:3px 8px}.player.viewport-fullscreen .toolbar,.player:fullscreen .toolbar{position:absolute;bottom:68px;right:max(10px,env(safe-area-inset-right));background:#191919dd;border-radius:4px;padding:3px}.player.viewport-fullscreen .stage,.player:fullscreen .stage{padding-bottom:0}.player.viewport-fullscreen .caption-line,.player:fullscreen .caption-line{bottom:12%}.player.viewport-fullscreen .video-panel,.player:fullscreen .video-panel{max-height:100%}}
+
+/* Messages overlay the stage; no status ever changes the control bar height. */
+.player #player-status{position:absolute;z-index:5;top:10px;left:50%;transform:translateX(-50%);max-width:70%;margin:0;padding:6px 10px;background:#111d;color:#eee;border-radius:4px;pointer-events:none;font-size:13px;line-height:1.4}
+.stage[data-mode=dual][data-main=primary] #secondary-panel.is-inset,.stage[data-mode=dual][data-main=secondary] #primary-panel.is-inset{left:var(--pip-left);top:var(--pip-top);right:auto;bottom:auto;width:var(--pip-width);height:auto;max-height:none;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+.stage[data-mode=dual] .video-panel.is-inset.pip-moving{cursor:grabbing}
+.is-inset video{pointer-events:none}
+.pip-resize{position:absolute;right:0;bottom:0;width:36px;height:36px;min-height:36px;padding:0;border:0;border-radius:4px 0 0 0;background:#0008;color:white;cursor:nwse-resize;touch-action:none;z-index:4}
+.pip-resize::after{content:'';position:absolute;right:6px;bottom:6px;width:13px;height:13px;border-right:2px solid white;border-bottom:2px solid white}
+.pip-resize:hover:not(:disabled){background:#000a}
+@media(max-width:800px),(pointer:coarse){.player-controls select{font-size:16px}}
