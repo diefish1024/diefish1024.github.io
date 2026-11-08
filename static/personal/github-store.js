@@ -1,6 +1,7 @@
 import {applyCommand} from './board-commands.js';
 import {mergeBoard,sameBoard} from './board-merge.js';
-const REPO='diefish1024/personal-todo-data',API='https://api.github.com/repos/'+REPO,KEY='personal-github-session-v1';
+import {createConnectionStorage} from './connection-storage.js';
+const REPO='diefish1024/personal-todo-data',API='https://api.github.com/repos/'+REPO;
 let token='',current=null;
 function headers(){return {Accept:'application/vnd.github+json',Authorization:'Bearer '+token,'X-GitHub-Api-Version':'2026-03-10'}}
 const decode=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g,'')),c=>c.charCodeAt(0)));
@@ -9,7 +10,7 @@ async function request(path,options={}){
  let r;
  try{r=await fetch(API+path,{...options,headers:{...headers(),...options.headers},cache:'no-store',redirect:'error',signal:globalThis.AbortSignal?.timeout?.(20000)})}
  catch{throw Error('网络暂时不可用，本页改动已保留，请重试同步')}
- if(r.status===401)throw Error('连接授权已失效，请重新连接');
+ if(r.status===401)throw Object.assign(Error('连接授权已失效，请重新连接'),{status:401});
  if(r.status===403)throw Error('暂时没有权限，或 GitHub 请求过于频繁，请稍后再试');
  if(r.status===404)throw Error('找不到私人清单，请检查授权是否包含 personal-todo-data');return r;
 }
@@ -23,12 +24,34 @@ async function read(){
  return {...latest,rev:latest.revision||0,runtime:'github',updatedAt:latest.updatedAt||latest.generatedAt};
 }
 export async function connectGitHub(){
- try{token=sessionStorage.getItem(KEY)||'';if(token){await verify();return}}catch{}token='';
- const host=document.getElementById('app');host.innerHTML=`<main class="connect-card"><h1>ToDo</h1><p>待办、课程、备忘录。</p><form><label for="connection-key">连接你的私人清单</label><input id="connection-key" type="password" autocomplete="off" required placeholder="粘贴此仓库的 GitHub 访问密钥"><small>仅需要 personal-todo-data 私有仓库的 Contents 读写权限。密钥只发送给 GitHub；不要填写 Canvas 授权或 GitHub 密码。</small><label><input name="remember" type="checkbox" checked> 在此标签页保持连接</label><p class="connection-error" role="alert"></p><button class="tbtn on" type="submit">打开清单</button></form><p><a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noreferrer">管理 GitHub 访问授权 ↗</a></p></main>`;
- await new Promise(resolve=>{host.querySelector('form').addEventListener('submit',async e=>{e.preventDefault();const form=e.currentTarget,button=form.querySelector('button');token=form.querySelector('input[type=password]').value.trim();button.disabled=true;const error=host.querySelector('.connection-error');error.textContent='';try{await verify();if(form.elements.remember.checked)sessionStorage.setItem(KEY,token);form.querySelector('input[type=password]').value='';resolve()}catch(e){token='';error.textContent=e.message;button.disabled=false}})});
+ const connection=createConnectionStorage();
+ let saved=connection.load(),message='';
+ if(saved){
+  token=saved.token;
+  try{await verify();if(saved.legacy)connection.save(token,true);return}
+  catch(e){message=e.status===401?e.message:'登录信息仍在此浏览器中，暂时无法连接。请重试，或更换密钥。';if(e.status===401){connection.forget();saved=null;token=''}}
+ }
+ const host=document.getElementById('app');
+ await new Promise(resolve=>{
+  function render(){
+   host.innerHTML=`<main class="connect-card"><h1>ToDo</h1><p>待办、课程、备忘录。</p><form>${saved?'<p>已记住你的私人清单连接。</p>':`<label for="connection-key">连接你的私人清单</label><input id="connection-key" type="password" autocomplete="off" required placeholder="粘贴此仓库的 GitHub 访问密钥"><small>仅需要 personal-todo-data 私有仓库的 Contents 读写权限。密钥只发送给 GitHub；不要填写 Canvas 授权或 GitHub 密码。</small><label><input name="remember" type="checkbox" checked> 在此浏览器保持登录</label><small>关闭网页后仍可直接打开；可在设置中退出登录。仅在自己的设备上勾选。</small>`}<p class="connection-error" role="alert"></p><button class="tbtn on" type="submit">${saved?'重试连接':'打开清单'}</button>${saved?'<button class="tbtn" type="button">更换密钥</button>':''}</form><p><a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noreferrer">管理 GitHub 访问授权 ↗</a></p></main>`;
+   const form=host.querySelector('form'),error=host.querySelector('.connection-error');error.textContent=message;
+   form.querySelector('button[type=button]')?.addEventListener('click',()=>{saved=null;token='';current=null;message='';render()});
+   form.addEventListener('submit',async e=>{
+    e.preventDefault();const buttons=form.querySelectorAll('button');for(const button of buttons)button.disabled=true;
+    token=saved?.token||form.querySelector('input[type=password]').value.trim();error.textContent='';
+    try{await verify();connection.save(token,saved?saved.remember:form.elements.remember.checked);const input=form.querySelector('input[type=password]');if(input)input.value='';resolve()}
+    catch(e){
+     if(saved&&e.status===401){connection.forget();saved=null;token='';message=e.message;render();return}
+     if(!saved)token='';error.textContent=e.message;for(const button of buttons)button.disabled=false;
+    }
+   });
+  }
+  render();
+ });
 }
 async function verify(){const r=await request('');if(!r.ok)throw Error('连接失败');const repo=await r.json();if(!repo.private)throw Error('数据仓库必须为私有，已停止读取');await read()}
-export function disconnectGitHub(){if(sessionStorage.getItem('personal-pending-changes-v1')&&!confirm('还有未同步的改动，确定放弃这些改动并断开连接？'))return;token='';current=null;sessionStorage.removeItem(KEY);sessionStorage.removeItem('personal-pending-changes-v1');location.reload()}
+export function disconnectGitHub(){if(sessionStorage.getItem('personal-pending-changes-v1')&&!confirm('还有未同步的改动，确定放弃这些改动并退出登录？'))return;createConnectionStorage().forget();token='';current=null;sessionStorage.removeItem('personal-pending-changes-v1');location.reload()}
 export async function readBoard(){await read();return structuredClone(current.board)}
 let writeQueue=Promise.resolve();
 export function writeBoard(base,local,{force=false}={}){
