@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         交大回放：三倍速与字幕
 // @namespace    personal.sjtu.replay
-// @version      1.2.0
+// @version      1.3.0
 // @updateURL    https://diefish1024.github.io/userscripts/sjtu-replay.meta.js
 // @downloadURL  https://diefish1024.github.io/userscripts/sjtu-replay.user.js
-// @description  三倍速、逐句字幕、音频增强、拖动工具条、前后15秒与放大双画面。
+// @description  三倍速、逐句字幕、平滑音频同步、紧凑工具条、横屏专注与系统全屏。
 // @match        https://v.sjtu.edu.cn/*
 // @run-at       document-start
 // @inject-into  page
@@ -18,7 +18,7 @@
   // Authentication stays in memory and is sent only to this same-origin API.
   const BASE = '/jy-application-resourcemanage';
   const UPDATE_BASE = 'https://diefish1024.github.io/userscripts/';
-  const VERSION = '1.2.0';
+  const VERSION = '1.3.0';
   const SPEEDS = [1, 1.25, 1.5, 1.75, 2, 2.5, 3];
   function seekTarget(current, delta, duration) {
     return Math.max(0, Math.min(Number.isFinite(duration) ? Math.max(0, duration - 0.05) : Infinity, (Number.isFinite(current) ? current : 0) + delta));
@@ -123,7 +123,9 @@
   let captionsOn = prefs.captions !== false;
   let fontSize = [12, 14, 16, 18].includes(prefs.fontSize) ? prefs.fontSize : 14;
   let placement = ['auto', 'bottom', 'top'].includes(prefs.placement) ? prefs.placement : 'auto';
-  let audioWanted = prefs.audioWanted !== false, pptWanted = prefs.pptWanted !== false;
+  let audioWanted = false, pptWanted = prefs.pptWanted !== false;
+  let focusPreference = prefs.focusPreference ?? 'landscape', controlsQuiet = false;
+  let interactionAt = Date.now(), focusPointerHeld = false, focusWasActive = false;
   let pptScale = [0.45, 0.7, 0.85, 1].includes(prefs.pptScale) ? prefs.pptScale : 0.7;
   let panelPosition = prefs.panelPosition, pptPosition = prefs.pptPosition, captionPosition = prefs.captionPosition;
   let pptHost = null, pptBody = null, pptVideo = null, pptSource = '', pptPlayAttempt = '';
@@ -141,12 +143,13 @@
 
   function savePrefs() {
     try { localStorage.setItem(prefsKey, JSON.stringify({ speed, captions: captionsOn, fontSize, placement,
-      audioWanted, pptWanted, pptScale, panelPosition, pptPosition, captionPosition })); } catch {}
+      audioWanted, pptWanted, pptScale, panelPosition, pptPosition, captionPosition, focusPreference })); } catch {}
   }
   function setStatus(text) { status = text; if (statusNode) statusNode.textContent = text; }
   function setRecording(id) {
     if (id === recording) return;
     restorePpt(); stopAudio(); mediaController?.abort(); mediaController = null;
+    showControls();
     mediaViews = []; mediaAttempt = ''; mediaError = '';
     recording = id; rows = []; offset = 0; revision++; generation++;
     request?.abort(); request = null; attempted = '';
@@ -371,6 +374,10 @@
   function seekBy(delta) {
     if (!currentVideo) return;
     const target = seekTarget(currentVideo.currentTime, delta, currentVideo.duration);
+    seekTo(target);
+  }
+  function seekTo(target) {
+    if (!currentVideo || !Number.isFinite(target)) return;
     // Use the same in-page event that the school's progress bar uses, if present.
     let component = currentVideo.__vueParentComponent;
     for (let i = 0; component && i < 20; i++, component = component.parent) {
@@ -380,13 +387,13 @@
     for (const v of videos.keys()) {
       try { v.currentTime = seekTarget(target, 0, v.duration); } catch {}
     }
-    syncPpt(); syncAudio(); renderCaptions();
+    syncPpt(); syncAudio(false, true); renderCaptions(); showControls();
   }
   function togglePlayback() {
     if (!currentVideo) return;
     if (currentVideo.paused) {
       for (const v of videos.keys()) { const result = v.play(); result?.catch(() => {}); }
-      syncPpt(true); if (audioWanted) startAudio();
+      syncPpt(true); syncAudio(true);
     } else {
       for (const v of videos.keys()) v.pause();
       pptVideo?.pause(); audioEngine?.audio.pause();
@@ -435,16 +442,21 @@
       gain.gain.value = 1.8; compressor.threshold.value = -20; compressor.knee.value = 20;
       compressor.ratio.value = 4; compressor.attack.value = .003; compressor.release.value = .25;
       input.connect(high).connect(low).connect(gain).connect(compressor).connect(context.destination);
-      const engine = { context, audio, main, epoch: generation, active: false, ready: false, timeout: null };
+      const engine = { context, audio, main, epoch: generation, active: false, ready: false, timeout: null,
+        seekingUntil: Date.now() + 2500, playPending: false };
       audioEngine = engine; audioMessage = '增强加载中…'; syncAudio();
       const fail = () => { if (audioEngine === engine) stopAudio('增强失败，已恢复原声；点按重试'); };
       audio.addEventListener('error', fail);
       audio.addEventListener('loadedmetadata', () => {
         if (audioEngine !== engine) return;
+        engine.seekingUntil = Date.now() + 2500;
         try { audio.currentTime = seekTarget(main.currentTime, 0, audio.duration); } catch {}
       });
       audio.addEventListener('waiting', () => {
         if (audioEngine !== engine) return;
+        if (engine.active && Date.now() > engine.seekingUntil) {
+          stopAudio('增强缓冲，已恢复原声'); return;
+        }
         engine.active = false;
         for (const [v, muted] of originalMute) v.muted = muted;
         originalMute.clear(); audioMessage = '增强缓冲中（原声）';
@@ -478,21 +490,35 @@
       else { audio?.remove(); context?.close().catch(() => {}); audioStarting = false; audioMessage = '增强失败，原声保留'; }
     }
   }
-  function syncAudio(fromGesture = false) {
+  function syncAudio(fromGesture = false, seek = false) {
     const engine = audioEngine, main = currentVideo;
     if (engine && (engine.epoch !== generation || engine.main !== main || !main?.isConnected)) {
       stopAudio(); return;
     }
     if (engine) {
       const audio = engine.audio;
-      applySpeed(audio);
+      let rate = speed;
       if (audio.readyState >= 1) try {
-        if (Math.abs(audio.currentTime - main.currentTime) > .35) audio.currentTime = seekTarget(main.currentTime, 0, audio.duration);
+        const drift = main.currentTime - audio.currentTime;
+        if (seek && Math.abs(drift) > .15) {
+          engine.seekingUntil = Date.now() + 2500;
+          audio.currentTime = seekTarget(main.currentTime, 0, audio.duration);
+        } else if (!main.paused && engine.active && !audio.seeking) {
+          // Never repeatedly seek a running sound track. Small clock differences
+          // converge with at most 1.5% rate adjustment; larger failures use original sound.
+          if (Math.abs(drift) > 2 && Date.now() > engine.seekingUntil) {
+            stopAudio('增强不同步，已恢复原声'); return;
+          }
+          if (Math.abs(drift) > .08) rate = speed * (1 + Math.max(-.015, Math.min(.015, drift * .02)));
+        }
       } catch {}
+      if (Math.abs(audio.playbackRate - rate) > .001) audio.playbackRate = rate;
       if (engine.active) muteOriginals();
       if (main.paused) { if (!audio.paused) audio.pause(); }
-      else if (audio.paused && (engine.ready || engine.active || fromGesture)) {
-        audio.play()?.catch(() => { if (audioEngine === engine) stopAudio('点按恢复增强'); });
+      else if (audio.paused && !engine.playPending && (engine.ready || engine.active || fromGesture)) {
+        engine.playPending = true;
+        Promise.resolve(audio.play()).catch(() => { if (audioEngine === engine) stopAudio('点按恢复增强'); })
+          .finally(() => { engine.playPending = false; });
       }
     }
     if (root) root.querySelector('#audio').textContent = audioMessage;
@@ -508,7 +534,7 @@
     if (pptHost || !document.body) return;
     pptHost = document.createElement('section'); pptHost.id = 'sjtu-replay-ppt';
     pptHost.style.cssText = 'position:fixed;z-index:2147483644;display:none;pointer-events:auto;background:#000;border:1px solid #64748b;border-radius:9px;overflow:hidden;box-shadow:0 3px 14px #0008;color:#fff;font:13px -apple-system,sans-serif;';
-    pptHost.innerHTML = `<div style="display:flex;align-items:center;height:34px;background:#162236;gap:4px;padding:0 5px"><span id="sjtu-ppt-handle" style="flex:1;touch-action:none;user-select:none;cursor:move;padding:7px">⠿ PPT · 可拖动</span><button id="sjtu-ppt-less" type="button">－</button><button id="sjtu-ppt-more" type="button">＋</button><button id="sjtu-ppt-close" type="button">收起</button></div><div id="sjtu-ppt-body" style="width:100%;aspect-ratio:16/9;position:relative;background:#000"></div><div id="sjtu-ppt-status" style="font-size:12px;padding:4px 8px"></div>`;
+    pptHost.innerHTML = `<div class="sjtu-ppt-heading" style="display:flex;align-items:center;height:34px;background:#162236;gap:4px;padding:0 5px"><span id="sjtu-ppt-handle" style="flex:1;touch-action:none;user-select:none;cursor:move;padding:7px">⠿ PPT · 可拖动</span><button id="sjtu-ppt-less" type="button">－</button><button id="sjtu-ppt-more" type="button">＋</button><button id="sjtu-ppt-close" type="button">收起</button></div><div id="sjtu-ppt-body" style="width:100%;aspect-ratio:16/9;position:relative;background:#000"></div><div id="sjtu-ppt-status" style="font-size:12px;padding:4px 8px"></div>`;
     const style = document.createElement('style');
     style.textContent = '#sjtu-replay-ppt button{color:white;background:#293448;border:1px solid #64748b;border-radius:5px;min-height:30px;font:13px -apple-system,sans-serif;padding:1px 7px}#sjtu-ppt-body video{display:block;object-fit:contain!important;width:100%!important;height:100%!important}';
     pptHost.append(style); document.body.append(pptHost);
@@ -571,18 +597,101 @@
     } catch {}
   }
 
+  function focusActive() {
+    const view = viewportBox();
+    return !!currentVideo && !nativeVideo && (focusPreference === true || (focusPreference === 'landscape' && view.width > view.height));
+  }
+  function setQuiet(quiet) {
+    controlsQuiet = !!quiet && focusActive();
+    if (host) { host.dataset.quiet = String(controlsQuiet); host.dataset.focus = String(focusActive()); }
+    document.documentElement?.classList.toggle('sjtu-replay-focus', focusActive());
+    document.documentElement?.classList.toggle('sjtu-replay-quiet', controlsQuiet);
+  }
+  function showControls() {
+    interactionAt = Date.now(); setQuiet(false);
+  }
+  function updateFocus() {
+    const active = focusActive();
+    if (active !== focusWasActive) { focusWasActive = active; showControls(); }
+    if (!active || !currentVideo || currentVideo.paused || focusPointerHeld || movingBox || !root?.querySelector('#extra').hidden) setQuiet(false);
+    else if (Date.now() - interactionAt > 2800) setQuiet(true);
+    if (root) {
+      root.querySelector('#focus').textContent = active ? '专注开' : '专注关';
+      const slider = root.querySelector('#seek'), duration = currentVideo?.duration;
+      slider.disabled = !Number.isFinite(duration) || duration <= 0;
+      if (!slider.disabled && !focusPointerHeld) slider.value = String((currentVideo.currentTime / duration) * 1000);
+      root.querySelector('#time').textContent = formatTime(currentVideo?.currentTime) + ' / ' + formatTime(duration);
+    }
+  }
+  function formatTime(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0) return '--:--';
+    return Math.floor(seconds / 60) + ':' + String(Math.floor(seconds % 60)).padStart(2, '0');
+  }
+  function enterSystemFullscreen() {
+    const v = currentVideo; if (!v) return;
+    stopAudio('系统全屏使用原声'); showControls();
+    try {
+      if (typeof v.webkitEnterFullscreen === 'function') v.webkitEnterFullscreen();
+      else if (typeof v.requestFullscreen === 'function') v.requestFullscreen().catch(() => setStatus('无法进入系统全屏，可使用专注模式'));
+      else setStatus('此浏览器不支持系统全屏，可使用专注模式');
+    } catch { setStatus('请先播放视频，再点系统全屏'); }
+  }
+  function installFocusControls() {
+    const style = document.createElement('style'); style.id = 'sjtu-replay-focus-style';
+    // These selectors are the school's actual mobile controls. Do not hide a
+    // broad header/div selector: that would hide unrelated dialogs or the video.
+    style.textContent = `
+      .sjtu-replay-focus .jkmp-control-wrap,.sjtu-replay-focus .jkp-control-wrap,
+      .sjtu-replay-focus .control-landscape-wrapper-keep-px,
+      .sjtu-replay-focus .play-detail-mobile .icon-back-keep-px,
+      .sjtu-replay-focus .play-detail-mobile .player-menu-bar{visibility:hidden!important;pointer-events:none!important}
+      .sjtu-replay-quiet #sjtu-replay-ppt .sjtu-ppt-heading{display:none!important}
+      .sjtu-replay-quiet #sjtu-replay-ppt #sjtu-ppt-status:empty{display:none!important}
+      .sjtu-replay-quiet #sjtu-replay-ppt{border-color:transparent!important;box-shadow:none!important}
+    `;
+    document.body.append(style);
+    root.addEventListener('pointerdown', () => { focusPointerHeld = true; showControls(); });
+    document.addEventListener('pointerup', () => { if (focusPointerHeld) { focusPointerHeld = false; showControls(); } }, true);
+    document.addEventListener('pointercancel', () => { focusPointerHeld = false; showControls(); }, true);
+    root.addEventListener('input', showControls);
+    root.addEventListener('click', showControls);
+    document.addEventListener('click', e => {
+      if (!focusActive() || !currentVideo) return;
+      const path = e.composedPath();
+      if (path.includes(host) || e.target.closest?.('button,select,input,a,.sjtu-ppt-heading,.jkmp-control-wrap,.jkp-control-wrap')) return;
+      const onPicture = [currentVideo, pptVideo].filter(Boolean).some(v => {
+        const r = v.getBoundingClientRect();
+        return r.width > 0 && r.height > 0 && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+      });
+      if (!onPicture) return;
+      e.preventDefault(); e.stopImmediatePropagation();
+      if (controlsQuiet) showControls(); else setQuiet(true);
+      syncPpt(true);
+    }, true);
+    root.querySelector('#wake').addEventListener('click', showControls);
+    root.querySelector('#focus').addEventListener('click', () => {
+      focusPreference = !focusActive(); savePrefs(); showControls(); updateFocus();
+    });
+    root.querySelector('#native-fullscreen').addEventListener('click', enterSystemFullscreen);
+    root.querySelector('#seek').addEventListener('input', e => {
+      root.querySelector('#time').textContent = formatTime(Number(e.target.value) / 1000 * currentVideo?.duration);
+    });
+    root.querySelector('#seek').addEventListener('change', e => {
+      if (Number.isFinite(currentVideo?.duration)) seekTo(Number(e.target.value) / 1000 * currentVideo.duration);
+    });
+  }
   function layoutBoxes() {
     const view = viewportBox(), panel = root?.querySelector('#panel');
-    if (panel?.getBoundingClientRect) {
+    if (panel?.getBoundingClientRect && !controlsQuiet) {
       const r = panel.getBoundingClientRect();
       placeBox(panel, panelPosition, { x: view.left + view.width - r.width - 10, y: view.top + 10 });
     }
     if (pptHost?.style.display === 'block') {
-      const width = Math.max(160, Math.min(view.width - 20, view.width * pptScale, (view.height - 130) * 16 / 9));
+      const width = Math.max(160, Math.min(view.width - 20, view.width * pptScale, (view.height - (focusActive() ? 60 : 130)) * 16 / 9));
       pptHost.style.width = width + 'px';
       const panelRect = panel?.getBoundingClientRect();
-      placeBox(pptHost, pptPosition, { x: view.left + (view.width - width) / 2,
-        y: view.top + (panelRect?.height || 100) + 22 });
+      placeBox(pptHost, pptPosition, focusActive() ? { x: view.left + 8, y: view.top + 8 } : {
+        x: view.left + (view.width - width) / 2, y: view.top + (panelRect?.height || 100) + 22 });
     }
   }
   function nativeMode() {
@@ -624,10 +733,15 @@
         videos.set(v, state);
         const opts = { signal: state.controller.signal };
         for (const name of ['play', 'loadedmetadata', 'emptied']) v.addEventListener(name, () => { state.revision = -1; applySpeed(v); fillTrack(v, state); }, opts);
-        v.addEventListener('webkitbeginfullscreen', () => { nativeVideo = v; nativeMode(); renderCaptions(); }, opts);
-        v.addEventListener('webkitendfullscreen', () => { nativeVideo = null; nativeMode(); renderCaptions(); }, opts);
+        v.addEventListener('webkitbeginfullscreen', () => { stopAudio('系统全屏使用原声'); nativeVideo = v; setQuiet(false); nativeMode(); renderCaptions(); }, opts);
+        v.addEventListener('webkitendfullscreen', () => { nativeVideo = null; showControls(); nativeMode(); renderCaptions(); }, opts);
         v.addEventListener('timeupdate', renderCaptions, opts);
-        for (const name of ['seeked', 'play', 'pause', 'ratechange']) v.addEventListener(name, () => { renderCaptions(); syncPpt(true); syncAudio(); updatePlayButton(); }, opts);
+        for (const name of ['seeked', 'play', 'pause', 'ratechange']) v.addEventListener(name, () => {
+          renderCaptions(); syncPpt(true);
+          if (v === currentVideo) { syncAudio(false, name === 'seeked'); if (name === 'pause') showControls(); }
+          updatePlayButton();
+        }, opts);
+        v.addEventListener('waiting', () => { if (audioEngine?.main === v && audioEngine.active) stopAudio('视频缓冲，已恢复原声'); }, opts);
         fillTrack(v, state);
       }
       applySpeed(v);
@@ -653,10 +767,14 @@
         return pictureBounds(rect, video.videoWidth, video.videoHeight, fit);
       }).filter(r => r.width > 0 && r.height > 0 && r.bottom > view.top && r.top < view.top + view.height);
       const box = captionLayout(pictures, view, fontSize, placement);
-      
-      captionNode.style.width = box.width + 'px';
+      const focusBottom = focusActive() && placement === 'auto';
+      captionNode.style.width = focusBottom ? 'max-content' : box.width + 'px';
+      captionNode.style.maxWidth = box.width + 'px';
       captionNode.style.fontSize = fontSize + 'px';
-      placeBox(captionNode, captionPosition, { x: box.left, y: box.top });
+      const rect = captionNode.getBoundingClientRect();
+      placeBox(captionNode, captionPosition, focusBottom ? {
+        x: view.left + (view.width - rect.width) / 2, y: view.top + view.height - rect.height - 16
+      } : { x: box.left, y: box.top });
     }
   }
   async function checkUpdate() {
@@ -690,14 +808,20 @@
     root.innerHTML = `<style>
       :host{all:initial;color:white;font:14px -apple-system,BlinkMacSystemFont,sans-serif;-webkit-text-size-adjust:100%;text-size-adjust:100%}
       *{box-sizing:border-box} button,select{font:inherit;color:white;background:#293448;border:1px solid #64748b;border-radius:8px;min-height:34px;padding:5px 8px;touch-action:manipulation}button:active{background:#475569}
-      #panel{position:fixed;width:342px;max-width:calc(100% - 16px);background:rgba(15,23,42,.94);padding:8px;border-radius:12px;pointer-events:auto;box-shadow:0 2px 12px #0006;max-height:calc(100dvh - 16px);overflow:auto}
-      #bar{display:grid;grid-template-columns:1fr 1.35fr 1fr 1fr;gap:5px;align-items:stretch}#bar button,#bar select{width:100%;min-height:52px;font-size:18px;padding:4px}#play{background:#1d4ed8}
-      #actions,#extra{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}#actions button{flex:1;font-size:14px}#extra button,#extra select{font-size:12px}#extra[hidden],#body[hidden]{display:none}
+      #panel{position:fixed;width:278px;max-width:calc(100% - 16px);background:rgba(15,23,42,.94);padding:8px;border-radius:12px;pointer-events:auto;box-shadow:0 2px 12px #0006;max-height:calc(100dvh - 16px);overflow:auto}
+      #bar{display:grid;grid-template-columns:1fr 1.35fr 1fr 1fr;gap:5px;align-items:stretch}#bar button,#bar select{width:100%;min-height:38px;font-size:14px;padding:3px}#play{background:#1d4ed8}
+      #actions,#extra{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}#actions button{flex:1;font-size:12px;min-height:30px;padding:3px 5px}#extra button,#extra select{font-size:12px}#extra[hidden],#body[hidden]{display:none}
       #heading{display:flex;align-items:center;gap:6px;margin-bottom:6px}#drag{flex:1;padding:4px;touch-action:none;user-select:none;cursor:move;color:#cbd5e1;font-size:12px}#fold{min-height:26px;padding:1px 8px;font-size:12px}
-      #status{font-size:11px;line-height:1.5;color:#cbd5e1;margin-top:6px}label{display:flex;align-items:center;gap:4px}
+      #status{display:none;font-size:11px;line-height:1.5;color:#cbd5e1;margin-top:6px}label{display:flex;align-items:center;gap:4px}
       #caption{position:fixed;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.45;font-weight:400;text-shadow:0 1px 2px #000;background:rgba(0,0,0,.4);border-radius:5px;padding:6px 10px;pointer-events:auto;touch-action:none;user-select:none;cursor:move;max-height:calc(2.9em + 12px);overflow:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
       #update-status{font-size:12px;width:100%;line-height:1.5}a{color:#93c5fd}
-    </style><section id="panel" aria-label="交大回放增强"><div id="heading"><span id="drag">⠿ 拖动工具条</span><button id="fold">收起</button></div><div id="body"><div id="bar"><button id="back" aria-label="后退15秒">−15s</button><button id="play">Ⅱ 暂停</button><button id="forward" aria-label="前进15秒">＋15s</button><select id="speed" aria-label="播放倍速"></select></div><div id="actions"><button id="captions">字幕开</button><button id="ppt">PPT开</button><button id="more">设置</button></div><div id="status" role="status"></div><div id="extra" hidden><button id="audio">点按增强</button><label>字号<select id="font-size" aria-label="字幕字号"></select></label><label>位置<select id="placement" aria-label="字幕位置"></select></label><button id="reset-layout">重置拖动位置</button><button id="reload-media">重载画面</button><button id="reload">重载字幕</button><button id="minus">字幕晚 0.5 秒</button><button id="plus">字幕早 0.5 秒</button><button id="offset">校时 0 秒</button><div style="font-size:12px;width:100%">字幕出现时，按住文字即可拖动。</div><button id="update">检查更新</button><div id="update-status"></div><div id="diagnostic" style="width:100%;font-size:11px"></div></div></div></section><div id="caption" aria-label="可拖动字幕"></div>`;
+      #timeline{display:none;align-items:center;gap:6px;margin-top:6px}#seek{min-width:0;flex:1;height:26px;accent-color:#60a5fa}#time{font-size:10px;color:#cbd5e1;white-space:nowrap}
+      :host([data-focus="true"]) #timeline{display:flex}
+      :host([data-quiet="true"]) #panel{display:none}
+      #wake{display:none;position:fixed;right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));pointer-events:auto;min-height:30px;padding:3px 8px;font-size:12px;opacity:.55;background:#0f172a;border-radius:16px}
+      :host([data-quiet="true"]) #wake{display:block}
+      @media(orientation:landscape){#panel{width:266px}#heading{margin-bottom:4px}#bar button,#bar select{min-height:34px;font-size:13px}#actions{margin-top:5px}}
+    </style><section id="panel" aria-label="交大回放增强"><div id="heading"><span id="drag">⠿ 拖动工具条</span><button id="fold">收起</button></div><div id="body"><div id="bar"><button id="back" aria-label="后退15秒">−15s</button><button id="play">Ⅱ 暂停</button><button id="forward" aria-label="前进15秒">＋15s</button><select id="speed" aria-label="播放倍速"></select></div><div id="actions"><button id="captions">字幕开</button><button id="ppt">PPT开</button><button id="focus">专注关</button><button id="more">设置</button></div><div id="timeline"><input id="seek" type="range" min="0" max="1000" value="0" step="1" aria-label="播放进度"><span id="time"></span></div><div id="status" role="status"></div><div id="extra" hidden><button id="audio">点按增强</button><button id="native-fullscreen">系统全屏</button><div style="width:100%;font-size:11px;line-height:1.5">专注模式：轻点画面显示控制，播放时约3秒自动隐藏。系统全屏只显示主视频；要保留PPT和拖动字幕，请用专注模式。</div><label>字号<select id="font-size" aria-label="字幕字号"></select></label><label>位置<select id="placement" aria-label="字幕位置"></select></label><button id="reset-layout">重置拖动位置</button><button id="reload-media">重载画面</button><button id="reload">重载字幕</button><button id="minus">字幕晚 0.5 秒</button><button id="plus">字幕早 0.5 秒</button><button id="offset">校时 0 秒</button><div style="font-size:12px;width:100%">字幕出现时，按住文字即可拖动。</div><button id="update">检查更新</button><div id="update-status"></div><div id="diagnostic" style="width:100%;font-size:11px"></div></div></div></section><button id="wake" aria-label="显示播放控制">控制</button><div id="caption" aria-label="可拖动字幕"></div>`;
 
     document.body.append(host);
     statusNode = root.querySelector('#status'); captionNode = root.querySelector('#caption');
@@ -709,6 +833,7 @@
     });
     root.querySelector('#back').addEventListener('click', () => seekBy(-15));
     root.querySelector('#forward').addEventListener('click', () => seekBy(15));
+    installFocusControls();
     root.querySelector('#play').addEventListener('click', togglePlayback);
     draggable(captionNode, captionNode, p => { captionPosition = p; });
     root.querySelector('#audio').addEventListener('click', () => {
@@ -746,7 +871,7 @@
     speedSelect.addEventListener('change', () => { speed = Number(speedSelect.value); savePrefs(); for (const v of videos.keys()) applySpeed(v); });
     captionButton.textContent = captionsOn ? '字幕开' : '字幕关';
     captionButton.addEventListener('click', () => { captionsOn = !captionsOn; captionButton.textContent = captionsOn ? '字幕开' : '字幕关'; savePrefs(); nativeMode(); renderCaptions(); });
-    root.querySelector('#more').addEventListener('click', () => { const e = root.querySelector('#extra'); e.hidden = !e.hidden; layoutBoxes(); });
+    root.querySelector('#more').addEventListener('click', () => { const e = root.querySelector('#extra'); e.hidden = !e.hidden; statusNode.style.display = e.hidden ? 'none' : 'block'; showControls(); layoutBoxes(); });
     root.querySelector('#reload').addEventListener('click', () => loadCaptions(true));
     const adjust = value => {
       offset = value; revision++;
@@ -772,7 +897,7 @@
   function tick() {
     checkRoute(); mount(); scanVideos();
     if (currentVideo) { loadCaptions(); loadMedia(); }
-    repairPpt(); layoutBoxes(); syncAudio(); updatePlayButton();
+    repairPpt(); layoutBoxes(); syncAudio(); updatePlayButton(); updateFocus();
     if (root) root.querySelector('#diagnostic').textContent = `v${VERSION} · 回放 ${recording || '未识别'} · ${mediaViews.length ? '视角 ' + mediaViews.map(v => v.id).join('/') : (mediaError || '正在读取视频源')} · 进度 ${Math.floor(currentVideo?.currentTime || 0)} 秒`;
     renderCaptions();
   }
@@ -787,7 +912,7 @@
   addEventListener('resize', layoutBoxes);
   window.visualViewport?.addEventListener('resize', layoutBoxes);
   document.addEventListener('DOMContentLoaded', tick, { once: true });
-  addEventListener('pagehide', () => { clearInterval(timer); timer = null; request?.abort(); mediaController?.abort(); stopAudio(); pptVideo?.pause(); });
+  addEventListener('pagehide', () => { clearInterval(timer); timer = null; request?.abort(); mediaController?.abort(); stopAudio(); pptVideo?.pause(); setQuiet(false); document.documentElement?.classList.remove('sjtu-replay-focus', 'sjtu-replay-quiet'); });
   addEventListener('pageshow', () => { attempted = ''; startTimer(); tick(); });
   startTimer();
   tick();
